@@ -11,12 +11,13 @@ and open the template in the editor.
     <h:head>
         <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
         <h:outputStylesheet name="styles.css" library="css"/>
     </h:head>
     <h:body styleClass="body">
-        <h:graphicImage name="logo.png" library="images" width="210px" height="30px"/>
-        <h:form>
-        <h:panelGrid styleClass="container" columns="3">
+        <h:panelGrid styleClass="container" columns="1">
+            <h:graphicImage name="logo.png" library="images" width="200px" height="30px"/>
+            <h:form>
                 <h:outputText value="E-Mail:"/>
                 <h:inputText id="emailInputText" required="true"
                              requiredMessage="Enter E-Mail"
@@ -25,19 +26,18 @@ and open the template in the editor.
                     <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
                 </h:inputText> 
                 <h:message id="emailMessage" for="emailInputText" styleClass="error"/>
-                
+                <br/>
                 <h:outputText value="Password:"/>
                 <h:inputSecret id="passInputText" required="true"
-                             requiredMessage="Enter Password"
-                             value="#{loginBean.password}">
+                               requiredMessage="Enter Password"
+                               value="#{loginBean.password}">
                 </h:inputSecret>
                 <h:message id="passwordMessage" for="passInputText" styleClass="error"/>
-                
-                <h:commandLink value="Login" action="#{loginBean.login()}">
-                </h:commandLink>
+                <br/>
+                <h:commandButton class="btn btn-default" value="Login" action="#{loginBean.login()}">
+                </h:commandButton> <br/>
                 <h:outputText value="#{loginBean.outputMessage}" styleClass="error" id="errorMessage"/>
+            </h:form> 
         </h:panelGrid>
-            
-         </h:form> 
     </h:body>
 </html>
