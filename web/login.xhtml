@@ -33,9 +33,8 @@ and open the template in the editor.
                 </h:inputSecret>
                 <h:message id="passwordMessage" for="passInputText" styleClass="error"/>
                 
-                <h:commandButton value="Login" action="#{loginBean.login()}">
-                    <f:ajax execute="emailInputText" render="emailMessage"/>
-                </h:commandButton>
+                <h:commandLink value="Login" action="#{loginBean.login()}">
+                </h:commandLink>
                 <h:outputText value="#{loginBean.outputMessage}" styleClass="error" id="errorMessage"/>
         </h:panelGrid>
             

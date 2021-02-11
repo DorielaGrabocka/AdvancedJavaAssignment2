@@ -7,10 +7,10 @@ package beans;
 
 import databaseConnection.EntityManagerProvider;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import models.User;
 //import models.User;
 
@@ -25,39 +25,41 @@ public class LoginBean implements Serializable {
     private String email;
     private String password;
     private User user;
-    private String outputMessage;
+    private String outputMessage="";
     public LoginBean() {
     }
 
     public String login() {
             boolean isUserAuthenticated = authenticateUser();
             if (!isUserAuthenticated) {
-                email="";
-                return "";
+                return "login";
             } 
             else{
                 outputMessage="";
-                return "success";
+                if("admin".equals(user.getUserType())) return "indexAdmin";
+                else return "indexStandard";
             }
     }
     
     private boolean authenticateUser(){
         EntityManager em = EntityManagerProvider.getEntityManager();
         String getUserQuery = "SELECT u FROM User u WHERE u.email=:email";
-        User user = (User)em.createQuery(getUserQuery)
-                .setParameter("email", email)
-                .getSingleResult();
-        if(user!=null){
-            if(user.getPassword().equals(password))
-                return true;
-            else{
-                outputMessage="Incorrect password";
-                return false;
-            }
-        }
-        outputMessage="Incorrect email";
-        return false;
         
+        List<User> users = em.createQuery(getUserQuery)
+                .setParameter("email", email)
+                .getResultList();
+        if (users.isEmpty()) {
+            email="";
+            outputMessage = "Incorrect email.";
+            return false;
+        }
+        user = users.get(0);
+        if (user.getPassword().equals(password)) {
+            return true;
+        } else {
+            outputMessage = "Incorrect password.";
+            return false;
+        }
     }
 
     public String getEmail() {
