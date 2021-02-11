@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="styles.css" library="css"/>
+    </h:head>
+    <h:body styleClass="body">
+        <h:graphicImage name="logo.png" library="images" width="210px" height="30px"/>
+        <h:form>
+        <h:panelGrid styleClass="container" columns="3">
+                <h:outputText value="E-Mail:"/>
+                <h:inputText id="emailInputText" required="true"
+                             requiredMessage="Enter E-Mail"
+                             validatorMessage="Please enter the email as example@provider.com"
+                             value="#{loginBean.email}">
+                    <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+                </h:inputText> 
+                <h:message id="emailMessage" for="emailInputText" styleClass="error"/>
+                
+                <h:outputText value="Password:"/>
+                <h:inputSecret id="passInputText" required="true"
+                             requiredMessage="Enter Password"
+                             value="#{loginBean.password}">
+                </h:inputSecret>
+                <h:message id="passwordMessage" for="passInputText" styleClass="error"/>
+                
+                <h:commandButton value="Login" action="#{loginBean.login()}">
+                    <f:ajax execute="emailInputText" render="emailMessage"/>
+                </h:commandButton>
+                <h:outputText value="#{loginBean.outputMessage}" styleClass="error" id="errorMessage"/>
+        </h:panelGrid>
+            
+         </h:form> 
+    </h:body>
+</html>

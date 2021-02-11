@@ -1,0 +1,13 @@
+.body {
+    font-family: "Garamond";
+    text-align: center;
+}
+
+.container {
+    padding: 30px;
+    background-color: #f4f2e9;
+}
+
+.error{
+    color: #ff0000;
+}
