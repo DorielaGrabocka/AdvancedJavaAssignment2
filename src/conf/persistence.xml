@@ -5,12 +5,13 @@
     <class>models.Book</class>
     <class>models.User</class>
     <class>models.Review</class>
+    <class>beans.NewEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/books_assign2?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.password" value="sysadmin"/>
     </properties>
   </persistence-unit>
 </persistence>
