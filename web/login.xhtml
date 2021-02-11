@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -15,13 +10,18 @@ and open the template in the editor.
         <h:outputStylesheet name="styles.css" library="css"/>
     </h:head>
     <h:body styleClass="body">
-        <h:panelGrid styleClass="container" columns="1">
-            <h:graphicImage name="logo.png" library="images" width="200px" height="30px"/>
+        <h:panelGrid styleClass="image">
+            <h:graphicImage name="read.jpg" styleClass="read" library="images"></h:graphicImage>
+        </h:panelGrid>
+        <h:panelGrid styleClass="container" >
+            <h:graphicImage name="logo.png" library="images" styleClass="logo"/>
             <h:form>
                 <h:outputText value="E-Mail:"/>
-                <h:inputText id="emailInputText" required="true"
+                <h:inputText required="true"
                              requiredMessage="Enter E-Mail"
                              validatorMessage="Please enter the email as example@provider.com"
+                             styleClass="fields"
+                             class="form-control" id="exampleInputEmail1"
                              value="#{loginBean.email}">
                     <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
                 </h:inputText> 
@@ -30,6 +30,8 @@ and open the template in the editor.
                 <h:outputText value="Password:"/>
                 <h:inputSecret id="passInputText" required="true"
                                requiredMessage="Enter Password"
+                               styleClass="fields"
+                               class="form-control"
                                value="#{loginBean.password}">
                 </h:inputSecret>
                 <h:message id="passwordMessage" for="passInputText" styleClass="error"/>
