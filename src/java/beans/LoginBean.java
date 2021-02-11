@@ -33,7 +33,6 @@ public class LoginBean implements Serializable {
             boolean isUserAuthenticated = authenticateUser();
             if (!isUserAuthenticated) {
                 email="";
-                outputMessage = "Invalid Password, please try again!";
                 return "";
             } 
             else{
@@ -44,19 +43,21 @@ public class LoginBean implements Serializable {
     
     private boolean authenticateUser(){
         EntityManager em = EntityManagerProvider.getEntityManager();
-        String getUserQuery = "SELECT u FROM User u WHERE u.email=:email AND u.password=:password"; 
-        try{
-         User user = (User)em.createQuery(getUserQuery)
+        String getUserQuery = "SELECT u FROM User u WHERE u.email=:email";
+        User user = (User)em.createQuery(getUserQuery)
                 .setParameter("email", email)
-                .setParameter("password", password)
                 .getSingleResult();
+        if(user!=null){
+            if(user.getPassword().equals(password))
+                return true;
+            else{
+                outputMessage="Incorrect password";
+                return false;
+            }
+        }
+        outputMessage="Incorrect email";
+        return false;
         
-        }
-        catch(NoResultException e){
-            outputMessage = e.toString();
-            return false;
-        }
-        return true;
     }
 
     public String getEmail() {
