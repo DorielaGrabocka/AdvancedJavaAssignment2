@@ -10,5 +10,5 @@ package beans;
  * @author user
  */
 public class lksdld {
-    
+    int dumb;
 }
