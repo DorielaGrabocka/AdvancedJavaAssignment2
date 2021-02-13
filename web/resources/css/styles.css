@@ -1,3 +1,6 @@
+*{
+    box-sizing: border-box;
+}
 .body {
     font-family: "Arial";
     text-align: center;
@@ -64,4 +67,53 @@
 .buttonsGrid{
     
     margin-left: 30%;
+}
+
+
+/*------------------style of indexSimple specific components------------------------------*/
+
+.logInLink{
+    display: block;
+    float: right;
+    margin-right: 4%;
+    font-size: 130%;
+    text-decoration: none;
+    color: black;
+}
+
+.bottom-part, .top-part{
+    /*border: 2px solid black;*/
+    display: block;
+    margin-top: 2%;
+}
+
+.filters, .stats{
+    display: block;
+    width: 100%;
+    /*border: 2px solid black;*/
+    margin-top: 5%;
+}
+
+.last5, .top5{
+    /*border: 2px solid black;*/
+    display: block;
+    width: 100%;
+    margin-bottom: 20%; 
+}
+
+
+.icon{
+    height: 40%;
+    width: 40%;
+    display: block;
+    margin-left:10%;
+    margin-right:10%;
+}
+
+
+.book{
+    width: 20%;
+    display: inline-block;
+    /*border: 2px solid blue;*/
+    float: left;
 }

@@ -79,4 +79,43 @@ public class BookDAO implements BaseDao<Book>{
                .getResultList();
     }
     
+    /**Method to get the last five added books to the database
+     * @return the list of books 
+     */
+    public List<Book> getLastFive(){
+        String query = "SELECT b FROM Book b ORDER BY b.dateAdded DESC";
+        return getEntityManager().createQuery(query, Book.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    
+    /**Method to get the top five rated books.
+     * @return the list of books 
+     */
+    public List<Book> getTopFive(){
+        String query="SELECT b "
+                + "FROM Book b JOIN Review r on b.id=r.reviewPK.bookID "
+                + "GROUP By b.id "
+                + "ORDER BY AVG(r.rating) DESC ";
+        
+        return getEntityManager().createQuery(query, Book.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    
+    /**Method to get the average rating of a book
+     *@param id - is the primary key of the book in the table
+     *@return the average rating of the book or 0 if no rating exists
+     */
+    public double getAverageRating(int id){
+        String query="SELECT r.rating FROM Review r WHERE r.reviewPK.bookID = :bookID";
+        
+        return getEntityManager().createQuery(query, Integer.class)
+                .setParameter("bookID", id)
+                .getResultList()
+                .stream()
+                .mapToInt(r -> r)
+                .average()
+                .orElse(0);
+    }
 }
