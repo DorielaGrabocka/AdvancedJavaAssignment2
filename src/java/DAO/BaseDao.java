@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @author Doriela
  */
+
 public interface BaseDao<T> {
     EntityManager getEntityManager();
     
@@ -27,18 +28,6 @@ public interface BaseDao<T> {
     * @throws Exception to be caught on the class where it is called.
     */
     void delete(T t) throws Exception;
-    
-    /**Method to update an object from the database
-    * @param updated  is the object with updated values
-    * @throws Exception to be caught on the class where it is called.
-    */
-    void update(T updated) throws Exception;
-    
-    /**Method to  get an object from the database that has the corresponding ID
-     * @param id - is the primary key of the object
-     * @return an object T
-     */
-    T getById(int id);
     
     /**Method to get all entities of a certain type from the database.
      *@return List of entities T.
