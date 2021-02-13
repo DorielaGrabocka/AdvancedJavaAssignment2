@@ -5,12 +5,10 @@
  */
 package beans;
 
-import databaseConnection.EntityManagerProvider;
+import DAO.UserDAO;
 import java.io.Serializable;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.EntityManager;
 import models.User;
 //import models.User;
 
@@ -30,6 +28,7 @@ public class LoginBean implements Serializable {
     }
 
     public String login() {
+            outputMessage="";
             boolean isUserAuthenticated = authenticateUser();
             if (!isUserAuthenticated) {
                 return "login";
@@ -42,24 +41,30 @@ public class LoginBean implements Serializable {
     }
     
     private boolean authenticateUser(){
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        String getUserQuery = "SELECT u FROM User u WHERE u.email=:email";
         
-        List<User> users = em.createQuery(getUserQuery)
-                .setParameter("email", email)
-                .getResultList();
-        if (users.isEmpty()) {
-            email="";
+        UserDAO userDAO = new UserDAO();
+        
+        try{
+            User potentialUser = userDAO.getUserByEmail(email);
+            if (potentialUser == null) {
+                email = "";
+                outputMessage = "Incorrect email.";
+                return false;
+            }
+
+            if (password.equals(potentialUser.getPassword())) {
+                user = potentialUser;
+                return true;
+            } else {
+                outputMessage = "Incorrect password.";
+                return false;
+            }
+        }catch(Exception e){
+            email = "";
             outputMessage = "Incorrect email.";
             return false;
         }
-        user = users.get(0);
-        if (user.getPassword().equals(password)) {
-            return true;
-        } else {
-            outputMessage = "Incorrect password.";
-            return false;
-        }
+        
     }
 
     public String getEmail() {

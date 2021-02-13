@@ -36,8 +36,13 @@
                 </h:inputSecret>
                 <h:message id="passwordMessage" for="passInputText" styleClass="error"/>
                 <br/>
-                <h:commandButton class="btn btn-default" value="Login" action="#{loginBean.login()}">
-                </h:commandButton> <br/>
+                <h:panelGrid columns="2" styleClass="buttonsGrid">
+                    <h:commandButton class="btn btn-default" value="Login" action="#{loginBean.login()}">
+                    </h:commandButton> 
+                    <h:link class="btn btn-default" value="Back to Index" outcome="indexSimple">
+                    </h:link> 
+                </h:panelGrid>
+                
                 <h:outputText value="#{loginBean.outputMessage}" styleClass="error" id="errorMessage"/>
             </h:form> 
         </h:panelGrid>
