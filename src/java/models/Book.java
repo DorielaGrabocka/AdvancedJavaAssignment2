@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -138,8 +139,9 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
-    public Date getDateAdded() {
-        return dateAdded;
+    public String getDateAdded() {
+        return new SimpleDateFormat("dd-MM-yyyy")
+                .format(dateAdded);
     }
 
     public void setDateAdded(Date dateAdded) {
