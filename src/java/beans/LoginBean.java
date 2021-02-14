@@ -27,6 +27,7 @@ public class LoginBean implements Serializable {
     private String password;
     private User user;
     private String outputMessage="";
+    
     public LoginBean() {
     }
 
@@ -112,7 +113,6 @@ public class LoginBean implements Serializable {
         }
          return "";
     }
-       
     
     public String getEmail() {
         return email;
@@ -139,6 +139,7 @@ public class LoginBean implements Serializable {
     }
     
     
-    
-    
+    public LoginBean getLoginBean(){
+        return this;
+    }
 }
