@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Books</title>
+        <h:outputStylesheet name="template.css" library="css"/>
+    </h:head>
+    <h:body styleClass="body">
+        <h:panelGrid styleClass="header" columns="2">
+            <h:graphicImage name="logo.png" library="images" styleClass="logo"></h:graphicImage>
+            <h:panelGrid styleClass="menus" columns="9">
+                <ul>
+                    <li><h:link styleClass="pages" outcome="indexAdmin">Home</h:link></li>
+                    <li><h:link styleClass="pages" outcome="usersPage">Users</h:link></li>
+                    <li><h:link styleClass="pages" outcome="booksPage">Books</h:link></li>
+                    <li><h:link styleClass="pages" outcome="login">Logout</h:link></li>
+                </ul>
+            </h:panelGrid>
+        </h:panelGrid>
+        
+        <h:panelGrid styleClass="page" columns="2">
+            <h:panelGrid styleClass="insert">
+                <h3>Insert Book</h3> 
+            </h:panelGrid>
+            <h:panelGrid styleClass="view">
+                <h3>Books</h3>
+            </h:panelGrid>
+        </h:panelGrid>
+    </h:body>
+</html>
+

@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke;
+    color: #716052;
+    background-size: cover;
+    background-position: center;
+    font-family: "Arial";
+    font-size: 12px;
+    text-align: center;
+}
+
+.header{
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    background-color: #d3cbbf;
+    width: 100%;
+    border: 1px solid transparent;
+    height: 50px;
+}
+
+.logo{
+    width: 132px;
+    height: 18px;
+    margin-left: 10px;
+    float: left;
+}
+
+.menus{
+    float:right;
+    display: inline-block;
+}
+
+.menus .pages {
+    display: inline-block;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: inline;
+}
+
+li {
+    list-style: none;
+    float: right;
+    display: inline;
+}
+
+.pages {
+    display: block;
+  color: #716052;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.pages:hover {
+  background-color: white;
+}
+
+/*CRUD PAGES*/
+
+.insert {
+    float:left;
+    width:50%;
+    border: 1px solid black;
+    height: 100%;
+}
+
+.view {
+    float: right;
+    border: 1px solid black;
+    width:50%;
+    margin-left: 50%;
+}
