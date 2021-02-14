@@ -1,9 +1,12 @@
 package beans;
 
 import javax.faces.bean.ManagedBean;
-import java.sql.Date;
+import java.util.Date;
 import models.Book;
 import DAO.BookDAO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "bookBean")
 public class BookBean {
@@ -11,24 +14,36 @@ public class BookBean {
     private String title;
     private String author;
     private String publishingHouse;
-    private String year;
+    private String publicationYear;
     private String genre;
     private Date dateAdded;
     private String synopsis;
     private String status;
     private BookDAO bookDao = new BookDAO();
+    private String outputMessage;
 
     public BookBean() {
 
     }
 
     public void insert() throws Exception {
-        long millis = System.currentTimeMillis();
-        dateAdded = new Date(millis);
-        status = "N";
-        Book book = new Book(title, author, publishingHouse, year, genre, dateAdded, synopsis, status);
-        bookDao.insert(book);
-        
+        boolean exists = bookDao.bookExists(title, publicationYear);
+        if (!exists) {
+            long millis = System.currentTimeMillis();
+            dateAdded = new Date(millis);
+            status = "N";
+            Book book = new Book(title, author, publishingHouse, publicationYear, genre, dateAdded, synopsis, status);
+            bookDao.insert(book);
+            FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("booksPage.xhtml");
+        }
+        else{
+            outputMessage = "Book already exists!";
+        }
+    }
+    
+    public List<Book> getAll(){
+        return bookDao.getAll();
     }
 
     public String getTitle() {
@@ -55,12 +70,12 @@ public class BookBean {
         this.publishingHouse = publishingHouse;
     }
 
-    public String getYear() {
-        return year;
+    public String getPublicationYear() {
+        return publicationYear;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setPublicationYear(String publicationYear) {
+        this.publicationYear = publicationYear;
     }
 
     public String getGenre() {
@@ -94,5 +109,12 @@ public class BookBean {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getOutputMessage() {
+        return outputMessage;
+    }
+
+    public void setOutputMessage(String outputMessage) {
+        this.outputMessage = outputMessage;
+    }
 }

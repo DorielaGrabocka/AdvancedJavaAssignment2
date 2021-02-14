@@ -26,6 +26,7 @@ public class BookDAO implements BaseDao<Book>{
     public void insert(Book b) throws Exception {
         EntityManager em = getEntityManager();
         EntityTransaction transcation = em.getTransaction();
+        
         transcation.begin();
         em.persist(b);
         transcation.commit();
@@ -35,9 +36,12 @@ public class BookDAO implements BaseDao<Book>{
     public void delete(Book b) throws Exception {
         EntityManager em = getEntityManager();
         EntityTransaction transcation = em.getTransaction();
+        boolean exists = bookExists(b.getTitle(), b.getPublicationYear());
+        if(!exists){
         transcation.begin();
         em.remove(b);
         transcation.commit();
+        }
     }
 
     public void update(Book updatedBook) throws Exception {
@@ -119,5 +123,15 @@ public class BookDAO implements BaseDao<Book>{
                 .mapToInt(r -> r)
                 .average()
                 .orElse(0);
+    }
+    
+    public boolean bookExists(String title, String publicationYear){
+        String query = "SELECT b FROM Book b WHERE b.title=:title AND b.publicationYear=:publicationYear";
+        
+        Book foundBook= getEntityManager().createQuery(query, Book.class)
+                .setParameter("title", title)
+                .setParameter("publicationYear", publicationYear)
+                .getSingleResult();
+        return foundBook != null;
     }
 }
