@@ -1,8 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <f:metadata> 
+            <f:event listener="#{loginBean.isUserLoggedIn()}" type="preRenderView"/>
+        </f:metadata>
         <title>The Booker-Admin</title>
         <h:outputStylesheet name="template.css" library="css"/>
     </h:head>
@@ -15,6 +19,7 @@
                     <li><h:link styleClass="pages" outcome="usersPage">Users</h:link></li>
                     <li><h:link styleClass="pages" outcome="booksPage">Books</h:link></li>
                     <li><h:link styleClass="pages" outcome="login">Logout</h:link></li>
+                    <li><h:outputText styleClass="pages" value="#{loginBean.user.name} #{loginBean.user.surname}"/></li>
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
