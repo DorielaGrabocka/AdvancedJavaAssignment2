@@ -61,7 +61,7 @@ public class BookDAO implements BaseDao<Book>{
         original.setGenre(updated.getGenre());
         original.setPublicationYear(updated.getPublicationYear());
         original.setPublishingHouse(updated.getPublishingHouse());
-        original.setSynopopsis(updated.getSynopopsis());
+        original.setSynopsis(updated.getSynopsis());
         original.setStatus(updated.getStatus());
     }
 
