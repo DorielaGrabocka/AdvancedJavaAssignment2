@@ -9,23 +9,46 @@
         </f:metadata>
         <title>The Booker-Admin</title>
         <h:outputStylesheet name="template.css" library="css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     </h:head>
     <h:body styleClass="body">
-        <h:panelGrid styleClass="header" columns="2">
+        <h:panelGrid styleClass="header" columns="2" >
             <h:graphicImage name="logo.png" library="images" styleClass="logo"></h:graphicImage>
-            <h:panelGrid styleClass="menus" columns="9">
+            <h:panelGrid styleClass="menus" columns="10">
                 <ul>
-                    <li><h:outputText styleClass="pages" value="#{loginBean.user.name} #{loginBean.user.surname}"/></li>
                     <li><h:link styleClass="pages" outcome="indexAdmin">Home</h:link></li>
+                    <li><h:link styleClass="pages" outcome="adminProfile">Profile</h:link></li>
                     <li><h:link styleClass="pages" outcome="usersPage">Users</h:link></li>
                     <li><h:link styleClass="pages" outcome="booksPage">Books</h:link></li>
-                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" /></h:form></li>
+                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" styleClass="pages"/></h:form></li>
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
-        
-        <h:panelGrid styleClass="page">
-            <h1>Welcome to Admin Panel!</h1>
+
+        <h:outputText styleClass="title" value="Welcome, #{loginBean.user.name} #{loginBean.user.surname}!"/>
+        <h:panelGrid styleClass="home" columns="1">
+            <h3>Lookup User</h3>
+            <h:panelGrid styleClass="searchUser" columns="2">
+                <h:form>
+                    <h:outputText value="UserID:"/>
+                    <h:inputText id="userIdInputText" required="true"
+                                 requiredMessage="Enter User ID!"
+                                 class="form-control"/>
+                    <h:commandButton value="Search User" styleClass="btn btn-default"/>
+                </h:form>
+            </h:panelGrid>
+            <h3>Lookup Book</h3>
+            <h:panelGrid styleClass="searchBook" columns="2">
+                <h:form>
+                    <h:outputText value="BookID:"/>
+                    <h:inputText id="bookIdInputText" required="true"
+                                 requiredMessage="Enter Book ID!"
+                                 class="form-control"
+                                 value="#{bookBean.id}"/>
+                    <h:commandButton value="Search Book" action="#{bookBean.lookup()}" styleClass="btn btn-default"/>
+                    <h:outputText value="Title: #{bookBean.title}" />
+                </h:form>
+            </h:panelGrid>
         </h:panelGrid>
     </h:body>
 </html>

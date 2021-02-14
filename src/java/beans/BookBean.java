@@ -4,13 +4,19 @@ import javax.faces.bean.ManagedBean;
 import java.util.Date;
 import models.Book;
 import DAO.BookDAO;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "bookBean")
+@ViewScoped
 public class BookBean {
 
+    private int id;
     private String title;
     private String author;
     private String publishingHouse;
@@ -21,6 +27,7 @@ public class BookBean {
     private String status;
     private BookDAO bookDao = new BookDAO();
     private String outputMessage;
+    private Book updatedBook = new Book();
 
     public BookBean() {
 
@@ -35,17 +42,70 @@ public class BookBean {
             Book book = new Book(title, author, publishingHouse, publicationYear, genre, dateAdded, synopsis, status);
             bookDao.insert(book);
             FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("booksPage.xhtml");
-        }
-        else{
+                    .redirect("booksPage.xhtml");
+        } else {
             outputMessage = "Book already exists!";
         }
     }
-    
-    public List<Book> getAll(){
-        return bookDao.getAll();
+
+    public List<Book> getAll() {
+        List<Book> booksToShow = new ArrayList<>();
+        bookDao.getAll()
+                .stream()
+                .filter(b -> (b.getStatus().equals("N")))
+                .forEachOrdered(b -> {booksToShow.add(b);});
+        return booksToShow;
     }
 
+    public void fillData() throws IOException, ParseException {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        this.id = Integer.parseInt(params.get("bookId"));
+        updatedBook = bookDao.getById(id);
+        populateFields(updatedBook);
+    }
+
+    public void edit() throws Exception {
+        populateModel(updatedBook);
+        bookDao.update(updatedBook);
+        FacesContext.getCurrentInstance().getExternalContext()
+                .redirect("booksPage.xhtml");
+    }
+    
+    public void populateModel(Book book){
+        book.setId(this.id);
+        book.setTitle(this.title);
+        book.setAuthor(this.author);
+        book.setDateAdded(this.dateAdded);
+        book.setGenre(this.genre);
+        book.setPublishingHouse(this.publishingHouse);
+        book.setPublicationYear(this.publicationYear);
+        book.setSynopsis(this.synopsis);
+        book.setStatus("N");
+    }
+    
+    public void populateFields(Book book) throws ParseException {
+        title = book.getTitle();
+        author = book.getAuthor();
+        publishingHouse = book.getPublishingHouse();
+        publicationYear = book.getPublicationYear();
+        genre = book.getGenre();
+        synopsis = book.getSynopsis();
+    }
+
+    public void delete() throws Exception {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        this.id = Integer.parseInt(params.get("bookId"));
+        Book book = bookDao.getById(id);
+        book.setStatus("D");
+        bookDao.update(book);
+    }
+
+    //Fix this
+    public void lookup() throws ParseException{
+        Book found = bookDao.getById(id);
+        populateFields(found);
+    }
+    
     public String getTitle() {
         return title;
     }
@@ -117,4 +177,13 @@ public class BookBean {
     public void setOutputMessage(String outputMessage) {
         this.outputMessage = outputMessage;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

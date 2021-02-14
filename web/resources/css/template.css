@@ -1,3 +1,4 @@
+/*Header styles*/
 body {
     margin: 0;
     padding: 0;
@@ -22,7 +23,7 @@ body {
 
 .logo{
     width: 132px;
-    height: 18px;
+    height: 15px;
     margin-left: 10px;
     float: left;
 }
@@ -37,11 +38,11 @@ body {
 }
 
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  display: inline;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: inline;
 }
 
 li {
@@ -52,28 +53,61 @@ li {
 
 .pages {
     display: block;
-  color: #716052;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+    color: #716052;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
 
 .pages:hover {
-  background-color: white;
+    background-color: white;
 }
 
-/*CRUD PAGES*/
+/*Index Styles*/
+
+
+.home {
+    text-align: center;
+}
+
+.title{
+    padding: 30px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+/*CRUD PAGES Styles*/
 
 .insert {
     float:left;
-    width:50%;
-    border: 1px solid black;
+    width:30%;
+    margin-left: 30px;
     height: 100%;
 }
 
 .view {
+    margin-top: 10px;
+    margin-right: 30px;
     float: right;
-    border: 1px solid black;
-    width:50%;
+    width:90%;
     margin-left: 50%;
+}
+
+.form-control{
+    width:200px;
+    margin: 6px;
+}
+
+.btn {
+    margin-top:10px;
+}
+
+.table{
+    overflow-y: scroll;
+}
+
+.error {
+    margin-top: 5px;
+    color: red;
+    width: 70%;
 }
