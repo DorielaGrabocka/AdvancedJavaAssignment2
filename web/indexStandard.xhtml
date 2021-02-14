@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <f:metadata> 
-            <f:event listener="#{loginBean.isUserLoggedIn()}" type="preRenderView"/>
+            <f:event listener="#{loginBean.isUserLoggedIn('standard')}" type="preRenderView"/>
         </f:metadata>
         <title>The Booker-Standard Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>

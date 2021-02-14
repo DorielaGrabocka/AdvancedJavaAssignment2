@@ -96,11 +96,13 @@ public class LoginBean implements Serializable {
 
     /**Method to check if a user is logged in or not. If yes then, go to the specific
      * page, else redirect to the login page.
+     * @param type- the type of user logged in
      * @return the page were it will land
      */
-    public String isUserLoggedIn(){
+    public String isUserLoggedIn(String type){
+        email="";
         try{
-            if(user==null){
+            if(user==null || !type.equals(user.getUserType())){
             FacesContext.getCurrentInstance()
                     .getExternalContext()
                     .redirect("login.xhtml");
@@ -109,7 +111,7 @@ public class LoginBean implements Serializable {
             return "login.xhtml";
         }
          return "";
-        }
+    }
        
     
     public String getEmail() {

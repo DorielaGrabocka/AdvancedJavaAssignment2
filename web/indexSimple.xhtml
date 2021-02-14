@@ -33,17 +33,17 @@
                 </h:panelGroup>
                 <h:panelGroup class="top5">
                     <h3>Top 5 rated books</h3>
-                            <ui:repeat value="#{indexBean.fillTopFive()}" var="book">
+                            <ui:repeat value="#{indexBean.fillTopFive()}" var="book1">
                                 <div class="book">
                                     <h:graphicImage alt="thumbnail" 
-                                                    name="#{book.genre}.jpg" 
-                                                    library="images/thumbnails/Academic.jpg"
+                                                    name="#{book1.genre}.jpg" 
+                                                    library="images/thumbnails/"
                                                     styleClass="icon"></h:graphicImage>
                                     <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
-                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="title">
-                                        <f:param name="bookID" value="#{book.id}"/>
+                                    <h:link value="#{book1.title}" outcome="bookDetails" styleClass="title">
+                                        <f:param name="bookID" value="#{book1.id}"/>
                                     </h:link>
-                                    <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
+                                    <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>

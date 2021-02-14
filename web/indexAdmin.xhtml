@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <f:metadata> 
-            <f:event listener="#{loginBean.isUserLoggedIn()}" type="preRenderView"/>
+            <f:event listener="#{loginBean.isUserLoggedIn('admin')}" type="preRenderView"/>
         </f:metadata>
         <title>The Booker-Admin</title>
         <h:outputStylesheet name="template.css" library="css"/>
