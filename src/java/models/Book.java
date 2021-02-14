@@ -6,7 +6,7 @@
 package models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,7 +66,7 @@ public class Book implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateAdded;
     @Column(name = "Synopopsis")
-    private String synopopsis;
+    private String synopsis;
     @Basic(optional = false)
     @Column(name = "Status")
     private String status;
@@ -78,15 +78,15 @@ public class Book implements Serializable {
         this.id = id;
     }
 
-    public Book(Integer id, String title, String author, String publishingHouse, 
-            String publicationYear, String genre, Date dateAdded, String status) {
-        this.id = id;
+    public Book(String title, String author, String publishingHouse, 
+            String publicationYear, String genre, Date dateAdded, String synopsis, String status) {
         this.title = title;
         this.author = author;
         this.publishingHouse = publishingHouse;
         this.publicationYear = publicationYear;
         this.genre = genre;
         this.dateAdded = dateAdded;
+        this.synopsis = synopsis;
         this.status = status;
     }
 
@@ -147,11 +147,11 @@ public class Book implements Serializable {
     }
 
     public String getSynopopsis() {
-        return synopopsis;
+        return synopsis;
     }
 
     public void setSynopopsis(String synopopsis) {
-        this.synopopsis = synopopsis;
+        this.synopsis = synopopsis;
     }
 
     public String getStatus() {
