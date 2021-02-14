@@ -35,7 +35,6 @@ public class UserDAO implements BaseDao<User>{
         transaction.commit();
     }
 
-    @Override
     public void update(User userUpdated) {
         EntityManager em = getEntityManager();
         User user = em.find(User.class, userUpdated.getId());
@@ -68,7 +67,6 @@ public class UserDAO implements BaseDao<User>{
      *@param id- is the corresponding primary key of the user in the table
      * @return the corresponding User object.
      */
-    @Override
     public User getById(int id){
         EntityManager em = getEntityManager();
         User user = (User) em.createNamedQuery("User.findById", User.class)

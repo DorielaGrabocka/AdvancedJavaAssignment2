@@ -40,7 +40,6 @@ public class BookDAO implements BaseDao<Book>{
         transcation.commit();
     }
 
-    @Override
     public void update(Book updatedBook) throws Exception {
         EntityManager em = getEntityManager();
         Book original = em.find(Book.class, updatedBook.getId());
@@ -66,7 +65,10 @@ public class BookDAO implements BaseDao<Book>{
         original.setStatus(updated.getStatus());
     }
 
-    @Override
+    /**Method to get a book by the id.
+     * @param id- is the primary key of the book on the table in the database.
+     * @return the corresponding book.
+     */
     public Book getById(int id) {
         return (Book)getEntityManager().createNamedQuery("Book.findById")
                 .setParameter("id", id)
