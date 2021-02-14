@@ -8,6 +8,7 @@ package beans;
 import DAO.UserDAO;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -55,6 +56,16 @@ public class LoginBean implements Serializable {
                 if("admin".equals(user.getUserType())) return "indexAdmin";
                 else return "indexStandard";
             }*/
+    }
+    
+    public void logOut() throws IOException{
+        
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage("", new FacesMessage("You have been succesfully logged out!"));
+            context.getExternalContext().invalidateSession();
+            context.getExternalContext().redirect("login.xhtml");
+        
+        
     }
     
     private boolean authenticateUser(){

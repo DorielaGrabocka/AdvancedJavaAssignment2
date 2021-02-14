@@ -10,15 +10,20 @@
         </f:metadata>
         <title>The Booker-Standard Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>
-        
+        <h:outputStylesheet library="css" name="template.css"/>
     </h:head>
     <h:body>
-        <h:panelGroup class="top-part">
-            <h1>Welcome to the Booker</h1>
-            <h:link styleClass="logInLink" outcome="login">Log out</h:link>
-            <h:outputText styleClass="logInLink" value="#{loginBean.user.name} #{loginBean.user.surname}"/>
-            <h:link outcome="profile" styleClass="logInLink" >Profile</h:link>
-        </h:panelGroup>
+        <h:panelGrid styleClass="header" columns="2">
+            <h:graphicImage name="logo.png" library="images" styleClass="logo"></h:graphicImage>
+            <h:panelGrid styleClass="menus" columns="9">
+                <ul>
+                    <li><h:outputText styleClass="pages" value="#{loginBean.user.name} #{loginBean.user.surname}"/></li>
+                    <li><h:link styleClass="pages" outcome="indexStandard">Home</h:link></li>
+                    <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
+                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" /></h:form></li>    
+                </ul>
+            </h:panelGrid>
+        </h:panelGrid>
         <h:panelGroup class="bottom-part">
             <h:panelGroup class="stats">
                 <h:panelGroup class="last5">
@@ -39,17 +44,17 @@
                 </h:panelGroup>
                 <h:panelGroup class="top5">
                     <h3>Top 5 rated books</h3>
-                            <ui:repeat value="#{indexBean.fillTopFive()}" var="book">
+                            <ui:repeat value="#{indexBean.fillTopFive()}" var="book1">
                                 <div class="book">
                                     <h:graphicImage alt="thumbnail" 
-                                                    name="#{book.genre}.jpg" 
+                                                    name="#{book1.genre}.jpg" 
                                                     library="images/thumbnails"
                                                     styleClass="icon"></h:graphicImage>
                                     <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
-                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="title">
-                                        <f:param name="bookID" value="#{book.id}"/>
+                                    <h:link value="#{book1.title}" outcome="bookDetails" styleClass="title">
+                                        <f:param name="bookID" value="#{book1.id}"/>
                                     </h:link>
-                                    <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
+                                    <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>

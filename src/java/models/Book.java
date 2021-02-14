@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Book.findByPublicationYear", query = "SELECT b FROM Book b WHERE b.publicationYear = :publicationYear")
     , @NamedQuery(name = "Book.findByGenre", query = "SELECT b FROM Book b WHERE b.genre = :genre")
     , @NamedQuery(name = "Book.findByDateAdded", query = "SELECT b FROM Book b WHERE b.dateAdded = :dateAdded")
-    , @NamedQuery(name = "Book.findBySynopopsis", query = "SELECT b FROM Book b WHERE b.synopopsis = :synopopsis")
+    , @NamedQuery(name = "Book.findBySynopopsis", query = "SELECT b FROM Book b WHERE b.synopsis = :synopopsis")
     , @NamedQuery(name = "Book.findByStatus", query = "SELECT b FROM Book b WHERE b.status = :status")})
 public class Book implements Serializable {
 
@@ -65,7 +65,7 @@ public class Book implements Serializable {
     @Column(name = "Date_Added")
     @Temporal(TemporalType.DATE)
     private Date dateAdded;
-    @Column(name = "Synopopsis")
+    @Column(name = "Synopsis")
     private String synopsis;
     @Basic(optional = false)
     @Column(name = "Status")
@@ -146,11 +146,12 @@ public class Book implements Serializable {
         this.dateAdded = dateAdded;
     }
 
-    public String getSynopopsis() {
+
+    public String getSynopsis() {
         return synopsis;
     }
 
-    public void setSynopopsis(String synopopsis) {
+    public void setSynopsis(String synopopsis) {
         this.synopsis = synopopsis;
     }
 
