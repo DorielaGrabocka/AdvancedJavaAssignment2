@@ -11,6 +11,7 @@
         <h:outputStylesheet library="css" name="styles.css"/>
         <h:outputStylesheet library="css" name="template.css"/>
         <title>The Booker-My Profile</title>
+        
     </h:head>
     <h:body>
         <h:panelGrid styleClass="header" columns="2">
@@ -24,6 +25,53 @@
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
+        <h:panelGroup class="bottom-part">
+            <h:form>
+                <h:panelGrid columns="3">
+                    <h:outputText value="Name"/>
+                    <h:inputText value="#{changeDetailsBean.name}" required="true" 
+                                 requiredMessage="Please enter a name"
+                                 id="nameInpuText"/>
+                    <h:message id="nameMessage" for="nameInpuText" styleClass="error"/>
+
+                    <h:outputText value="Surname"/>
+                    <h:inputText value="#{changeDetailsBean.currentUser.surname}"
+                                 required="true"
+                                 requiredMessage="Please enter a surname"
+                                 id="surnameInputText"/>
+                    <h:message for="surnameInputText" id="surnameMessage" styleClass="error"/>
+
+                    <h:outputText value="Email"/>
+                    <h:inputText required="true"
+                             requiredMessage="Enter E-Mail"
+                             validatorMessage="Please enter the email as example@provider.com"
+                             styleClass="fields"
+                             class="form-control" id="emailInputText"
+                             value="#{changeDetailsBean.email}">
+                        <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+                    </h:inputText> 
+                    <h:message for="emailInputText" id="emailMessage"/>
+             
+                    <h:commandButton value="Save Changes" action="#{changeDetailsBean.updateProfile()}"/>
+                    
+                </h:panelGrid>
+            
+                <div id="changePassword">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Current Password"/>
+                        <h:inputSecret value="#{changeDetailsBean.currentPassowrd}"/>
+
+                        <h:outputText value="New Password"/>
+                        <h:inputText value="#{changeDetailsBean.newPassword}"/>
+
+                        <h:outputText value="Confirm New Password"/>
+                        <h:inputText value="#{changeDetailsBean.confirmNewPassword}"/>
+
+                        <h:commandButton value="Save Password" action="#{changeDetailsBean.updatePassword()}"/>
+                    </h:panelGrid>
+                </div>
+            </h:form>    
+        </h:panelGroup>
     </h:body>
 </html>
 
