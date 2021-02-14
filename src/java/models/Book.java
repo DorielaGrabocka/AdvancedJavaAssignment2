@@ -78,15 +78,15 @@ public class Book implements Serializable {
         this.id = id;
     }
 
-    public Book(Integer id, String title, String author, String publishingHouse, 
-            String publicationYear, String genre, Date dateAdded, String status) {
-        this.id = id;
+    public Book(String title, String author, String publishingHouse, 
+            String publicationYear, String genre, Date dateAdded, String synopsis, String status) {
         this.title = title;
         this.author = author;
         this.publishingHouse = publishingHouse;
         this.publicationYear = publicationYear;
         this.genre = genre;
         this.dateAdded = dateAdded;
+        this.synopsis = synopsis;
         this.status = status;
     }
 
@@ -145,6 +145,7 @@ public class Book implements Serializable {
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }
+
 
     public String getSynopsis() {
         return synopsis;

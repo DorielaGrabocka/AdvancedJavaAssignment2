@@ -5,6 +5,7 @@
     <h:head>
         <title>Books</title>
         <h:outputStylesheet name="template.css" library="css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     </h:head>
     <h:body styleClass="body">
         <h:panelGrid styleClass="header" columns="2">
@@ -18,11 +19,44 @@
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
-        
+
         <h:panelGrid styleClass="page" columns="2">
-            <h:panelGrid styleClass="insert">
-                <h3>Insert Book</h3> 
-            </h:panelGrid>
+            <h:form>
+                <h3>Insert Book</h3>
+                <h:panelGrid styleClass="insert" columns="2">
+
+                    <h:outputText value="Title:" />
+                    <h:inputText id="titleInputText" required="true"
+                                 requiredMessage="Enter Title!"
+                                 class="form-control"
+                                 value="#{bookBean.title}"/>
+                    <h:outputText value="Author:" />
+                    <h:inputText id="authorInputText" required="true"
+                                 requiredMessage="Enter Author!"
+                                 class="form-control"
+                                 value="#{bookBean.author}"/>
+                    <h:outputText value="Publishing House:" />
+                    <h:inputText id="pubhouseInputText" required="true"
+                                 requiredMessage="Enter Publishing House!"
+                                 class="form-control"
+                                 value="#{bookBean.publishingHouse}"/>
+                    <h:outputText value="Publication Year:" />
+                    <h:inputText id="yearInputText" required="true"
+                                 requiredMessage="Enter Year!"
+                                 class="form-control"
+                                 value="#{bookBean.year}"/>
+                    <h:outputText value="Genre:" />
+                    <h:inputText id="genreInputText" required="true"
+                                 requiredMessage="Enter Genre!"
+                                 class="form-control"
+                                 value="#{bookBean.genre}"/>
+                    <h:outputText value="Synopsis:" />
+                    <h:inputText id="synopsisInputText" 
+                                 class="form-control"
+                                 value="#{bookBean.synopsis}"/>
+                    <h:commandButton value="Insert" action="#{bookBean.insert()}" styleClass="btn btn-default"/>
+                </h:panelGrid>
+            </h:form>
             <h:panelGrid styleClass="view">
                 <h3>Books</h3>
             </h:panelGrid>
