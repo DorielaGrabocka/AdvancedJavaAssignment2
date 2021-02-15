@@ -95,7 +95,7 @@ public class LoginBean implements Serializable {
             }
         }catch(Exception e){
             email = "";
-            outputMessage = "Incorrect email. exception occured";
+            outputMessage = "Incorrect email. Exception occured";
             return false;
         }  
     }

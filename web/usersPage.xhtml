@@ -1,28 +1,119 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>The Bookier-Admin Login</title>
+        <title>Admin | The Booker</title>
+        <h:outputStylesheet name="template.css" library="css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     </h:head>
     <h:body>
-        Hello from the Bookier-Admin Login
-    </h:body>
-</html>
+        <h:panelGrid styleClass="header" columns="2">
+            <h:graphicImage name="logo.png" library="images" styleClass="logo"></h:graphicImage>
+            <h:panelGrid styleClass="menus" columns="10">
+                <ul>
+                    <li><h:link styleClass="pages" outcome="indexAdmin">Home</h:link></li>
+                    <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
+                    <li><h:link styleClass="pages" outcome="usersPage">Users</h:link></li>
+                    <li><h:link styleClass="pages" outcome="booksPage">Books</h:link></li>
+                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" styleClass="pages"/></h:form></li>
+                </ul>
+            </h:panelGrid>
+        </h:panelGrid>
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+        <h:panelGrid styleClass="page" columns="2">
+            <div>
+                <h:form id="insertUser">
+                    <h3>User Info</h3>
+                    <h:panelGrid styleClass="insert" columns="3">
+
+                        <h:outputText value="Name:" />
+                        <h:inputText id="nameInputText" required="true"
+                                     requiredMessage="Enter name"
+                                     class="form-control"
+                                     value="#{userBean.name}"/>
+                        <h:message for="nameInputText" id="nameMessage" styleClass="error"/>
+
+                        <h:outputText value="Surname:" />
+                        <h:inputText id="surnameInputText" required="true"
+                                     requiredMessage="Enter surname"
+                                     class="form-control"
+                                     value="#{userBean.surname}"/>
+                        <h:message for="surnameInputText" id="surnameMessage" styleClass="error"/>
+
+                        <h:outputText value="Email:" />
+                        <h:inputText required="true"
+                                     requiredMessage="Enter E-Mail"
+                                     validatorMessage="Please enter the email as example@provider.com"
+                                     styleClass="fields"
+                                     class="form-control" id="emailInputText"
+                                     value="#{userBean.email}">
+                            <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+                        </h:inputText> 
+                        <h:message for="emailInputText" id="emailMessage" styleClass="error"/>
+
+                        <h:outputText value="User Type:" />
+                        <h:selectOneMenu id="userTypeInputMenu" required="true"
+                                         requiredMessage="Enter user type"
+                                         class="form-control"
+                                         value="#{userBean.userType}">
+                            <f:selectItem itemValue="admin" itemLabel="Admin User"/>
+                            <f:selectItem itemValue="standard" itemLabel="Standard User"/>
+                        </h:selectOneMenu>
+                        <h:message for="userTypeInputMenu" id="usertTypeMessage" styleClass="error"/>
+                        <h:commandButton value="Save" styleClass="btn btn-default">
+                            <f:ajax execute="nameInputText surnameInputText 
+                                    emailInputText userTypeInputMenu"
+                                    render=""/>
+                        </h:commandButton>
+                        <h:outputText value="#{userBean.message}" styleClass="error"/>
+                        <h:outputText value=""/>
+                    </h:panelGrid>
+                </h:form>
+            </div>
+            <div>
+                 <h:panelGrid id="showUsers" styleClass="view">
+                     <h3>Users</h3>
+                     <h:dataTable var="user" value="#{userBean.getAllUsers()}" styleClass="table table-striped">
+                          <h:column> 
+                             <f:facet name="header">ID</f:facet>
+                             <h:outputText value="#{user.id}"/>   
+                          </h:column>
+                          <h:column>
+                             <f:facet name="header">Operation</f:facet>
+                             <h:form>
+                                 <h:commandLink action="#{userBean.fillData()}" 
+                                                styleClass="icons">
+                                     <span class="glyphicon glyphicon-pencil"></span>
+                                     <f:param name="userId" value="#{user.id}"/>
+                                     <f:ajax render="insertUser msg"/>
+                                 </h:commandLink> |
+                                 <h:commandLink action="#{userBean.delete()}" styleClass="icons">
+                                     <span class="glyphicon glyphicon-trash"></span>
+                                     <f:param name="userId" value="#{user.id}"/>
+                                 </h:commandLink>
+                             </h:form>
+                          </h:column>
+                          <h:column> 
+                              <f:facet name="header">Name</f:facet>
+                              <h:outputText value="#{user.name}"/>   
+                          </h:column>
+                          <h:column> 
+                              <f:facet name="header">Surname</f:facet>
+                              <h:outputText value="#{user.surname}"/>   
+                          </h:column>
+                          <h:column> 
+                              <f:facet name="header">Email</f:facet>
+                              <h:outputText value="#{user.email}"/>   
+                          </h:column>
+                          <h:column> 
+                              <f:facet name="header">User Type</f:facet>
+                              <h:outputText value="#{user.userType}"/>   
+                          </h:column>
+                      </h:dataTable>
+                  </h:panelGrid>
+              </div>    
+        </h:panelGrid>
+    </h:body>
 </html>

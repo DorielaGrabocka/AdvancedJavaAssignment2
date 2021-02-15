@@ -101,7 +101,7 @@ public class BookDAO implements BaseDao<Book> {
      * @return the list of books
      */
     public List<Book> getLastFive() {
-        String query = "SELECT b FROM Book b ORDER BY b.dateAdded DESC";
+        String query = "SELECT b FROM Book b WHERE b.status!='D' ORDER BY b.dateAdded DESC";
         return getEntityManager().createQuery(query, Book.class)
                 .setMaxResults(5)
                 .getResultList();
@@ -115,6 +115,7 @@ public class BookDAO implements BaseDao<Book> {
     public List<Book> getTopFive() {
         String query = "SELECT b "
                 + "FROM Book b JOIN Review r on b.id=r.reviewPK.bookID "
+                + "WHERE b.status!='D' "
                 + "GROUP By b.id "
                 + "ORDER BY AVG(r.rating) DESC ";
 
@@ -142,7 +143,8 @@ public class BookDAO implements BaseDao<Book> {
     }
 
     public boolean bookExists(String title, String publicationYear) {
-        String query = "SELECT b FROM Book b WHERE b.title=:title AND b.publicationYear=:publicationYear";
+        String query = "SELECT b FROM Book b WHERE b.title=:title "
+                + "AND b.publicationYear=:publicationYear AND b.status!='D'";
         try {
             Book foundBook = getEntityManager().createQuery(query, Book.class)
                     .setParameter("title", title)
@@ -153,5 +155,21 @@ public class BookDAO implements BaseDao<Book> {
         } catch (NoResultException e) {
             return false;
         }
+    }
+    
+    /**Method to get books that have average rating greater than specified value
+     * @param averageRating is the lower bound of the rating that we are searching for
+     * @return the list of books
+     */
+    public List<Book> getAllBookWithAverageRatingGreaterThan(int averageRating){
+        String query = "SELECT b "
+                + "FROM Book b join Review r ON b.id=r.reviewPK.bookID "
+                + "WHERE b.status!='D'"            
+                + "GROUP BY b.id "
+                + "HAVING avg(r.rating)>:value";
+        
+        return getEntityManager().createQuery(query, Book.class)
+                .setParameter("value", averageRating)
+                .getResultList();
     }
 }

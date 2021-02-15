@@ -78,6 +78,7 @@ public class UserDAO implements BaseDao<User>{
     /**Method that find and returns a user by a specific id.
      *@param email- is the corresponding user email
      *@return the corresponding User object.
+     *@throws Exception
      */
     public User getUserByEmail(String email) throws Exception{
         EntityManager em = getEntityManager();

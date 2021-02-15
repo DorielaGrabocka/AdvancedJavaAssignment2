@@ -29,16 +29,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "books")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b")
-    , @NamedQuery(name = "Book.findById", query = "SELECT b FROM Book b WHERE b.id = :id")
-    , @NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title")
-    , @NamedQuery(name = "Book.findByAuthor", query = "SELECT b FROM Book b WHERE b.author = :author")
-    , @NamedQuery(name = "Book.findByPublishingHouse", query = "SELECT b FROM Book b WHERE b.publishingHouse = :publishingHouse")
-    , @NamedQuery(name = "Book.findByPublicationYear", query = "SELECT b FROM Book b WHERE b.publicationYear = :publicationYear")
-    , @NamedQuery(name = "Book.findByGenre", query = "SELECT b FROM Book b WHERE b.genre = :genre")
-    , @NamedQuery(name = "Book.findByDateAdded", query = "SELECT b FROM Book b WHERE b.dateAdded = :dateAdded")
-    , @NamedQuery(name = "Book.findBySynopopsis", query = "SELECT b FROM Book b WHERE b.synopsis = :synopopsis")
-    , @NamedQuery(name = "Book.findByStatus", query = "SELECT b FROM Book b WHERE b.status = :status")})
+    @NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b WHERE b.status!='D'")
+    , @NamedQuery(name = "Book.findById", query = "SELECT b FROM Book b WHERE b.id = :id AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByAuthor", query = "SELECT b FROM Book b WHERE b.author = :author AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByPublishingHouse", query = "SELECT b FROM Book b WHERE b.publishingHouse = :publishingHouse AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByPublicationYear", query = "SELECT b FROM Book b WHERE b.publicationYear = :publicationYear AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByGenre", query = "SELECT b FROM Book b WHERE b.genre = :genre AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByDateAdded", query = "SELECT b FROM Book b WHERE b.dateAdded = :dateAdded AND b.status!='D'")
+    , @NamedQuery(name = "Book.findBySynopopsis", query = "SELECT b FROM Book b WHERE b.synopsis = :synopopsis AND b.status!='D'")
+    , @NamedQuery(name = "Book.findByStatus", query = "SELECT b FROM Book b WHERE b.status = :status AND b.status!='D'")})
 public class Book implements Serializable {
 
     private static final long serialVersionUID = 1L;

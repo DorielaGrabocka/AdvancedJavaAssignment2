@@ -23,11 +23,21 @@
                                                     name="#{book.genre}.jpg" 
                                                     library="images/thumbnails"
                                                     styleClass="icon"></h:graphicImage>
+                                    <h:outputText value="Rank: "/>                
                                     <h:outputText value="#{indexBean.rankLast}." styleClass="rank"/>
-                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="title">
+                                    <br/>
+                                    <h:outputText value="Title: "/>
+                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="book-title">
                                         <f:param name="bookID" value="#{book.id}"/>
                                     </h:link>
+                                    <br/>
+                                    <h:outputText value="Average Rating: "/>
                                     <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
+                                    <br/>
+                                    <h:link outcome="bookDetails">Add Review
+                                        <f:param name="bookId" value="#{book.id}"/>
+                                        <f:param name="addReview" value="true"/>
+                                    </h:link>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>
@@ -37,17 +47,28 @@
                                 <div class="book">
                                     <h:graphicImage alt="thumbnail" 
                                                     name="#{book1.genre}.jpg" 
-                                                    library="images/thumbnails/"
+                                                    library="images/thumbnails"
                                                     styleClass="icon"></h:graphicImage>
+                                    
+                                    <h:outputText value="Rank: "/>
                                     <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
-                                    <h:link value="#{book1.title}" outcome="bookDetails" styleClass="title">
+                                    <br/>
+                                    <h:outputText value="Title: "/>
+                                    <h:link value="#{book1.title}" outcome="bookDetails" styleClass="book-title">
                                         <f:param name="bookID" value="#{book1.id}"/>
                                     </h:link>
+                                    <br/>
+                                    <h:outputText value="Rating: "/>
                                     <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
+                                    <br/>
+                                    <h:link outcome="bookDetails">Add Review
+                                        <f:param name="bookId" value="#{book1.id}"/>
+                                        <f:param name="addReview" value="true"/>
+                                    </h:link>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>
-            </h:panelGroup>    
+            </h:panelGroup>   
         </h:panelGroup>
     </h:body>
 </html>

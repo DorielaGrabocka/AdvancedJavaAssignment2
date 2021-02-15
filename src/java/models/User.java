@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "users")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-    , @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
-    , @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")
-    , @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname")
-    , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
-    , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")
-    , @NamedQuery(name = "User.findByUserType", query = "SELECT u FROM User u WHERE u.userType = :userType")
-    , @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status")})
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u WHERE u.status!='D'")
+    , @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id AND u.status!='D'")
+    , @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name AND u.status!='D'")
+    , @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname AND u.status!='D'")
+    , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email AND u.status!='D'")
+    , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password AND u.status!='D'")
+    , @NamedQuery(name = "User.findByUserType", query = "SELECT u FROM User u WHERE u.userType = :userType AND u.status!='D'")
+    , @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status AND u.status!='D'")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
