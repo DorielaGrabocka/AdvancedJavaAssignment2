@@ -37,12 +37,24 @@ public class UserDAO implements BaseDao<User>{
 
     public void update(User userUpdated) {
         EntityManager em = getEntityManager();
-        User user = em.find(User.class, userUpdated.getId());
-        updateUser(user, userUpdated);
+        String query = "UPDATE User u SET u.name=:name, u.surname=:surname,"
+                + "u.email=:email, u.userType=:type, u.status=:status WHERE u.id=:id";
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.merge(user);
+        em.createQuery(query)
+                .setParameter("name", userUpdated.getName())
+                .setParameter("surname", userUpdated.getSurname())
+                .setParameter("email", userUpdated.getEmail())
+                .setParameter("status", userUpdated.getStatus())
+                .setParameter("type", userUpdated.getUserType())
+                .setParameter("id", userUpdated.getId())
+                .executeUpdate();
         transaction.commit();
+        /*User user = em.find(User.class, userUpdated.getId());
+        updateUser(user, userUpdated);
+        
+        em.merge(user);
+        transaction.commit();*/
     }
     
     /**Method that gets the user with the original values and the user with new values
@@ -50,13 +62,13 @@ public class UserDAO implements BaseDao<User>{
     * @param user - the user with unchanged data
     * @param updatedUser -user with new parameters.
     */
-    private void updateUser(User user, User updatedUser){
+    /*private void updateUser(User user, User updatedUser){
         user.setName(updatedUser.getName());
         user.setSurname(updatedUser.getSurname());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(updatedUser.getPassword());
         user.setStatus(updatedUser.getStatus());
-    }
+    }*/
 
     @Override
     public EntityManager getEntityManager() {

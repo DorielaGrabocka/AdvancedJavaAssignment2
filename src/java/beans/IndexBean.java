@@ -47,7 +47,6 @@ public class IndexBean {
         return ++rankTop;
     }
     
-    
     public int getRankLast(){
         return ++rankLast;
     }

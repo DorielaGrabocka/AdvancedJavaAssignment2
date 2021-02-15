@@ -125,7 +125,7 @@ public class ChangeDetailsBean {
             getCurrentUser().setName(name);//change name
             getCurrentUser().setSurname(surname);//change surname
             getCurrentUser().setEmail(email);//change email
-            messageDetails="User Data updated successfully!" + name +" "+ surname+" " + email;
+            //messageDetails="User Data updated successfully!" + name +" "+ surname+" " + email;
             userDAO.update(getCurrentUser());//update
             messageDetails="User Data updated successfully!";
         }
