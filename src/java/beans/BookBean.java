@@ -1,21 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package beans;
 
-import javax.faces.bean.ManagedBean;
-import java.util.Date;
-import models.Book;
 import DAO.BookDAO;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import models.Book;
 
+/**
+ *
+ * @author Doriela
+ */
 @ManagedBean(name = "bookBean")
 @ViewScoped
 public class BookBean {
-
     private int id;
     private String title;
     private String author;
@@ -184,6 +192,4 @@ public class BookBean {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-}
+    }}

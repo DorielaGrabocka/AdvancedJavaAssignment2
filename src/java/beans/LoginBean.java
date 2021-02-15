@@ -8,12 +8,12 @@ package beans;
 import DAO.UserDAO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import models.User;
-//import models.User;
 
 /**
  *
@@ -31,6 +31,9 @@ public class LoginBean implements Serializable {
     public LoginBean() {
     }
 
+    /**Method that performs the login.
+     * @throws IOException
+     */
     public void login() throws IOException{
             outputMessage="";
             boolean isUserAuthenticated = authenticateUser();
@@ -59,16 +62,18 @@ public class LoginBean implements Serializable {
             }*/
     }
     
+    /**Method to logout the current user.
+     * @throws IOException
+     */
     public void logOut() throws IOException{
         
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("", new FacesMessage("You have been succesfully logged out!"));
             context.getExternalContext().invalidateSession();
             context.getExternalContext().redirect("login.xhtml");
-        
-        
     }
     
+    /**Method used to authenticate in a login attempt.*/
     private boolean authenticateUser(){
         
         UserDAO userDAO = new UserDAO();
@@ -81,7 +86,7 @@ public class LoginBean implements Serializable {
                 return false;
             }
 
-            if (password.equals(potentialUser.getPassword())) {
+            if (decryptPassword(potentialUser.getPassword()).equals(password)) {
                 user = potentialUser;
                 return true;
             } else {
@@ -90,7 +95,7 @@ public class LoginBean implements Serializable {
             }
         }catch(Exception e){
             email = "";
-            outputMessage = "Incorrect email.";
+            outputMessage = "Incorrect email. exception occured";
             return false;
         }  
     }
@@ -104,7 +109,7 @@ public class LoginBean implements Serializable {
         email="";
         try{
             if(user==null || !type.equals(user.getUserType())){
-            FacesContext.getCurrentInstance()
+                 FacesContext.getCurrentInstance()
                     .getExternalContext()
                     .redirect("login.xhtml");
             }
@@ -113,6 +118,40 @@ public class LoginBean implements Serializable {
         }
          return "";
     }
+    
+    /**Method used to go back to the index page after a user or an admin has gone to 
+     * another page.
+     * @param userType -  is the type of the logged in user.
+     * @return a String that can be a landing page in case of an exception.
+     */
+    public String navigate(String userType){
+        
+            if (userType.equals("standard")) {
+                return "indexStandard.xhtml";
+            } else {
+                return "indexAdmin.xhtml";
+            }
+    }
+    
+    /**Method to check is a user is logged in or not. It is used only from the 
+     * profile.xhtml view.
+     * @return a string that will be the landing page in case of an excpetion.
+     */
+    public String isUserLoggedIn(){
+        email="";
+        try{
+            if(user==null){
+                 FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .redirect("login.xhtml");
+            }
+        }catch(IOException e){
+            return "login.xhtml";
+        }
+         return "";
+    }
+    
+    /**----------------Getters and setters start here--------------------------*/
     
     public String getEmail() {
         return email;
@@ -138,8 +177,13 @@ public class LoginBean implements Serializable {
         return user;
     }
     
+    /**----------------Getters and setters end here--------------------------*/
     
-    public LoginBean getLoginBean(){
-        return this;
+    /**Method used to decrypt the password from the database.
+     * @param password is the string to be decrypted.
+     * @return is the decrypted string.
+     */   
+    public String decryptPassword(String password){
+        return new String(Base64.getDecoder().decode(password.getBytes()));
     }
 }

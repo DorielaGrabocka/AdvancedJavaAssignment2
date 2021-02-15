@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <f:metadata> 
-            <f:event listener="#{loginBean.isUserLoggedIn('standard')}" type="preRenderView"/>
+            <f:event listener="#{loginBean.isUserLoggedIn()}" type="preRenderView"/>
         </f:metadata>
         <title>The Booker-Standard Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>
@@ -19,7 +19,7 @@
             <h:panelGrid styleClass="menus" columns="9">
                 <ul>
                     <li><h:outputText styleClass="pages" value="#{loginBean.user.name} #{loginBean.user.surname}"/></li>
-                    <li><h:link styleClass="pages" outcome="indexStandard">Home</h:link></li>
+                    <li><h:form><h:commandLink styleClass="pages" action="#{loginBean.navigate(loginBean.user.userType)}" value="Home"/></h:form></li>
                     <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
                     <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" /></h:form></li>    
                 </ul>
@@ -27,50 +27,76 @@
         </h:panelGrid>
         <h:panelGroup class="bottom-part">
             <h:form>
-                <h:panelGrid columns="3">
-                    <h:outputText value="Name"/>
-                    <h:inputText value="#{changeDetailsBean.name}" required="true" 
-                                 requiredMessage="Please enter a name"
-                                 id="nameInpuText"/>
-                    <h:message id="nameMessage" for="nameInpuText" styleClass="error"/>
+                
+                <!--Here the div for the change of details starts-->
+                <div id="chnageDeatils">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Name"/>
+                        <h:inputText value="#{changeDetailsBean.name}" required="true" 
+                                     requiredMessage="Please enter a name"
+                                     id="nameInpuText"/>
+                        <h:message id="nameMessage" for="nameInpuText" styleClass="error"/>
 
-                    <h:outputText value="Surname"/>
-                    <h:inputText value="#{changeDetailsBean.currentUser.surname}"
-                                 required="true"
-                                 requiredMessage="Please enter a surname"
-                                 id="surnameInputText"/>
-                    <h:message for="surnameInputText" id="surnameMessage" styleClass="error"/>
+                        <h:outputText value="Surname"/>
+                        <h:inputText value="#{changeDetailsBean.surname}"
+                                     required="true"
+                                     requiredMessage="Please enter a surname"
+                                     id="surnameInputText"/>
+                        <h:message for="surnameInputText" id="surnameMessage" styleClass="error"/>
 
-                    <h:outputText value="Email"/>
-                    <h:inputText required="true"
-                             requiredMessage="Enter E-Mail"
-                             validatorMessage="Please enter the email as example@provider.com"
-                             styleClass="fields"
-                             class="form-control" id="emailInputText"
-                             value="#{changeDetailsBean.email}">
-                        <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
-                    </h:inputText> 
-                    <h:message for="emailInputText" id="emailMessage"/>
-             
-                    <h:commandButton value="Save Changes" action="#{changeDetailsBean.updateProfile()}"/>
-                    
-                </h:panelGrid>
-            
+                        <h:outputText value="Email"/>
+                        <h:inputText required="true"
+                                     requiredMessage="Enter E-Mail"
+                                     validatorMessage="Please enter the email as example@provider.com"
+                                     styleClass="fields"
+                                     class="form-control" id="emailInputText"
+                                     value="#{changeDetailsBean.email}">
+                            <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+                        </h:inputText> 
+                        <h:message for="emailInputText" id="emailMessage" styleClass="error"/>
+
+                        <h:commandButton value="Save Changes" action="#{changeDetailsBean.updateProfile()}">
+                            <f:ajax execute="nameInpuText surnameInputText emailInputText" 
+                                    render="resultMsg1 emailInputText surnameInputText nameInpuText
+                                    emailMessage surnameMessage nameMessage"/>
+                        </h:commandButton>
+                    </h:panelGrid>
+                    <p><h:outputText value="#{changeDetailsBean.messageDetails}" id="resultMsg1"/></p>
+                </div>
+                
+                <!--Here the div for the change of Password starts-->
                 <div id="changePassword">
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         <h:outputText value="Current Password"/>
-                        <h:inputSecret value="#{changeDetailsBean.currentPassowrd}"/>
+                        <h:inputSecret value="#{changeDetailsBean.currentPassowrd}" 
+                                       required="true"
+                                       requiredMessage="Enter old password"
+                                       id="currentPassInpt"/>
+                        <h:message for="currentPassInpt" id="currentPassMsg" styleClass="error"/>
 
                         <h:outputText value="New Password"/>
-                        <h:inputText value="#{changeDetailsBean.newPassword}"/>
+                        <h:inputSecret value="#{changeDetailsBean.newPassword}" 
+                                       required="true"
+                                       requiredMessage="Enter new password"
+                                       id="newPassInp"/>
+                        <h:message for="newPassInp" id="newPassMsg" styleClass="error"/>
 
                         <h:outputText value="Confirm New Password"/>
-                        <h:inputText value="#{changeDetailsBean.confirmNewPassword}"/>
+                        <h:inputSecret value="#{changeDetailsBean.confirmNewPassword}" 
+                                       required="true"
+                                       requiredMessage="Confirm new password"
+                                       id="confPassInp"
+                                     />
+                        <h:message for="confPassInp" id="CongNewPassMsg" styleClass="error"/>
 
-                        <h:commandButton value="Save Password" action="#{changeDetailsBean.updatePassword()}"/>
+                        <h:commandButton value="Save Password" action="#{changeDetailsBean.updatePassword()}">
+                            <f:ajax execute="confPassInp newPassInp currentPassInpt" 
+                                    render="resultMsg2 CongNewPassMsg newPassMsg currentPassMsg"/>
+                        </h:commandButton>
                     </h:panelGrid>
+                    <p><h:outputText value="#{changeDetailsBean.messagePassword}" id="resultMsg2"/></p>
                 </div>
-            </h:form>    
+            </h:form> 
         </h:panelGroup>
     </h:body>
 </html>
