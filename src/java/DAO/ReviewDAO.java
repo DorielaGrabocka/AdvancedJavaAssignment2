@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import models.Book;
 import models.Review;
+import models.ReviewPK;
 
 /**
  *
@@ -40,13 +41,26 @@ public class ReviewDAO implements BaseDao<Review>{
         em.remove(r);
         transaction.commit();
     }
+    
+    public void removeReview(ReviewPK reviewPK){
+        String query ="DELETE FROM Review r WHERE r.reviewPK=:reviewPK";
+        getEntityManager().createQuery(query)
+                .setParameter("reviewPK", reviewPK);
+    }
 
     public Review getByIds(int userId, int bookID) {
         String query = "SELECT r FROM Review r "
-                + "WHERE r.reviewPK.userID = :userID AND r.reviewPK.bookID";
+                + "WHERE r.reviewPK.userID=:userID AND r.reviewPK.bookID=:bookID";
         return getEntityManager().createQuery(query, Review.class)
                 .setParameter("userID", userId)
                 .setParameter("bookID", bookID)
+                .getSingleResult();
+    }
+    
+    public Review getById(ReviewPK reviewPK){
+        String query = "SELECT r FROM Review r WHERE r.reviewPK=:reviewPK";
+        return getEntityManager().createQuery(query, Review.class)
+                .setParameter("reviewPK", reviewPK)
                 .getSingleResult();
     }
 
@@ -62,6 +76,15 @@ public class ReviewDAO implements BaseDao<Review>{
         
         return getEntityManager().createQuery(query, Review.class)
                 .setParameter("bookId", id)
+                .getResultList();
+    }
+    
+    public List<Review> getUserReviews(int id){
+        String query = "SELECT r "
+                + "FROM Review r WHERE r.reviewPK.userID=:userId";
+        
+        return getEntityManager().createQuery(query, Review.class)
+                .setParameter("userId", id)
                 .getResultList();
     }
     

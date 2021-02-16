@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <f:metadata> 
             <f:event listener="#{loginBean.isUserLoggedIn('standard')}" type="preRenderView"/>
@@ -40,7 +41,9 @@
 
             <h:panelGrid styleClass="reviews">
                 <h3>Book Reviews</h3>
-                <h:dataTable var="r" value="#{bookDetailsBean.getReviews()}" styleClass="table table-striped">
+
+                <h:dataTable var="r" value="#{bookDetailsBean.getReviews()}"
+                             styleClass="table table-striped">
                     <h:column> 
                         <f:facet name="header">Comment</f:facet>
                         <h:outputText value="#{r.text}"/>   
@@ -54,13 +57,27 @@
                         <f:facet name="header">User</f:facet>
                         <h:outputText value="#{bookDetailsBean.getFullName(r.reviewPK.userID)}"/>   
                     </h:column>
+                    <h:column> 
+                        <f:facet name="header">Remove</f:facet>
+                        <h:form>
+                            <h:commandLink action="#{bookDetailsBean.removeReview(r.reviewPK.userID,r.reviewPK.bookID)}" 
+                                           rendered="#{r.reviewPK.userID eq bookDetailsBean.getCurrentUser().id}" 
+                                           styleClass="icons"
+                                           onclick="if(!confirm('Remove review?')) return false;"
+                                           >
+                                <f:param name="bookID" value="#{bookDetailsBean.bookID}"/>
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </h:commandLink>
+                        </h:form>
+                    </h:column>
                 </h:dataTable>
+                <h:outputText value="#{bookDetailsBean.outputText}"/>
                 <h:form>
                     <h3>Add Review</h3>
                     <h:outputText value="Comment:"/>
                     <h:inputTextarea styleClass="form-control"/>
                     <h:outputText value="Rating:"/>
-                    
+
                     <h:commandButton value="Add Review" action="#{bookDetailsBean.addReview()}" styleClass="btn btn-default"/>
                 </h:form>
             </h:panelGrid>
