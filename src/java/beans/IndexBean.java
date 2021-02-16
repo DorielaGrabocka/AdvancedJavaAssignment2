@@ -8,7 +8,7 @@ package beans;
 import DAO.BookDAO;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import models.Book;
 
 /**
@@ -16,10 +16,11 @@ import models.Book;
  * @author Doriela
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class IndexBean {
     
     private BookDAO bookDAO;
+    private int id;
     private int rankTop;
     private int rankLast;
     
@@ -47,8 +48,8 @@ public class IndexBean {
         return ++rankTop;
     }
     
-    
     public int getRankLast(){
         return ++rankLast;
     }
+   
 }

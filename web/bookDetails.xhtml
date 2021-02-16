@@ -8,9 +8,63 @@
             <f:event listener="#{loginBean.isUserLoggedIn('standard')}" type="preRenderView"/>
         </f:metadata>
         <title>Book Details</title>
+        <h:outputStylesheet name="template.css" library="css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     </h:head>
     <h:body>
-        Book Details Page
+        <f:metadata>
+            <f:viewParam name="bookID" value="#{bookDetailsBean.bookID}" />
+            <f:event type="preRenderView" listener="#{bookDetailsBean.init}" />
+        </f:metadata>
+        <h:panelGrid styleClass="body" columns="2">
+
+            <h:panelGrid styleClass="details" columns="1">
+                <h3>Book Details</h3>
+                <h:outputText value="Title:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.title}"/>
+                <h:outputText value="Author:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.author}"/>
+                <h:outputText value="Publishing House:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.publishingHouse}"/>
+                <h:outputText value="Publication Year:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.publicationYear}"/>
+                <h:outputText value="Genre:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.genre}"/>
+                <h:outputText value="Date Added:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.dateAdded}"/>
+                <h:outputText value="Average Rating:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.averageRating}"/>
+                <h:outputText value="Synopsis:" styleClass="components"/>
+                <h:outputText value="#{bookDetailsBean.book.synopsis}"/>
+            </h:panelGrid>
+
+            <h:panelGrid styleClass="reviews">
+                <h3>Book Reviews</h3>
+                <h:dataTable var="r" value="#{bookDetailsBean.getReviews()}" styleClass="table table-striped">
+                    <h:column> 
+                        <f:facet name="header">Comment</f:facet>
+                        <h:outputText value="#{r.text}"/>   
+                    </h:column>
+
+                    <h:column> 
+                        <f:facet name="header">Rating</f:facet>
+                        <h:outputText value="#{r.rating}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">User</f:facet>
+                        <h:outputText value="#{bookDetailsBean.getFullName(r.reviewPK.userID)}"/>   
+                    </h:column>
+                </h:dataTable>
+                <h:form>
+                    <h3>Add Review</h3>
+                    <h:outputText value="Comment:"/>
+                    <h:inputTextarea styleClass="form-control"/>
+                    <h:outputText value="Rating:"/>
+                    
+                    <h:commandButton value="Add Review" action="#{bookDetailsBean.addReview()}" styleClass="btn btn-default"/>
+                </h:form>
+            </h:panelGrid>
+        </h:panelGrid>
     </h:body>
 </html>
 

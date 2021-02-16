@@ -27,7 +27,7 @@
                                     <h:outputText value="#{indexBean.rankLast}." styleClass="rank"/>
                                     <br/>
                                     <h:outputText value="Title: "/>
-                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="book-title">
+                                    <h:link outcome="bookDetails" value="#{book.title}" styleClass="book-title">
                                         <f:param name="bookID" value="#{book.id}"/>
                                     </h:link>
                                     <br/>
