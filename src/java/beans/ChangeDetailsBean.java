@@ -107,28 +107,28 @@ public class ChangeDetailsBean {
     /**Method used to update the details of a user like name, surname and email.
      */
     public void updateProfile(){
-        boolean emailExists = false;
+        //boolean emailExists = false;
         UserDAO userDAO = new UserDAO();
         try{
-            User userWithSameEmail = userDAO.getUserByEmail(email);
-            if(userWithSameEmail!=null) {
-                emailExists =true;
-                messageDetails = "This email is already taken! "
-                        + "Try another one or simply go back without making any changes.";
-            }
-            
-        }catch(Exception e){
-            messageDetails=name +" "+ surname+" " + email;
-        }
-        
-        if(!emailExists){
+            //User userWithSameEmail = userDAO.getUserByEmail(email);
+            //if(userWithSameEmail!=null) {
+            //    emailExists =true;
+             //if(!emailExists){
             getCurrentUser().setName(name);//change name
             getCurrentUser().setSurname(surname);//change surname
             getCurrentUser().setEmail(email);//change email
             //messageDetails="User Data updated successfully!" + name +" "+ surname+" " + email;
             userDAO.update(getCurrentUser());//update
             messageDetails="User Data updated successfully!";
+            //}
+            //}
+            
+        }catch(Exception e){
+             messageDetails = "This email is already taken! "
+                        + "Try another one or simply go back without making any changes.";
         }
+        
+        
     }
     
     /**Method to update the password of the user*/

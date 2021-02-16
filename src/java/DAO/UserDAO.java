@@ -9,6 +9,8 @@ import databaseConnection.EntityManagerProvider;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import models.User;
 
 /**
@@ -109,4 +111,31 @@ public class UserDAO implements BaseDao<User>{
                 .getResultList();
     }
     
+    
+    public List<User> filterUsers(String name, String surname, 
+            String email, String type)
+    {
+        String query = "SELECT u FROM User u";
+        if(!("".equals(name)) && !(name==null))
+            query +=" WHERE u.name LIKE :name";
+        if(!("".equals(surname)) && !(surname==null))
+            query +=" AND u.surname LIKE :surname";
+        if(!("".equals(email)) && !(email==null))
+            query +=" AND u.email LIKE :email";
+        if(!("".equals(type)) && !(type==null))
+            query +=" AND u.userType= :type";
+        
+        TypedQuery<User> tQuery  = getEntityManager().createQuery(query, User.class);
+        if(!("".equals(name)) && !(name==null))
+            tQuery.setParameter("name", name+"%");
+        if(!("".equals(surname)) && !(surname==null))
+            tQuery.setParameter("surname", surname+"%");
+        if(!("".equals(email)) && !(email==null))
+            tQuery.setParameter("email", email+"%");
+        if(!("".equals(type)) && !(type==null))
+            tQuery.setParameter("type", type);
+        
+        return tQuery.getResultList();
+        
+    }
 }

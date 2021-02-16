@@ -6,10 +6,16 @@
 package beans;
 
 import DAO.UserDAO;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import models.User;
@@ -22,8 +28,12 @@ import models.User;
 @ViewScoped
 public class UserBean {
 
-    private UserDAO userDAO;
     
+    @ManagedProperty(value="#{loginBean}")
+    LoginBean loginBean;
+    
+    private UserDAO userDAO;
+    private List<User> listOfUsers;
     private String id;
     private boolean editing;
     private String name;
@@ -33,11 +43,64 @@ public class UserBean {
     private String message;
     private User user;
     private String deleteMessage;
+    private String searchMessage="Hello";
+    
+    
+    //used for filters
+    private String searchName;
+    private String searchSurname;
+    private String searchEmail;
+    private String searchType;
     
     public UserBean() {
         userDAO = new UserDAO();
+        
     }
 
+    @PostConstruct
+    public void init(){
+        listOfUsers = new ArrayList<>();
+        getAllUsers();
+    }
+
+    public String getSearchMessage() {
+        return searchMessage;
+    }
+    
+    
+    
+    public String getSearchName() {
+        return searchName;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
+
+    public String getSearchSurname() {
+        return searchSurname;
+    }
+
+    public void setSearchSurname(String searchSurname) {
+        this.searchSurname = searchSurname;
+    }
+
+    public String getSearchEmail() {
+        return searchEmail;
+    }
+
+    public void setSearchEmail(String searchEmail) {
+        this.searchEmail = searchEmail;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(String searchType) {
+        this.searchType = searchType;
+    }
+    
     public String getName() {
         return name;
     }
@@ -78,8 +141,20 @@ public class UserBean {
         this.message = message;
     }
     
-    public List<User> getAllUsers(){
-        return userDAO.getAll();
+    public void getAllUsers(){
+        int currentUserID = loginBean.getUser().getId();
+        listOfUsers = userDAO.getAll().stream()
+                .filter(u-> u.getId() != currentUserID)
+                .collect(Collectors.toList());
+        searchMessage= "Inside all users "+ listOfUsers.size()+" members";
+    }
+
+    public List<User> getListOfUsers() {
+        return listOfUsers;
+    }
+
+    public void setListOfUsers(List<User> listOfUsers) {
+        this.listOfUsers = listOfUsers;
     }
     
     public void setUser(User u){
@@ -97,6 +172,15 @@ public class UserBean {
     public void setDeleteMessage(String deleteMessage) {
         this.deleteMessage = deleteMessage;
     }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+    
     
     public void fillData(){
         clear();
@@ -171,9 +255,30 @@ public class UserBean {
     public void delete(){
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String sID = params.get("userId");
-        int id = Integer.parseInt(sID);
-        User proccessedUser = userDAO.getById(id);
+        int idD = Integer.parseInt(sID);
+        User proccessedUser = userDAO.getById(idD);
         proccessedUser.setStatus('D');
         userDAO.update(proccessedUser);
+    }
+    
+    /**Method to search for a specific user*/
+    public void searchUsers(){
+        searchMessage = "Inside search Users";
+        /*if(searchEmail==null || "".equals(searchEmail))
+            searchEmail = "";
+        if(searchName==null || "".equals(searchName))
+            searchName = "";
+        if(searchSurname==null || "".equals(searchSurname))
+            searchSurname = "";
+        if(searchType==null || "".equals(searchType))
+            searchType = "";
+        
+        int currentUserID = loginBean.getUser().getId();
+        listOfUsers = userDAO.filterUsers(name, surname, 
+                email, searchType)
+                .stream()
+                .filter(u -> u.getId()!= currentUserID)
+                .collect(Collectors.toList());
+        deleteMessage += listOfUsers.size()+" records found";*/
     }
 }
