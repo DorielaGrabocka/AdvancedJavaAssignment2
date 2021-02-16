@@ -20,7 +20,7 @@
                     <li><h:outputText styleClass="pages" value="#{loginBean.user.name} #{loginBean.user.surname}"/></li>
                     <li><h:link styleClass="pages" outcome="indexStandard">Home</h:link></li>
                     <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
-                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" /></h:form></li>    
+                    <li><h:form><h:commandLink styleClass="pages" value="Log out" action="#{loginBean.logOut()}" /></h:form></li>    
                 </ul>
             </h:panelGrid>
         </h:panelGrid>

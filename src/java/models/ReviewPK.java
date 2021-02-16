@@ -5,6 +5,8 @@
  */
 package models;
 
+import DAO.ReviewDAO;
+import DAO.UserDAO;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;

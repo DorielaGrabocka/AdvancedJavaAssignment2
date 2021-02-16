@@ -111,3 +111,31 @@ li {
     color: red;
     width: 70%;
 }
+
+/*Book Details Styles*/
+
+.details{
+    float:left;
+    width:300px;
+    margin-left: 30px;
+    height: 100%;
+    padding: 30px;
+}
+
+.reviews{
+    margin-top: 10px;
+    margin-right: 30px;
+    float: right;
+    width:500px;
+    margin-left: 50%;
+}
+
+.components{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-control{
+    margin:auto;
+    resize: none;
+}

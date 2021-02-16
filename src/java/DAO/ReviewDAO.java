@@ -9,6 +9,7 @@ import databaseConnection.EntityManagerProvider;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import models.Book;
 import models.Review;
 
 /**
@@ -52,6 +53,15 @@ public class ReviewDAO implements BaseDao<Review>{
     @Override
     public List<Review> getAll() {
         return getEntityManager().createNamedQuery("Review.findAll")
+                .getResultList();
+    }
+    
+    public List<Review> getBookReviews(int id){
+        String query = "SELECT r "
+                + "FROM Review r WHERE r.reviewPK.bookID=:bookId";
+        
+        return getEntityManager().createQuery(query, Review.class)
+                .setParameter("bookId", id)
                 .getResultList();
     }
     
