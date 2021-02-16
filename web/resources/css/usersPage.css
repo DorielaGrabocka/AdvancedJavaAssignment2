@@ -14,7 +14,7 @@ and open the template in the editor.
 }
 
 .left, .right{
-    border: 2px solid black;
+    border: 2px solid transparent;
     display: block;
 }
 
@@ -33,5 +33,14 @@ and open the template in the editor.
 
 .filters{
     display: block;
-    border: 2px solid black;
+    border: 2px solid transparent;
+    margin-top: -100px;
+}
+
+.filters *{
+    margin: 5px;
+}
+
+.filters h3{
+    margin-bottom: 10px;
 }

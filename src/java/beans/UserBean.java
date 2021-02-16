@@ -32,6 +32,7 @@ public class UserBean {
     @ManagedProperty(value="#{loginBean}")
     LoginBean loginBean;
     
+    private int currentUserId;
     private UserDAO userDAO;
     private List<User> listOfUsers;
     private String id;
@@ -54,20 +55,29 @@ public class UserBean {
     
     public UserBean() {
         userDAO = new UserDAO();
-        
-    }
-
-    @PostConstruct
-    public void init(){
-        listOfUsers = new ArrayList<>();
         getAllUsers();
     }
 
+    
+    public void init(){
+        Map<String, String> params = FacesContext
+                .getCurrentInstance()
+                .getExternalContext()
+                .getRequestParameterMap();
+        currentUserId = Integer.parseInt(params.get("userIdB"));
+    }
+    
     public String getSearchMessage() {
         return searchMessage;
     }
-    
-    
+
+    public int getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setCurrentUserId(int currentUserId) {
+        this.currentUserId = currentUserId;
+    }
     
     public String getSearchName() {
         return searchName;
@@ -141,12 +151,13 @@ public class UserBean {
         this.message = message;
     }
     
-    public void getAllUsers(){
-        int currentUserID = loginBean.getUser().getId();
+    public String getAllUsers(){
+//        int currentUserID = loginBean.getUser().getId();
         listOfUsers = userDAO.getAll().stream()
-                .filter(u-> u.getId() != currentUserID)
+                .filter(u-> u.getId() != currentUserId)
                 .collect(Collectors.toList());
         searchMessage= "Inside all users "+ listOfUsers.size()+" members";
+        return "";
     }
 
     public List<User> getListOfUsers() {
@@ -253,7 +264,9 @@ public class UserBean {
      * 
      */
     public void delete(){
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String, String> params = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getRequestParameterMap();
         String sID = params.get("userId");
         int idD = Integer.parseInt(sID);
         User proccessedUser = userDAO.getById(idD);
@@ -262,9 +275,9 @@ public class UserBean {
     }
     
     /**Method to search for a specific user*/
-    public void searchUsers(){
+    public String searchUsers(){
         searchMessage = "Inside search Users";
-        /*if(searchEmail==null || "".equals(searchEmail))
+        if(searchEmail==null || "".equals(searchEmail))
             searchEmail = "";
         if(searchName==null || "".equals(searchName))
             searchName = "";
@@ -279,6 +292,7 @@ public class UserBean {
                 .stream()
                 .filter(u -> u.getId()!= currentUserID)
                 .collect(Collectors.toList());
-        deleteMessage += listOfUsers.size()+" records found";*/
+        deleteMessage = listOfUsers.size()+" records found";
+        return "";
     }
 }

@@ -115,13 +115,13 @@ public class UserDAO implements BaseDao<User>{
     public List<User> filterUsers(String name, String surname, 
             String email, String type)
     {
-        String query = "SELECT u FROM User u";
+        String query = "SELECT u FROM User u WHERE u.id=u.id ";
         if(!("".equals(name)) && !(name==null))
-            query +=" WHERE u.name LIKE :name";
+            query +=" AND LOWER(u.name) LIKE LOWER(:name)";
         if(!("".equals(surname)) && !(surname==null))
-            query +=" AND u.surname LIKE :surname";
+            query +=" AND LOWER(u.surname) LIKE LOWER(:surname)";
         if(!("".equals(email)) && !(email==null))
-            query +=" AND u.email LIKE :email";
+            query +=" AND LOWER(u.email) LIKE LOWER(:email)";
         if(!("".equals(type)) && !(type==null))
             query +=" AND u.userType= :type";
         
