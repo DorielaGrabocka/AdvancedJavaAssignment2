@@ -33,6 +33,10 @@ h1{
     height: 300px;
 }
 
+.form-control{
+    width:150px;
+}
+
 .filters *{
     margin:5px;
 }
