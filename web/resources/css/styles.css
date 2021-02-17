@@ -72,19 +72,11 @@
 
 /*------------------style of indexSimple specific components------------------------------*/
 
-.logInLink{
-    display: block;
-    float: right;
-    margin-right: 4%;
-    font-size: 130%;
-    text-decoration: none;
-    color: black;
-}
 
 .bottom-part, .top-part{
     /*border: 2px solid black;*/
     display: block;
-    margin-top: 2%;
+    /*margin-top: 2%;*/
 }
 
 .filters, .stats{
@@ -102,11 +94,11 @@
 }
 
 
-.icon{
+.img-thumbnail{
     height: 40%;
     width: 40%;
     display: block;
-    margin-left:10%;
+    margin-left:30%;
     margin-right:10%;
 }
 
@@ -117,3 +109,4 @@
     /*border: 2px solid blue;*/
     float: left;
 }
+

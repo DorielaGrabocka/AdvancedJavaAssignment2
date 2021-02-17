@@ -37,6 +37,7 @@ public class BookDetailsBean implements Serializable{
     private final ReviewDAO reviewDao = new ReviewDAO();
     private final UserDAO userDao = new UserDAO();
     private double averageRating;
+    private ReviewPK reviewId;
     private String outputText = "";
     private String comment;
     
