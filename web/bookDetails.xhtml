@@ -43,7 +43,8 @@
                 <h3>Book Reviews</h3>
 
                 <h:dataTable var="r" value="#{bookDetailsBean.getReviews()}"
-                             styleClass="table table-striped">
+                             styleClass="table table-striped"
+                             id="reviewsTable">
                     <h:column> 
                         <f:facet name="header">Comment</f:facet>
                         <h:outputText value="#{r.text}"/>   
@@ -67,8 +68,8 @@
                                                        return false;"
                                            >
                                 <f:param name="bookID" value="#{r.reviewPK.bookID}"/>
-
                                 <span class="glyphicon glyphicon-trash"></span>
+                                <f:ajax render="reviewsTable"/>
                             </h:commandLink>
                         </h:form>
                     </h:column>
@@ -78,6 +79,7 @@
                     <h3>Add Review</h3>
                     <h:outputText value="Comment:" styleClass="labels"/>
                     <h:inputTextarea value="#{bookDetailsBean.comment}" styleClass="form-control"/>
+                    
                     <h:outputText value="Rating:" styleClass="labels"/>
                     <div class="stars">
                         <h:commandLink action="#{bookDetailsBean.addReview(5)}"
