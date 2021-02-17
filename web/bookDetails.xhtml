@@ -11,6 +11,7 @@
         <title>Book Details</title>
         <h:outputStylesheet name="template.css" library="css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     </h:head>
     <h:body>
         <f:metadata>
@@ -18,25 +19,24 @@
             <f:event type="preRenderView" listener="#{bookDetailsBean.init}" />
         </f:metadata>
         <h:panelGrid styleClass="body" columns="2">
-
             <h:panelGrid styleClass="details" columns="1">
                 <h3>Book Details</h3>
                 <h:outputText value="Title:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.title}"/>
-                <h:outputText value="Author:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.author}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.title}"/>
+                <h:outputText  value="Author:" styleClass="components"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.author}"/>
                 <h:outputText value="Publishing House:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.publishingHouse}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.publishingHouse}"/>
                 <h:outputText value="Publication Year:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.publicationYear}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.publicationYear}"/>
                 <h:outputText value="Genre:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.genre}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.genre}"/>
                 <h:outputText value="Date Added:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.dateAdded}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.dateAdded}"/>
                 <h:outputText value="Average Rating:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.averageRating}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.averageRating}"/>
                 <h:outputText value="Synopsis:" styleClass="components"/>
-                <h:outputText value="#{bookDetailsBean.book.synopsis}"/>
+                <h:outputText styleClass="info" value="#{bookDetailsBean.book.synopsis}"/>
             </h:panelGrid>
 
             <h:panelGrid styleClass="reviews">
@@ -63,9 +63,11 @@
                             <h:commandLink action="#{bookDetailsBean.removeReview(r.reviewPK.userID,r.reviewPK.bookID)}" 
                                            rendered="#{r.reviewPK.userID eq bookDetailsBean.getCurrentUser().id}" 
                                            styleClass="icons"
-                                           onclick="if(!confirm('Remove review?')) return false;"
+                                           onclick="if (!confirm('Remove review?'))
+                                                       return false;"
                                            >
-                                <f:param name="bookID" value="#{bookDetailsBean.bookID}"/>
+                                <f:param name="bookID" value="#{r.reviewPK.bookID}"/>
+
                                 <span class="glyphicon glyphicon-trash"></span>
                             </h:commandLink>
                         </h:form>
@@ -74,11 +76,36 @@
                 <h:outputText value="#{bookDetailsBean.outputText}"/>
                 <h:form>
                     <h3>Add Review</h3>
-                    <h:outputText value="Comment:"/>
-                    <h:inputTextarea styleClass="form-control"/>
-                    <h:outputText value="Rating:"/>
-
-                    <h:commandButton value="Add Review" action="#{bookDetailsBean.addReview()}" styleClass="btn btn-default"/>
+                    <h:outputText value="Comment:" styleClass="labels"/>
+                    <h:inputTextarea value="#{bookDetailsBean.comment}" styleClass="form-control"/>
+                    <h:outputText value="Rating:" styleClass="labels"/>
+                    <div class="stars">
+                        <h:commandLink action="#{bookDetailsBean.addReview(5)}"
+                                       id="b1" styleClass="radios b1">
+                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
+                            <ion-icon name="star"></ion-icon>
+                        </h:commandLink>
+                        <h:commandLink action="#{bookDetailsBean.addReview(4)}"
+                                       id="b2" styleClass="radios b2">
+                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
+                            <ion-icon name="star"></ion-icon>
+                        </h:commandLink>
+                        <h:commandLink action="#{bookDetailsBean.addReview(3)}"
+                                       id="b3" styleClass="radios b3">
+                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
+                            <ion-icon name="star"></ion-icon>
+                        </h:commandLink>
+                        <h:commandLink action="#{bookDetailsBean.addReview(2)}"
+                                       id="b4" styleClass="radios b4">
+                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
+                            <ion-icon name="star"></ion-icon>
+                        </h:commandLink>
+                        <h:commandLink action="#{bookDetailsBean.addReview(1)}"
+                                       id="b5" styleClass="radios b5">
+                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
+                            <ion-icon name="star"></ion-icon>
+                        </h:commandLink>
+                    </div>
                 </h:form>
             </h:panelGrid>
         </h:panelGrid>

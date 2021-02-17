@@ -9,6 +9,7 @@ import databaseConnection.EntityManagerProvider;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import models.Book;
 import models.Review;
 import models.ReviewPK;
@@ -38,6 +39,9 @@ public class ReviewDAO implements BaseDao<Review>{
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
+        if(!em.contains(r)){
+            r = em.merge(r);
+        }
         em.remove(r);
         transaction.commit();
     }
@@ -86,6 +90,21 @@ public class ReviewDAO implements BaseDao<Review>{
         return getEntityManager().createQuery(query, Review.class)
                 .setParameter("userId", id)
                 .getResultList();
+    }
+    
+    public boolean reviewExists(int userID, int bookID) {
+        String query = "SELECT r FROM Review r "
+                + "WHERE r.reviewPK.userID=:userID AND r.reviewPK.bookID=:bookID";
+        try {
+            Review foundReview = getEntityManager().createQuery(query, Review.class)
+                    .setParameter("userID", userID)
+                    .setParameter("bookID", bookID)
+                    .getSingleResult();
+
+            return foundReview != null;
+        } catch (NoResultException e) {
+            return false;
+        }
     }
     
 }

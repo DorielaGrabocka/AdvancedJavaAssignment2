@@ -8,13 +8,14 @@ package beans;
 import DAO.BookDAO;
 import DAO.ReviewDAO;
 import DAO.UserDAO;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import models.Book;
@@ -24,23 +25,23 @@ import models.User;
 
 /**
  *
- * @author Oli 
+ * @author user
  */
 @ManagedBean(name="bookDetailsBean")
 @ViewScoped
-public class BookDetailsBean {
-    
+public class BookDetailsBean implements Serializable{
+     
     @ManagedProperty(value = "#{loginBean}")
     private LoginBean loginBean;
-    
     private int bookID;
     private Book book;
     private BookDAO bookDao = new BookDAO();
     private ReviewDAO reviewDao = new ReviewDAO();
     private UserDAO userDao = new UserDAO();
     private double averageRating;
-    private ReviewPK reviewId;
     private String outputText = "";
+    private int rating;
+    private String comment;
     
     public BookDetailsBean(){
         
@@ -67,13 +68,22 @@ public class BookDetailsBean {
         reviewDao.delete(review);
         outputText="Review successfully removed!";
         FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("bookDetails.xhtml"); 
+   }
+    
+    public void addReview(int rating) throws Exception{
+        boolean exists = reviewDao.reviewExists(loginBean.getUser().getId(), bookID);
+        if(!exists){
+        ReviewPK reviewPK = new ReviewPK(loginBean.getUser().getId(), bookID);
+        Review review = new Review(reviewPK, rating, comment);
+        reviewDao.insert(review);
+        FacesContext.getCurrentInstance().getExternalContext()
                     .redirect("bookDetails.xhtml");
+        }else {
+            outputText = "Review already exists!";
+        }
     }
     
-    public void addReview(){
-        
-    }
-
     public User getCurrentUser() {
         return loginBean.getUser();
     }
@@ -117,4 +127,13 @@ public class BookDetailsBean {
     public void setOutputText(String outputText) {
         this.outputText = outputText;
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
 }

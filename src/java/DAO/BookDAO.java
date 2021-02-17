@@ -80,13 +80,14 @@ public class BookDAO implements BaseDao<Book> {
      * @return the corresponding book.
      */
     public Book getById(int id) {
-        try {
-            return (Book) getEntityManager().createNamedQuery("Book.findById")
-                    .setParameter("id", id)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        //try {
+         //   return (Book) getEntityManager().createNamedQuery("Book.findById")
+           //         .setParameter("id", id)
+             //       .getSingleResult();
+        //} catch (NoResultException e) {
+        //    return null;
+       // }
+       return getEntityManager().find(Book.class, id);
     }
 
     @Override
