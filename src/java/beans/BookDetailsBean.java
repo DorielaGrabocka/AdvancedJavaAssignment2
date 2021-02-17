@@ -8,7 +8,6 @@ package beans;
 import DAO.BookDAO;
 import DAO.ReviewDAO;
 import DAO.UserDAO;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;

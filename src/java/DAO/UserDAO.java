@@ -115,24 +115,24 @@ public class UserDAO implements BaseDao<User>{
     public List<User> filterUsers(String name, String surname, 
             String email, String type)
     {
-        String query = "SELECT u FROM User u WHERE u.id=u.id ";
-        if(!("".equals(name)) && !(name==null))
+        String query = "SELECT u FROM User u WHERE u.status !='D' ";
+        if(name!=null)
             query +=" AND LOWER(u.name) LIKE LOWER(:name)";
-        if(!("".equals(surname)) && !(surname==null))
+        if(surname!=null && !surname.equals(""))
             query +=" AND LOWER(u.surname) LIKE LOWER(:surname)";
-        if(!("".equals(email)) && !(email==null))
+        if(email!=null && !email.equals(""))
             query +=" AND LOWER(u.email) LIKE LOWER(:email)";
-        if(!("".equals(type)) && !(type==null))
+        if(type!=null && !type.equals(""))
             query +=" AND u.userType= :type";
         
         TypedQuery<User> tQuery  = getEntityManager().createQuery(query, User.class);
-        if(!("".equals(name)) && !(name==null))
+        if(name!=null)
             tQuery.setParameter("name", name+"%");
-        if(!("".equals(surname)) && !(surname==null))
+        if(surname!=null && !surname.equals(""))
             tQuery.setParameter("surname", surname+"%");
-        if(!("".equals(email)) && !(email==null))
+        if(email!=null && !email.equals(""))
             tQuery.setParameter("email", email+"%");
-        if(!("".equals(type)) && !(type==null))
+        if(!type.equals(""))
             tQuery.setParameter("type", type);
         
         return tQuery.getResultList();

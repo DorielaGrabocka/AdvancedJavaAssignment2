@@ -6,8 +6,6 @@
     <h:head>
         <f:metadata> 
             <f:event listener="#{loginBean.isUserLoggedIn('admin')}" type="preRenderView"/>
-            <f:viewParam name="userIdB" value="#{userBean.currentUserId}"/>
-            <f:event listener="#{userBean.init()}" type="preRenderView"/>
         </f:metadata>
         <title>Admin | The Booker</title>
         <h:outputStylesheet name="template.css" library="css"/>
@@ -21,20 +19,19 @@
                 <ul>
                     <li><h:link styleClass="pages" outcome="indexAdmin">Home</h:link></li>
                     <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
-                    <li><h:link styleClass="pages" outcome="usersPage">Users</h:link>
-                    </li>
+                    <li><h:link styleClass="pages" outcome="usersPage">Users</h:link></li>
                     <li><h:link styleClass="pages" outcome="booksPage">Books</h:link></li>
                     <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" styleClass="pages"/></h:form></li>
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
 
-        <h:panelGrid styleClass="page" columns="2">
-            
+        <h:panelGrid styleClass="page-top" columns="1">
+            <h1>Users</h1>
+            <h:panelGrid columns="2" styleClass="content">
                 <h:panelGroup styleClass="left">
-                    
+                    <h3>User Data</h3>
                     <h:form id="insertUser">
-                        <h3>User Info</h3>
                         <h:panelGrid styleClass="insert" columns="3">
 
                         <h:outputText value="Name:" />
@@ -78,25 +75,23 @@
                                     emailInputText userTypeInputMenu"
                                     render="nameMessage surnameMessage emailMessage
                                     nameInputText surnameInputText emailInputText
-                                    userTypeMessage showUsers resultMessage"/>
+                                    userTypeMessage usersTable resultMessage"/>
                         </h:commandButton>
                         <h:commandButton value="Clear" styleClass="btn btn-default" action="#{userBean.clear()}">
                             <f:ajax render="nameInputText surnameInputText emailInputText 
-                                    userTypeInputMenu showUsers resultMessage msg"/>
+                                    userTypeInputMenu usersTable resultMessage msg"/>
                         </h:commandButton>
-                        
-                        <h:outputText value="#{userBean.message}" id="resultMessage"/>
-                        <h:outputText value=""/>
                     </h:panelGrid>
                 </h:form>
+                        <h:outputText value="#{userBean.message}" id="resultMessage"/>
                         <h:outputText value="#{userBean.deleteMessage}" id="msg"/>
                 </h:panelGroup>
-                 
+         
             
             <h:panelGroup class="right">
                 <h:panelGrid columns="2">
                     <h:panelGrid id="showUsers" styleClass="view">
-                     <h3>Users</h3>
+                     <h3></h3>
                      <h:dataTable  id="usersTable" 
                                    var="user" value="#{userBean.listOfUsers}" 
                                    styleClass="table table-striped">
@@ -109,18 +104,20 @@
                              <h:form>
                                  
                                  <h:commandLink action="#{userBean.fillData()}" 
-                                                styleClass="icons">
+                                                styleClass="icons"
+                                                rendered="#{user.id ne loginBean.user.id}">
                                      <span class="glyphicon glyphicon-pencil"></span>
                                      <f:param name="userId" value="#{user.id}"/>
-                                     <f:ajax render="insertUser msg"/>
+                                     <f:ajax render="insertUser showUsers msg"/>
                                  </h:commandLink> |
                                  
                                  <h:commandLink action="#{userBean.delete()}" 
                                                 styleClass="icons"
+                                                rendered="#{user.id ne loginBean.user.id}"
                                                 onclick="if(!confirm('Delete user?')) return false; ">
                                      <span class="glyphicon glyphicon-trash"></span>
                                      <f:param name="userId" value="#{user.id}"/>
-                                     <f:ajax render="showUsers msg"/>
+                                     <f:ajax render="usersTable msg"/>
                                  </h:commandLink>
                              </h:form>
                           </h:column>
@@ -147,16 +144,16 @@
                     <h:panelGrid columns="4">
 
                         <h:outputText value="Name"/>
-                        <h:inputText value="#{userBean.searchName}"/>
+                        <h:inputText value="#{userBean.searchName}" id="nameInp"/>
 
                         <h:outputText value="Surname"/>
-                        <h:inputText value="#{userBean.searchSurname}"/>
+                        <h:inputText value="#{userBean.searchSurname}" id="surnameInp"/>
 
                         <h:outputText value="Email"/>
-                        <h:inputText value="#{userBean.searchEmail}"/>
+                        <h:inputText value="#{userBean.searchEmail}" id="emailInp"/>
 
                         <h:outputText value="Type"/>
-                        <h:selectOneMenu value="#{userBean.searchType}">
+                        <h:selectOneMenu value="#{userBean.searchType}" id="statusInp">
                             <f:selectItem itemLabel="" itemValue=""/>
                             <f:selectItem itemLabel="Admin User" itemValue="admin"/>
                             <f:selectItem itemLabel="Standard User" itemValue="standard"/>
@@ -164,9 +161,12 @@
                         <h:outputText value=""/>
                         <h:form>
                             <h:commandButton value="Search" action="#{userBean.searchUsers()}">
-                                <f:ajax render="usersTable searchMsg"/>
+                                <!--f:ajax execute="nameInp surnameInp emailInp statusInp"
+                                    render="usersTable searchMsg"/-->
                             </h:commandButton>
-                            <h:commandButton  value="Show All" action="#{userBean.getAllUsers()}"/>
+                            <h:commandButton  value="Show All" action="#{userBean.allUsers()}">
+                                <!--f:ajax render="usersTable searchMsg"/-->
+                            </h:commandButton>
                         </h:form>
                         <h:outputText value=""/>
                     </h:panelGrid>
@@ -177,6 +177,7 @@
                 
                  
             </h:panelGroup>
+        </h:panelGrid>
         </h:panelGrid>
     </h:body>
 </html>
