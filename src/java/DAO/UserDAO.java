@@ -102,6 +102,16 @@ public class UserDAO implements BaseDao<User>{
         return user;
     }
     
+    /**Method to return all users in the database no matter of their status(present or lazily 
+     * deleted)
+     * @return a list of users
+     */
+    public List<User> getAllUsersStatusInsensitive(){
+        String query = "SELECT u FROM User u";
+        return getEntityManager().createQuery(query)
+                .getResultList();
+    }
+    
     /**Method to return all the users in the database.
      *@return a list of users
      */

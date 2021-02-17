@@ -6,7 +6,6 @@
 package beans;
 
 import DAO.UserDAO;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -200,7 +199,7 @@ public class UserBean {
         //message = "Editing set to "+editing;
     }
     
-    public void save() throws Exception{
+    public void save(){
         try{
             if (editing) {//we are editing
                 //message="Inside editing";
@@ -219,6 +218,28 @@ public class UserBean {
                     message+="User with this email already exists!";
                 }*/
                 //else{
+                try{
+                    //check if user is probably deleted
+                    User u1 = userDAO.getAllUsersStatusInsensitive()
+                            .stream()
+                            .filter(u -> u.getEmail().equals(email))
+                            .filter(u -> u.getUserType().equals(userType))
+                            .collect(Collectors.toList())
+                            .get(0);
+                    
+                    //editing mode here
+                    u1.setName(name);
+                    u1.setSurname(surname);
+                    u1.setEmail(email);
+                    u1.setStatus('N');
+                    u1.setUserType(userType);
+                    u1.setPassword("user");
+                    userDAO.update(u1);
+                    message="User added succesfully!";
+                    
+                }catch(Exception e){
+                    //user with that email does not exist or that status does not exist
+                    //normal insertion procedure goes here
                     User u = new User();
                     u.setName(name);
                     u.setSurname(surname);
@@ -227,7 +248,19 @@ public class UserBean {
                     u.setStatus('N');//set user status to NOT DELETED
                     u.setUserType(userType);
                     userDAO.insert(u);//add user
-                    message="User added succesfully! Check users table"+editing;
+                    message="User added succesfully! Check users table";
+                }
+                    
+                
+//                    User u = new User();
+//                    u.setName(name);
+//                    u.setSurname(surname);
+//                    u.setEmail(email);
+//                    u.setPassword(encrypt("user"));
+//                    u.setStatus('N');//set user status to NOT DELETED
+//                    u.setUserType(userType);
+//                    userDAO.insert(u);//add user
+//                    message="User added succesfully! Check users table";
                 //}
             }
             allUsers();//update the list

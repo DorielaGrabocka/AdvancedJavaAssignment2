@@ -59,7 +59,7 @@
                     <h:inputText id="synopsisInputText" 
                                  class="form-control"
                                  value="#{bookBean.synopsis}"/>
-                    <h:commandButton value="Save" action="#{bookBean.insert()}" styleClass="btn btn-default"/> 
+                    <h:commandButton value="Save" action="#{bookBean.upsert()}" styleClass="btn btn-default"/> 
                     <h:commandButton value="Update" action="#{bookBean.edit()}" styleClass="btn btn-default"/><br/>
                     <h:outputText value=""/>
                     <h:outputText value="#{bookBean.outputMessage}" styleClass="error"/>

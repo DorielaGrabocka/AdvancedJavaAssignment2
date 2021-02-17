@@ -37,7 +37,7 @@ public class BookDAO implements BaseDao<Book> {
     public void delete(Book b) throws Exception {
         EntityManager em = getEntityManager();
         EntityTransaction transcation = em.getTransaction();
-        boolean exists = bookExists(b.getTitle(), b.getPublicationYear());
+        boolean exists = bookExists(b.getTitle(), b.getPublicationYear())!=null;
         if (!exists) {
             transcation.begin();
             em.remove(b);
@@ -142,18 +142,18 @@ public class BookDAO implements BaseDao<Book> {
                 .orElse(0);
     }
 
-    public boolean bookExists(String title, String publicationYear) {
+    public Book bookExists(String title, String publicationYear) {
         String query = "SELECT b FROM Book b WHERE b.title=:title "
-                + "AND b.publicationYear=:publicationYear AND b.status!='D'";
+                + "AND b.publicationYear=:publicationYear";
         try {
             Book foundBook = getEntityManager().createQuery(query, Book.class)
                     .setParameter("title", title)
                     .setParameter("publicationYear", publicationYear)
                     .getSingleResult();
 
-            return foundBook != null;
+            return foundBook ;
         } catch (NoResultException e) {
-            return false;
+            return null;
         }
     }
     
