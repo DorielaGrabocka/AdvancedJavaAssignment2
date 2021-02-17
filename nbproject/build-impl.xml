@@ -993,6 +993,10 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.jsf20.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.eclipselink.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.MySQLDriver.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+<<<<<<< HEAD
+=======
+        <copyfiles files="${libs.CDI_Library.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+>>>>>>> 49ebc33247070191b7267325cb052e7e74b3f241
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>
