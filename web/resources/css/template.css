@@ -206,3 +206,9 @@ li {
     margin-right: 30%;
     transform: translate(-65%,-40%);
 }
+
+/*My Reviews Style*/
+
+.myReviews{
+    margin: auto;
+}

@@ -11,11 +11,8 @@ import DAO.UserDAO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import models.Book;
@@ -35,12 +32,11 @@ public class BookDetailsBean implements Serializable{
     private LoginBean loginBean;
     private int bookID;
     private Book book;
-    private BookDAO bookDao = new BookDAO();
-    private ReviewDAO reviewDao = new ReviewDAO();
-    private UserDAO userDao = new UserDAO();
+    private final BookDAO bookDao = new BookDAO();
+    private final ReviewDAO reviewDao = new ReviewDAO();
+    private final UserDAO userDao = new UserDAO();
     private double averageRating;
     private String outputText = "";
-    private int rating;
     private String comment;
     
     public BookDetailsBean(){
@@ -135,5 +131,4 @@ public class BookDetailsBean implements Serializable{
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
 }

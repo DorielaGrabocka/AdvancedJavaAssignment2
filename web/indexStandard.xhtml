@@ -10,7 +10,10 @@
         </f:metadata>
         <title>The Booker-Standard Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="myReviews.css"/>
         <h:outputStylesheet library="css" name="template.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
     </h:head>
     <h:body>
         <h:panelGrid styleClass="header" columns="2">
@@ -25,60 +28,96 @@
             </h:panelGrid>
         </h:panelGrid>
         <h:outputText styleClass="title" value="Welcome, #{loginBean.user.name} #{loginBean.user.surname}!"/>
+        <br/>
+        <h:link styleClass="btn btn-primary" outcome="myReviews">My Reviews</h:link>
         <h:panelGroup class="bottom-part">
             <h:panelGroup class="stats">
                 <h:panelGroup class="last5">
                     <h3>Last 5 added books</h3>
                     <ui:repeat value="#{indexBean.fillLastFive()}" var="book">
-                                <div class="book">
-                                    <h:graphicImage alt="thumbnail" 
-                                                    name="#{book.genre}.jpg" 
-                                                    library="images/thumbnails"
-                                                    styleClass="icon"></h:graphicImage>
-                                    <h:outputText value="Rank: "/>                
-                                    <h:outputText value="#{indexBean.rankLast}." styleClass="rank"/>
-                                    <br/>
-                                    <h:outputText value="Title: "/>
-                                    <h:link value="#{book.title}" outcome="bookDetails" styleClass="book-title">
-                                        <f:param name="bookID" value="#{book.id}"/>
-                                    </h:link>
-                                    <br/>
-                                    <h:outputText value="Average Rating: "/>
-                                    <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
-                                    <br/>
-                                    <h:link outcome="bookDetails">Add Review
-                                        <f:param name="bookId" value="#{book.id}"/>
-                                        <f:param name="addReview" value="true"/>
-                                    </h:link>
-                                </div>
-                            </ui:repeat>
+                        <div class="book">
+                            <h:graphicImage alt="thumbnail" 
+                                            name="book.png" 
+                                            library="thumbnails"
+                                            styleClass="img-thumbnail"></h:graphicImage>
+                            <h:outputText value="Rank: "/>                
+                            <h:outputText value="#{indexBean.rankLast}." styleClass="rank"/>
+                            <br/>
+                            <h:outputText value="Title: "/>
+                            <h:link value="#{book.title}" outcome="bookDetails" styleClass="book-title">
+                                <f:param name="bookID" value="#{book.id}"/>
+                            </h:link>
+                            <br/>
+                            <h:outputText value="Average Rating: "/>
+                            <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
+                            <br/>
+                            <h:link outcome="bookDetails">Add Review
+                                <f:param name="bookID" value="#{book.id}"/>
+                                <f:param name="addReview" value="true"/>
+                            </h:link>
+                        </div>
+                    </ui:repeat>
                 </h:panelGroup>
                 <h:panelGroup class="top5">
                     <h3>Top 5 rated books</h3>
-                            <ui:repeat value="#{indexBean.fillTopFive()}" var="book1">
-                                <div class="book">
-                                    <h:graphicImage alt="thumbnail" 
-                                                    name="#{book1.genre}.jpg" 
-                                                    library="images/thumbnails"
-                                                    styleClass="icon"></h:graphicImage>
-                                    
-                                    <h:outputText value="Rank: "/>
-                                    <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
-                                    <br/>
-                                    <h:outputText value="Title: "/>
-                                    <h:link value="#{book1.title}" outcome="bookDetails" styleClass="book-title">
-                                        <f:param name="bookID" value="#{book1.id}"/>
-                                    </h:link>
-                                    <br/>
-                                    <h:outputText value="Rating: "/>
-                                    <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
-                                    <br/>
-                                    <h:link outcome="bookDetails">Add Review
-                                        <f:param name="bookId" value="#{book1.id}"/>
-                                        <f:param name="addReview" value="true"/>
-                                    </h:link>
-                                </div>
-                            </ui:repeat>
+                    <ui:repeat value="#{indexBean.fillTopFive()}" var="book1">
+                        <div class="book">
+                            <h:graphicImage alt="thumbnail" 
+                                            name="book.png" 
+                                            library="thumbnails"
+                                            styleClass="img-thumbnail"
+                                            ></h:graphicImage>
+
+                            <h:outputText value="Rank: "/>
+                            <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
+                            <br/>
+                            <h:outputText value="Title: "/>
+                            <h:link value="#{book1.title}" outcome="bookDetails" styleClass="book-title">
+                                <f:param name="bookID" value="#{book1.id}"/>
+                            </h:link>
+                            <br/>
+                            <h:outputText value="Rating: "/>
+                            <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
+                            <br/>
+                            <h:link outcome="bookDetails">Add Review
+                                <f:param name="bookID" value="#{book1.id}"/>
+                                <f:param name="addReview" value="true"/>
+                            </h:link>
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+                <h:panelGroup class="books">
+                    <h3>Books</h3>
+                    <h:dataTable var="b" value="#{bookBean.getAll()}" styleClass="table table-striped">
+                    <h:column> 
+                        <f:facet name="header">ID</f:facet>
+                        <h:outputText value="#{b.id}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{b.title}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Author</f:facet>
+                        <h:outputText value="#{b.author}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Publishing House</f:facet>
+                        <h:outputText value="#{b.publishingHouse}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Publication Year</f:facet>
+                        <h:outputText value="#{b.publicationYear}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Date Added</f:facet>
+                        <h:outputText value="#{b.dateAdded}"/>   
+                    </h:column>
+                    <h:column> 
+                        <f:facet name="header">Synopsis</f:facet>
+                        <h:outputText value="#{b.synopsis}"/>   
+                    </h:column>
+                </h:dataTable>
                 </h:panelGroup>
             </h:panelGroup>    
         </h:panelGroup>
