@@ -88,7 +88,7 @@
                 </h:panelGroup>
                 <h:panelGroup class="books">
                     <h3>Books</h3>
-                    <h:dataTable var="b" value="#{bookBean.getAll()}" styleClass="table table-striped">
+                    <h:dataTable var="b" value="#{bookBean.listOfBooks}" styleClass="table table-striped">
                     <h:column> 
                         <f:facet name="header">ID</f:facet>
                         <h:outputText value="#{b.id}"/>   
