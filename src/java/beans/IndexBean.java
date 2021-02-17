@@ -3,7 +3,7 @@ package beans;
 import DAO.BookDAO;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import models.Book;
 
 /**
@@ -11,7 +11,7 @@ import models.Book;
  * @author Doriela
  */
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class IndexBean {
     
     private BookDAO bookDAO;
