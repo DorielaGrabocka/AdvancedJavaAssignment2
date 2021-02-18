@@ -12,6 +12,7 @@ import DAO.UserDAO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -31,6 +32,10 @@ public class BookDetailsBean implements Serializable{
      
     @ManagedProperty(value = "#{loginBean}")
     private LoginBean loginBean;
+    
+    @ManagedProperty(value="#{bufferSessionBean}")
+    private BufferSessionBean bufferSessionBean;
+    
     private int bookID;
     private Book book;
     private final BookDAO bookDao = new BookDAO();
@@ -40,16 +45,26 @@ public class BookDetailsBean implements Serializable{
     private ReviewPK reviewId;
     private String outputText = "";
     private String comment;
+    private int rating;
+
+    public BufferSessionBean getBufferSessionBean() {
+        return bufferSessionBean;
+    }
+
+    public void setBufferSessionBean(BufferSessionBean bufferSessionBean) {
+        this.bufferSessionBean = bufferSessionBean;
+    }
     
     public BookDetailsBean(){
-        
     }
     
     public void init(){
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        this.bookID = Integer.parseInt(params.get("bookID"));
+        /*Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        this.bookID = Integer.parseInt(params.get("bookID"));*/
+        bookID = bufferSessionBean.getBookIDFromIndexToDetails();
         book = bookDao.getById(bookID);
         averageRating = bookDao.getAverageRating(bookID);
+        //outputText=bookID+" YYY";
     }
     
     public List<Review> getReviews(){
@@ -62,24 +77,52 @@ public class BookDetailsBean implements Serializable{
     }
     
     public void removeReview(int userID, int bookID) throws Exception{
-        Review review = reviewDao.getByIds(userID, bookID);
-        reviewDao.delete(review);
-        outputText="Review successfully removed!";
-        FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("bookDetails.xhtml"); 
+        if(loginBean.getUser()==null){//user not logged in
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("login.xhtml?faces-redirect=true");
+        }
+        else{//user logged in
+            Review review = reviewDao.getByIds(userID, bookID);
+            reviewDao.delete(review);
+            outputText="Review successfully removed!";
+        }
+        
+        /*FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("bookDetails.xhtml"); */
+        
+        averageRating = bookDao.getAverageRating(bookID);
    }
     
-    public void addReview(int rating) throws Exception{
-        boolean exists = reviewDao.reviewExists(loginBean.getUser().getId(), bookID);
-        if(!exists){
-        ReviewPK reviewPK = new ReviewPK(loginBean.getUser().getId(), bookID);
-        Review review = new Review(reviewPK, rating, comment);
-        reviewDao.insert(review);
-        FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("bookDetails.xhtml");
-        }else {
-            outputText = "Review already exists!";
+    public void addReview() throws Exception{
+        
+        if(loginBean.getUser()==null){//user not logged in
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("login.xhtml?faces-redirect=true");
         }
+        else{//user logged in
+            boolean exists = reviewDao.reviewExists(loginBean.getUser().getId(), bookID);
+            if (!exists) {
+                ReviewPK reviewPK = new ReviewPK(loginBean.getUser().getId(), bookID);
+                Review review = new Review(reviewPK, rating, comment);
+                reviewDao.insert(review);
+                /*FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("bookDetails.xhtml");*/
+                outputText = "Review added succesfully!";
+                averageRating = bookDao.getAverageRating(bookID);
+            } else {
+                outputText = "Review already exists!";
+            }
+        }
+        
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+        outputText+=rating+"XXXX";
     }
     
     public User getCurrentUser() {

@@ -72,6 +72,8 @@ public class Book implements Serializable {
     @Column(name = "Status")
     private String status;
 
+    
+    
     public Book() {
     }
 

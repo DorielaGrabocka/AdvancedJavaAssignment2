@@ -44,9 +44,12 @@
                             <h:outputText value="#{indexBean.rankLast}." styleClass="rank"/>
                             <br/>
                             <h:outputText value="Title: "/>
-                            <h:link value="#{book.title}" outcome="bookDetails" styleClass="book-title">
+                            <h:form>
+                            <h:commandLink value="#{book.title}" 
+                                           action="#{bufferSessionBean.saveBookIDFromIndexToDetails(book.id)}" 
+                                           styleClass="book-title">
                                 <f:param name="bookID" value="#{book.id}"/>
-                            </h:link>
+                            </h:commandLink></h:form>
                             <br/>
                             <h:outputText value="Average Rating: "/>
                             <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
@@ -72,9 +75,12 @@
                             <h:outputText value="#{indexBean.rankTop}." styleClass="rank"/>
                             <br/>
                             <h:outputText value="Title: "/>
-                            <h:link value="#{book1.title}" outcome="bookDetails" styleClass="book-title">
+                            <h:form>
+                            <h:commandLink value="#{book1.title}" 
+                                           action="#{bufferSessionBean.saveBookIDFromIndexToDetails(book1.id)}" 
+                                           styleClass="book-title">
                                 <f:param name="bookID" value="#{book1.id}"/>
-                            </h:link>
+                            </h:commandLink></h:form>
                             <br/>
                             <h:outputText value="Rating: "/>
                             <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
