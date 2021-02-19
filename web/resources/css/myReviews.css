@@ -1,13 +1,13 @@
 /*My reviews button*/
 
-.btn {
+.myReviewsBtn  {
     background-color: #d3cbbf;
     color: #716052;
     font-size: 17px;
     border: none;
 }
 
-.btn:hover{
+.myReviewsBtn:hover{
     color: #716052;
     background-color: white;
 }

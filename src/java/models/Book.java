@@ -76,10 +76,6 @@ public class Book implements Serializable {
     @Basic(optional = false)
     @Column(name = "Status")
     private String status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    List<Review> reviews;
-    
-
     
     
     public Book() {
@@ -174,16 +170,6 @@ public class Book implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    
     
     @Override
     public int hashCode() {

@@ -43,8 +43,6 @@ public class Review implements Serializable {
     @Basic(optional = false)
     @Column(name = "Text")
     private String text;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Book book;
 
     public Review() {
     }
@@ -86,16 +84,6 @@ public class Review implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-    
-    
 
     @Override
     public int hashCode() {

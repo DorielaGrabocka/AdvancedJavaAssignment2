@@ -10,6 +10,7 @@
         <title>The Booker-Standard Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>
         <h:outputStylesheet library="css" name="template.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
         <title>The Booker-My Profile</title>
         
     </h:head>
@@ -27,35 +28,34 @@
         </h:panelGrid>
         <h:panelGroup class="bottom-part">
             <h:form>
-                
+            <h1>My Profile</h1>    
                 <!--Here the div for the change of details starts-->
-                <div id="chnageDeatils">
-                    <h:panelGrid columns="3">
+                <div id="chnageDeatils" style="profileDetails">
+                    <h:panelGrid columns="3" styleClass="profileDetails">
                         <h:outputText value="Name"/>
                         <h:inputText value="#{changeDetailsBean.name}" required="true" 
                                      requiredMessage="Please enter a name"
-                                     id="nameInpuText"/>
+                                     id="nameInpuText" styleClass="form-control"/>
                         <h:message id="nameMessage" for="nameInpuText" styleClass="error"/>
 
                         <h:outputText value="Surname"/>
                         <h:inputText value="#{changeDetailsBean.surname}"
                                      required="true"
                                      requiredMessage="Please enter a surname"
-                                     id="surnameInputText"/>
+                                     id="surnameInputText" styleClass="form-control"/>
                         <h:message for="surnameInputText" id="surnameMessage" styleClass="error"/>
 
                         <h:outputText value="Email"/>
                         <h:inputText required="true"
                                      requiredMessage="Enter E-Mail"
                                      validatorMessage="Please enter the email as example@provider.com"
-                                     styleClass="fields"
                                      class="form-control" id="emailInputText"
-                                     value="#{changeDetailsBean.email}">
+                                     value="#{changeDetailsBean.email}" styleClass="form-control">
                             <f:validateRegex pattern="\w+([+-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
                         </h:inputText> 
                         <h:message for="emailInputText" id="emailMessage" styleClass="error"/>
 
-                        <h:commandButton value="Save Changes" action="#{changeDetailsBean.updateProfile()}">
+                        <h:commandButton value="Save Changes" action="#{changeDetailsBean.updateProfile()}" styleClass="btn btn-default">
                             <f:ajax execute="nameInpuText surnameInputText emailInputText" 
                                     render="resultMsg1 emailInputText surnameInputText nameInpuText
                                     emailMessage surnameMessage nameMessage"/>
@@ -66,30 +66,32 @@
                 
                 <!--Here the div for the change of Password starts-->
                 <div id="changePassword">
-                    <h:panelGrid columns="3">
+                    <h4>Change Password</h4>
+                    <h:panelGrid columns="3" styleClass="profileDetails">
+                        
                         <h:outputText value="Current Password"/>
                         <h:inputSecret value="#{changeDetailsBean.currentPassowrd}" 
                                        required="true"
                                        requiredMessage="Enter old password"
-                                       id="currentPassInpt"/>
+                                       id="currentPassInpt" styleClass="form-control"/>
                         <h:message for="currentPassInpt" id="currentPassMsg" styleClass="error"/>
 
                         <h:outputText value="New Password"/>
                         <h:inputSecret value="#{changeDetailsBean.newPassword}" 
                                        required="true"
                                        requiredMessage="Enter new password"
-                                       id="newPassInp"/>
+                                       id="newPassInp" styleClass="form-control"/>
                         <h:message for="newPassInp" id="newPassMsg" styleClass="error"/>
 
                         <h:outputText value="Confirm New Password"/>
                         <h:inputSecret value="#{changeDetailsBean.confirmNewPassword}" 
                                        required="true"
                                        requiredMessage="Confirm new password"
-                                       id="confPassInp"
+                                       id="confPassInp" styleClass="form-control"
                                      />
                         <h:message for="confPassInp" id="CongNewPassMsg" styleClass="error"/>
 
-                        <h:commandButton value="Save Password" action="#{changeDetailsBean.updatePassword()}">
+                        <h:commandButton value="Save Password" action="#{changeDetailsBean.updatePassword()}" styleClass="btn btn-default">
                             <f:ajax execute="confPassInp newPassInp currentPassInpt" 
                                     render="resultMsg2 CongNewPassMsg newPassMsg currentPassMsg"/>
                         </h:commandButton>

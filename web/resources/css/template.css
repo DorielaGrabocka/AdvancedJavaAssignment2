@@ -145,3 +145,12 @@ li {
 
 }
 
+/*My Profile Style*/
+.profileDetails{
+    margin:auto;
+    
+}
+
+.profileDetails .btn {
+    margin-left: 105%;
+}
