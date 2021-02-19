@@ -36,3 +36,18 @@ h1{
 .filters *{
     margin:5px;
 }
+
+
+.table table-striped books{
+    margin-left: 2%;
+    margin-right:2%;
+    width: 100%;
+}
+
+.book-upsert{
+    border-right: 1px solid #716052;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}

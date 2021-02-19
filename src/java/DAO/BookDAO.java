@@ -6,11 +6,20 @@
 package DAO;
 
 import databaseConnection.EntityManagerProvider;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import models.Book;
+import models.Review;
+import models.ReviewPK;
+import models.User;
 
 /**
  *
@@ -37,7 +46,7 @@ public class BookDAO implements BaseDao<Book> {
     public void delete(Book b) throws Exception {
         EntityManager em = getEntityManager();
         EntityTransaction transcation = em.getTransaction();
-        boolean exists = bookExists(b.getTitle(), b.getPublicationYear())!=null;
+        boolean exists = bookExists(b.getTitle(), b.getPublicationYear()) != null;
         if (!exists) {
             transcation.begin();
             em.remove(b);
@@ -81,13 +90,13 @@ public class BookDAO implements BaseDao<Book> {
      */
     public Book getById(int id) {
         //try {
-         //   return (Book) getEntityManager().createNamedQuery("Book.findById")
-           //         .setParameter("id", id)
-             //       .getSingleResult();
+        //   return (Book) getEntityManager().createNamedQuery("Book.findById")
+        //         .setParameter("id", id)
+        //       .getSingleResult();
         //} catch (NoResultException e) {
         //    return null;
-       // }
-       return getEntityManager().find(Book.class, id);
+        // }
+        return getEntityManager().find(Book.class, id);
     }
 
     @Override
@@ -152,25 +161,79 @@ public class BookDAO implements BaseDao<Book> {
                     .setParameter("publicationYear", publicationYear)
                     .getSingleResult();
 
-            return foundBook ;
+            return foundBook;
         } catch (NoResultException e) {
             return null;
         }
     }
-    
-    /**Method to get books that have average rating greater than specified value
-     * @param averageRating is the lower bound of the rating that we are searching for
+
+    /**
+     * Method to get books that have average rating greater than specified value
+     *
+     * @param averageRating is the lower bound of the rating that we are
+     * searching for
      * @return the list of books
      */
-    public List<Book> getAllBookWithAverageRatingGreaterThan(int averageRating){
+    public List<Book> getAllBookWithAverageRatingGreaterThan(int averageRating) {
         String query = "SELECT b "
                 + "FROM Book b join Review r ON b.id=r.reviewPK.bookID "
-                + "WHERE b.status!='D'"            
-                + "GROUP BY b.id "
+                + "WHERE b.status!='D'"
+                + "GROUP BY r.reviewPK.bookID "
                 + "HAVING avg(r.rating)>:value";
-        
-        return getEntityManager().createQuery(query, Book.class)
+
+        return getEntityManager().createQuery(query)
                 .setParameter("value", averageRating)
                 .getResultList();
     }
+
+    public List<Book> filterBooks(String title, String author,
+            int min, int max, String genre) {
+        String query = "SELECT b FROM Book b WHERE b.status !='D' ";
+        if (title != null && !title.equals("")) {
+            query += " AND LOWER(b.title) LIKE LOWER(:title)";
+        }
+        if (author != null && !author.equals("")) {
+            query += " AND LOWER(b.author) LIKE LOWER(:author)";
+        }
+        if (genre != null && !genre.equals("")) {
+            query += " AND LOWER(b.genre) LIKE LOWER(:genre)";
+        }
+
+        TypedQuery<Book> tQuery = getEntityManager().createQuery(query, Book.class);
+        if (title != null && !title.equals("")) {
+            tQuery.setParameter("title", title + "%");
+        }
+        if (author != null && !author.equals("")) {
+            tQuery.setParameter("author", author + "%");
+        }
+        if (genre != null && !genre.equals("")) {
+            tQuery.setParameter("genre", genre + "%");
+        }
+        List<Book> filteredBooks = tQuery.getResultList();
+        List<Book> filteredByMinMax = new ArrayList<>();
+        if (min != 0 || max != 0) {
+            filteredByMinMax = filterByRange(filteredBooks, min, max);
+
+            return filteredByMinMax;
+        }
+        return filteredBooks;
+    }
+
+    private List<Book> filterByRange(List<Book> books, int min, int max) {
+        if (min != 0 && max != 0) {
+            return books.stream()
+                    .filter(b -> getAverageRating(b.getId()) > min && getAverageRating(b.getId()) <= max)
+                    .collect(Collectors.toList());
+        } else if (min != 0) {
+            return books.stream()
+                    .filter(b -> getAverageRating(b.getId()) > min)
+                    .collect(Collectors.toList());
+        } else if (max != 0) {
+            return books.stream()
+                    .filter(b -> getAverageRating(b.getId()) <= max)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
 }

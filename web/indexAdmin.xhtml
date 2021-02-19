@@ -19,18 +19,18 @@
                 <ul>
                     <li><h:link styleClass="pages" outcome="indexAdmin">Home</h:link></li> 
                     <li><h:link styleClass="pages" outcome="profile">My Profile</h:link></li>
-                    <li><h:form><h:commandLink value="Log out" action="#{loginBean.logOut()}" /></h:form></li>
+                    <li><h:form><h:commandLink value="Log out" styleClass="pages" action="#{loginBean.logOut()}" /></h:form></li>
                 </ul>
             </h:panelGrid>
         </h:panelGrid>
 
         <h:outputText styleClass="title" value="Welcome, #{loginBean.user.name} #{loginBean.user.surname}!"/>
-        
-        
+
+
         <h1>Users</h1>
         <h:panelGrid columns="3" styleClass="top-part">
-            
-            
+
+
             <h:panelGroup styleClass="left-panel">
                 <h:panelGrid columns="2" styleClass="content">
                     <h:panelGroup styleClass="left">
@@ -92,64 +92,66 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </h:panelGroup>
-            
-            
-            
-            
+
+
+
+
             <h:panelGroup styleClass="middle-panel">
                 <h:panelGrid id="showUsers" styleClass="view">
-                     <h3></h3>
-                     <h:dataTable  id="usersTable" 
-                                   var="user" value="#{userBean.listOfUsers}" 
-                                   styleClass="table table-striped">
-                          <h:column> 
-                             <f:facet name="header">ID</f:facet>
-                             <h:outputText value="#{user.id}"/>   
-                          </h:column>
-                          <h:column>
-                             <f:facet name="header">Operation</f:facet>
-                             <h:form>
-                                 
-                                 <h:commandLink action="#{userBean.fillData()}" 
-                                                styleClass="icons"
-                                                rendered="#{user.id ne loginBean.user.id}">
-                                     <span class="glyphicon glyphicon-pencil"></span>
-                                     <f:param name="userId" value="#{user.id}"/>
-                                     <f:ajax render="insertUser showUsers msg"/>
-                                 </h:commandLink> |
-                                 
-                                 <h:commandLink action="#{userBean.delete()}" 
-                                                styleClass="icons"
-                                                rendered="#{user.id ne loginBean.user.id}"
-                                                onclick="if(!confirm('Delete user?')) return false; ">
-                                     <span class="glyphicon glyphicon-trash"></span>
-                                     <f:param name="userId" value="#{user.id}"/>
-                                     <f:ajax render="usersTable msg"/>
-                                 </h:commandLink>
-                             </h:form>
-                          </h:column>
-                          <h:column> 
-                              <f:facet name="header">Name</f:facet>
-                              <h:outputText value="#{user.name}"/>   
-                          </h:column>
-                          <h:column> 
-                              <f:facet name="header">Surname</f:facet>
-                              <h:outputText value="#{user.surname}"/>   
-                          </h:column>
-                          <h:column> 
-                              <f:facet name="header">Email</f:facet>
-                              <h:outputText value="#{user.email}"/>   
-                          </h:column>
-                          <h:column> 
-                              <f:facet name="header">User Type</f:facet>
-                              <h:outputText value="#{user.userType}"/>   
-                          </h:column>
-                      </h:dataTable>
-                  </h:panelGrid>
+                    <h3></h3>
+                    <h:dataTable  id="usersTable" 
+                                  var="user" value="#{userBean.listOfUsers}" 
+                                  styleClass="table table-striped">
+                        <h:column> 
+                            <f:facet name="header">ID</f:facet>
+                            <h:outputText value="#{user.id}"/>   
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Operation</f:facet>
+                            <h:form>
+
+                                <h:commandLink action="#{userBean.fillData()}" 
+                                               styleClass="icons"
+                                               rendered="#{user.id ne loginBean.user.id}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <f:param name="userId" value="#{user.id}"/>
+                                    <f:ajax render="insertUser showUsers msg"/>
+                                </h:commandLink> |
+
+                                <h:commandLink action="#{userBean.delete()}" 
+                                               styleClass="icons"
+                                               rendered="#{user.id ne loginBean.user.id}"
+                                               onclick="if (!confirm('Delete user?'))
+                                                           return false;
+                                               ">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    <f:param name="userId" value="#{user.id}"/>
+                                    <f:ajax render="usersTable msg"/>
+                                </h:commandLink>
+                            </h:form>
+                        </h:column>
+                        <h:column> 
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{user.name}"/>   
+                        </h:column>
+                        <h:column> 
+                            <f:facet name="header">Surname</f:facet>
+                            <h:outputText value="#{user.surname}"/>   
+                        </h:column>
+                        <h:column> 
+                            <f:facet name="header">Email</f:facet>
+                            <h:outputText value="#{user.email}"/>   
+                        </h:column>
+                        <h:column> 
+                            <f:facet name="header">User Type</f:facet>
+                            <h:outputText value="#{user.userType}"/>   
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGrid>
             </h:panelGroup>
-            
-            
-            
+
+
+
             <h:panelGroup styleClass="right-panel">
                 <h:form styleClass="filters">
                     <h3>Search Filters</h3>
@@ -192,60 +194,62 @@
                 </h:form>
             </h:panelGroup>
         </h:panelGrid>
-        
+
 
         <h1>Books</h1>
-        <h:panelGrid styleClass="bottom-part" columns="2">
-            <h:panelGroup styleClass="left">
-                <h:panelGroup styleClass="books-top">
-                    <h3>Book Data</h3>
-                    <h:form id="booksForm">
-                        <h:panelGrid styleClass="page" columns="3">
-                            
-                            <h:outputText value="Title:" />
-                            <h:inputText id="titleInputText" required="true"
-                                         requiredMessage="Enter Title!"
-                                         class="form-control"
-                                         value="#{bookBean.title}"/>
-                            <h:message for="titleInputText" id="titleMessage"/>
-                            
-                            
-                            <h:outputText value="Author:" />
-                            <h:inputText id="authorInputText" required="true"
-                                         requiredMessage="Enter Author!"
-                                         class="form-control"
-                                         value="#{bookBean.author}"/>
-                            <h:message for="authorInputText" id="authorMessage"/>
-                            
-                            <h:outputText value="Publishing House:" />
-                            <h:inputText id="pubhouseInputText" required="true"
-                                         requiredMessage="Enter Publishing House!"
-                                         class="form-control"
-                                         value="#{bookBean.publishingHouse}"/>
-                            <h:message for="pubhouseInputText" id="houseMessage"/>
-                            
-                            <h:outputText value="Publication Year:" />
-                            <h:inputText id="yearInputText" required="true"
-                                         requiredMessage="Enter Year!"
-                                         class="form-control"
-                                         value="#{bookBean.publicationYear}"/>
-                            <h:message for="yearInputText" id="yearMessage"/>
-                            
-                            <h:outputText value="Genre:" />
-                            <h:inputText id="genreInputText" required="true"
-                                         requiredMessage="Enter Genre!"
-                                         class="form-control"
-                                         value="#{bookBean.genre}"/>
-                            <h:message for="genreInputText" id="genreMessage"/>
-                            
-                            <h:outputText value="Synopsis:" />
-                            <h:inputTextarea id="synopsisInputText" 
+        <h:panelGrid styleClass="bottom-part" columns="1">
+            <h:panelGrid columns="2">
+                <h:panelGroup styleClass="left">
+                    <h:panelGroup styleClass="books-upsert">
+                        <h3>Book Data</h3>
+                        <h:form id="booksForm">
+                            <h:panelGrid styleClass="book-upsert" columns="6">
+
+                                <h:outputText value="Title:" />
+                                <h:inputText id="titleInputText" required="true"
+                                             requiredMessage="Enter Title!"
                                              class="form-control"
-                                         value="#{bookBean.synopsis}"/>
-                            <h:message for="synopsisInputText" id="synopsisMessage"/>
-                            
-                            <h:commandButton value="Save" action="#{bookBean.upsert()}" styleClass="btn btn-default">
-                                <f:ajax execute="titleInputText authorInputText 
+                                             value="#{bookBean.title}"/>
+                                <h:message for="titleInputText" id="titleMessage"/>
+
+
+                                <h:outputText value="Author:" />
+                                <h:inputText id="authorInputText" required="true"
+                                             requiredMessage="Enter Author!"
+                                             class="form-control"
+                                             value="#{bookBean.author}"/>
+                                <h:message for="authorInputText" id="authorMessage"/>
+
+                                <h:outputText value="Publishing House:" />
+                                <h:inputText id="pubhouseInputText" required="true"
+                                             requiredMessage="Enter Publishing House!"
+                                             class="form-control"
+                                             value="#{bookBean.publishingHouse}"/>
+                                <h:message for="pubhouseInputText" id="houseMessage"/>
+
+                                <h:outputText value="Publication Year:" />
+                                <h:inputText id="yearInputText" required="true"
+                                             requiredMessage="Enter Year!"
+                                             class="form-control"
+                                             value="#{bookBean.publicationYear}"/>
+                                <h:message for="yearInputText" id="yearMessage"/>
+
+                                <h:outputText value="Genre:" />
+                                <h:inputText id="genreInputText" required="true"
+                                             requiredMessage="Enter Genre!"
+                                             class="form-control"
+                                             value="#{bookBean.genre}"/>
+                                <h:message for="genreInputText" id="genreMessage"/>
+
+                                <h:outputText value="Synopsis:" />
+                                <h:inputTextarea id="synopsisInputText" 
+                                                 class="form-control"
+                                                 value="#{bookBean.synopsis}"/>
+                                <h:message for="synopsisInputText" id="synopsisMessage"/>
+                                 
+                                <h:outputText value=""/>
+                                <h:commandButton value="Save" action="#{bookBean.upsert()}" styleClass="btn btn-default">
+                                    <f:ajax execute="titleInputText authorInputText 
                                             pubhouseInputText yearInputText 
                                             synopsisInputText genreInputText"
                                             render="titleMessage authorMessage houseMessage
@@ -254,37 +258,83 @@
                                             pubhouseInputText yearInputText 
                                             synopsisInputText genreInputText 
                                             booksTable outputMessageBooks"/>
-                            </h:commandButton> 
-                            <h:commandButton value="Clear" action="#{bookBean.clear()}" styleClass="btn btn-default">
-                                <f:ajax render="titleInputText authorInputText 
+                                </h:commandButton> 
+                                <h:outputText value=""/>
+                                <h:commandButton value="Clear" action="#{bookBean.clear()}" styleClass="btn btn-default">
+                                    <f:ajax render="titleInputText authorInputText 
                                             pubhouseInputText yearInputText 
                                             synopsisInputText genreInputText 
                                             outputMessageBooks deleteMessageBooks"/>
-                            </h:commandButton>
-                            
-                           <h:outputText value=""/>
-                        </h:panelGrid>
+                                </h:commandButton>
+
+                                <h:outputText value=""/>
+                            </h:panelGrid>
+                        </h:form>
+                        <h:outputText id="outputMessageBooks" value="#{bookBean.outputMessage}" />
+                        <h:outputText id="deleteMessageBooks" value="#{bookBean.deleteMessage}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="books-search">
+                    <h:form styleClass="filters">
+                        <h3>Search Filters</h3>
+                        <h:form>
+                            <h:panelGrid columns="4">
+
+                                <h:outputText value="Title"/>
+                                <h:inputText value="#{bookBean.searchTitle}" id="titleInp"
+                                             class="form-control"/>
+                                <h:outputText value="Author"/>
+                                <h:inputText value="#{bookBean.searchAuthor}" id="authorInp"
+                                             class="form-control"/>
+                                    <h:outputText value="Avg Max"/>
+                                    <h:selectOneMenu value="#{bookBean.searchMax}" id="maxInp"
+                                                     class="form-control">
+                                        <f:selectItem itemValue="1" itemLabel="1"/>
+                                        <f:selectItem itemValue="2" itemLabel="2"/>
+                                        <f:selectItem itemValue="3" itemLabel="3"/>
+                                        <f:selectItem itemValue="4" itemLabel="4"/>
+                                        <f:selectItem itemValue="5" itemLabel="5"/>
+                                    </h:selectOneMenu>
+                                    <h:outputText value="Avg Min"/>
+                                    <h:selectOneMenu value="#{bookBean.searchMin}" id="minInp"
+                                                     class="form-control">
+                                        <f:selectItem itemValue="1" itemLabel="1"/>
+                                        <f:selectItem itemValue="2" itemLabel="2"/>
+                                        <f:selectItem itemValue="3" itemLabel="3"/>
+                                        <f:selectItem itemValue="4" itemLabel="4"/>
+                                        <f:selectItem itemValue="5" itemLabel="5"/>
+                                    </h:selectOneMenu>
+
+
+                                <h:outputText value="Genre"/>
+                                <h:inputText value="#{bookBean.searchGenre}" id="genreInp"
+                                             class="form-control"/>
+                                <h:outputText value=""/>
+                                
+                                <h:outputText value=""/>
+
+                                <h:outputText value=""/>
+                                <h:commandButton value="Search" action="#{bookBean.searchBooks()}"
+                                                 styleClass="btn btn-default">
+                                    <f:ajax execute="titleInp authorInp maxInp minInp genreInp" 
+                                            render="booksTable searchMsg"/>
+                                </h:commandButton>
+                                <h:commandButton  value="Show All" action="#{bookBean.getAll()}"
+                                                  styleClass="btn btn-default">
+                                    <f:ajax render="booksTable"/>
+                                </h:commandButton>
+                                <h:outputText value="#{bookBean.searchMessage}" id="searchMsg"/>
+                                <h:outputText value=""/>
+                            </h:panelGrid>
+                        </h:form>
                     </h:form>
-                    <h:outputText id="outputMessageBooks" value="#{bookBean.outputMessage}" />
-                    <h:outputText id="deleteMessageBooks" value="#{bookBean.deleteMessage}"/>
-                    
                 </h:panelGroup>
-                
-                
-                
-                
-                <h:panelGroup styleClass="books-bottom">
-                    <h3>Search Filters</h3>
-                </h:panelGroup>
+            </h:panelGrid>
 
-            </h:panelGroup>
-
-            
-            
-            
             <h:panelGroup styleClass="right">
                 <h:panelGrid styleClass="view">
-                    <h:dataTable var="b" value="#{bookBean.listOfBooks}" styleClass="table table-striped"
+                    <h:dataTable var="b" value="#{bookBean.listOfBooks}" styleClass="table table-striped books"
                                  id="booksTable">
                         <h:column> 
                             <f:facet name="header">ID</f:facet>
@@ -299,7 +349,8 @@
                                     <f:ajax render="booksForm"/>
                                 </h:commandLink> |
                                 <h:commandLink action="#{bookBean.delete()}" styleClass="icons"
-                                               onclick="if(!confirm('Are you sure about deleting the book?'))return false;">
+                                               onclick="if (!confirm('Are you sure about deleting the book?'))
+                                                           return false;">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     <f:param name="bookId" value="#{b.id}"/>
                                     <f:ajax render="booksTable deleteMessageBooks"/>
@@ -327,17 +378,19 @@
                             <h:outputText value="#{b.dateAdded}"/>   
                         </h:column>
                         <h:column> 
+                            <f:facet name="header">Genre</f:facet>
+                            <h:outputText value="#{b.genre}"/>
+                        </h:column>
+                        <h:column> 
                             <f:facet name="header">Synopsis</f:facet>
                             <h:outputText value="#{b.synopsis}"/>   
                         </h:column>
                     </h:dataTable>
                 </h:panelGrid>
             </h:panelGroup>
-            
-            
-            
+
         </h:panelGrid>
-        
+
     </h:body>
 </html>
 

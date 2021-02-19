@@ -7,9 +7,13 @@ package models;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -39,6 +43,8 @@ public class Review implements Serializable {
     @Basic(optional = false)
     @Column(name = "Text")
     private String text;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Book book;
 
     public Review() {
     }
@@ -80,6 +86,16 @@ public class Review implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -25,6 +25,7 @@ import models.Book;
 @ManagedBean(name = "bookBean")
 @ViewScoped
 public class BookBean {
+
     private int id;
     private String title;
     private String author;
@@ -40,48 +41,51 @@ public class BookBean {
     private String deleteMessage;
     private boolean editing;
     private List<Book> listOfBooks;
-    
-    
-    
+
+    //For searching
+    private String searchTitle;
+    private String searchAuthor;
+    private String searchMax;
+    private String searchMin;
+    private String searchGenre;
+    private String searchMessage;
+
     public BookBean() {
-            listOfBooks = new ArrayList<>();
-            getAll();
+        listOfBooks = new ArrayList<>();
+        getAll();
     }
 
     public void upsert() {
-        try{
+        try {
             if (editing) {//we are editing
                 //message="Inside editing";
                 populateModel(updatedBook);
                 bookDao.update(updatedBook);
-                outputMessage="Book updated succesfully!";
+                outputMessage = "Book updated succesfully!";
                 clear();
-            }
-            else{//we are inserting
+            } else {//we are inserting
                 Book potentialBook = bookDao.bookExists(title, publicationYear);
-                if (potentialBook==null) {//check if title and year match
+                if (potentialBook == null) {//check if title and year match
                     long millis = System.currentTimeMillis();
                     dateAdded = new Date(millis);
                     status = "N";
-                    Book book = new Book(title, author, publishingHouse, 
+                    Book book = new Book(title, author, publishingHouse,
                             publicationYear, genre, dateAdded, synopsis, status);
                     bookDao.insert(book);
-                    outputMessage="Book added succesfully! Check books' table.";
-                } 
-                else if(potentialBook.getStatus().equals("N")){//book found in the db-not lazy deleted
+                    outputMessage = "Book added succesfully! Check books' table.";
+                } else if (potentialBook.getStatus().equals("N")) {//book found in the db-not lazy deleted
                     outputMessage = "Book already exists!";
-                }
-                else{//book found in DB and lazy deleted
+                } else {//book found in DB and lazy deleted
                     potentialBook.setStatus("N");
                     bookDao.update(potentialBook);//change the status of the book
                     outputMessage = "Book added succesfully! Check books' table.";
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             outputMessage = "An error has occured! Book might already exist!";
         }
         getAll();
-        deleteMessage="";
+        deleteMessage = "";
     }
 
     public void getAll() {
@@ -89,29 +93,31 @@ public class BookBean {
                 .stream()
                 .filter(b -> (b.getStatus().equals("N")))
                 .collect(Collectors.toList());
-        
+
     }
 
     public void fillData() throws IOException, ParseException {
         clear();
-        editing=true;
+        editing = true;
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         this.id = Integer.parseInt(params.get("bookId"));
         updatedBook = bookDao.getById(id);
         populateFields(updatedBook);
     }
-    
-    /**Utility method to clear the view after an insert or delete.*/
-    public void clear(){
-        title="";
-        author="";
-        publishingHouse="";
-        publicationYear="";
-        genre="";
-        synopsis="";
-        deleteMessage="";
-            outputMessage="";
-        editing=false;
+
+    /**
+     * Utility method to clear the view after an insert or delete.
+     */
+    public void clear() {
+        title = "";
+        author = "";
+        publishingHouse = "";
+        publicationYear = "";
+        genre = "";
+        synopsis = "";
+        deleteMessage = "";
+        outputMessage = "";
+        editing = false;
     }
 
     /*public void edit() throws Exception {
@@ -120,8 +126,7 @@ public class BookBean {
         FacesContext.getCurrentInstance().getExternalContext()
                 .redirect("booksPage.xhtml");
     }*/
-    
-    public void populateModel(Book book){
+    public void populateModel(Book book) {
         book.setId(this.id);
         book.setTitle(this.title);
         book.setAuthor(this.author);
@@ -132,7 +137,7 @@ public class BookBean {
         book.setSynopsis(this.synopsis);
         book.setStatus("N");
     }
-    
+
     public void populateFields(Book book) throws ParseException {
         title = book.getTitle();
         author = book.getAuthor();
@@ -145,24 +150,42 @@ public class BookBean {
     public void delete() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         this.id = Integer.parseInt(params.get("bookId"));
-        try{
+        try {
             Book book = bookDao.getById(id);
             book.setStatus("D");
             bookDao.update(book);
             deleteMessage = "Book deleted succesfully!";
-        }catch(Exception e){
+        } catch (Exception e) {
             deleteMessage = "Error: Book could not be deleted!";
         }
         getAll();//set the list of Books
-        outputMessage="";
+        outputMessage = "";
     }
 
-    //Fix this
-    public void lookup() throws ParseException{
-        Book found = bookDao.getById(id);
-        populateFields(found);
+    public void searchBooks() throws ParseException {
+        int min;
+        int max;
+        if (searchMin.equals("")) {
+            min = 0;
+        } else {
+            min = Integer.parseInt(searchMin);
+        }
+        if (searchMax.equals("")) {
+            max = 0;
+        } else {
+            max = Integer.parseInt(searchMax);
+        }
+        
+        if(min > max){
+            searchMessage = "Please put minimum less than maximum!";
+        }
+        
+        listOfBooks = bookDao.filterBooks(searchTitle, searchAuthor,
+                min, max, searchGenre)
+                .stream()
+                .collect(Collectors.toList());
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -258,6 +281,53 @@ public class BookBean {
     public void setListOfBooks(List<Book> listOfBooks) {
         this.listOfBooks = listOfBooks;
     }
-    
-    
+
+    public String getSearchTitle() {
+        return searchTitle;
+    }
+
+    public void setSearchTitle(String searchTitle) {
+        this.searchTitle = searchTitle;
+    }
+
+    public String getSearchAuthor() {
+        return searchAuthor;
+    }
+
+    public void setSearchAuthor(String searchAuthor) {
+        this.searchAuthor = searchAuthor;
+    }
+
+    public String getSearchMax() {
+        return searchMax;
+    }
+
+    public void setSearchMax(String searchMax) {
+        this.searchMax = searchMax;
+    }
+
+    public String getSearchMin() {
+        return searchMin;
+    }
+
+    public void setSearchMin(String searchMin) {
+        this.searchMin = searchMin;
+    }
+
+    public String getSearchGenre() {
+        return searchGenre;
+    }
+
+    public void setSearchGenre(String searchGenre) {
+        this.searchGenre = searchGenre;
+    }
+
+    public String getSearchMessage() {
+        return searchMessage;
+    }
+
+    public void setSearchMessage(String searchMessage) {
+        this.searchMessage = searchMessage;
+    }
+
 }

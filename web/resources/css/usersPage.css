@@ -40,3 +40,8 @@ h1{
 .filters *{
     margin:5px;
 }
+
+.books-top{
+    border : 1px solid black;
+    margin-left: 50%;
+}
