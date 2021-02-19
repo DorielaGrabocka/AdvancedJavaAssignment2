@@ -224,18 +224,18 @@ public class BookDAO implements BaseDao<Book> {
         List<Book> listOfBooks = bookDAO.getAll();
         if(minAverageRating!=0 && maxAverageRating!=0){
             return listOfBooks.stream()
-                    .filter(b->bookDAO.getAverageRating(b.getId())>minAverageRating)
-                    .filter(b->bookDAO.getAverageRating(b.getId())<maxAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())>=minAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())<=maxAverageRating)
                     .collect(Collectors.toList());
         }
         else if(minAverageRating!=0){
             return listOfBooks.stream()
-                    .filter(b->bookDAO.getAverageRating(b.getId())>minAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())>=minAverageRating)
                     .collect(Collectors.toList());
         }
         else if(maxAverageRating!=0){
             return listOfBooks.stream()
-                    .filter(b->bookDAO.getAverageRating(b.getId())<maxAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())<=maxAverageRating)
                     .filter(b->bookDAO.getAverageRating(b.getId())>0)
                     .collect(Collectors.toList());
         }
