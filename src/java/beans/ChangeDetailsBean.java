@@ -19,20 +19,20 @@ import models.User;
 @ManagedBean
 @RequestScoped
 public class ChangeDetailsBean {
-    
+
     @ManagedProperty(value = "#{loginBean}")
-    private LoginBean loginBean; 
-    
+    private LoginBean loginBean;
+
     private String currentPassword;
     private String newPassword;
     private String confirmNewPassword;
     private String messagePassword;
-    
-    private String messageDetails;    
+
+    private String messageDetails;
     private String email;
     private String surname;
     private String name;
-    
+
     public ChangeDetailsBean() {
     }
 
@@ -63,7 +63,7 @@ public class ChangeDetailsBean {
     public void setSurname(String surname) {
         this.surname = surname;
     }
- 
+
     public void setCurrentPassowrd(String currentPassowrd) {
         this.currentPassword = currentPassowrd;
     }
@@ -99,51 +99,40 @@ public class ChangeDetailsBean {
     public String getMessagePassword() {
         return messagePassword;
     }
-    
+
     public String getMessageDetails() {
         return messageDetails;
     }
-         
-    /**Method used to update the details of a user like name, surname and email.
+
+    /**
+     * Method used to update the details of a user like name, surname and email.
      */
-    public void updateProfile(){
-        //boolean emailExists = false;
+    public void updateProfile() {
         UserDAO userDAO = new UserDAO();
-        try{
-            //User userWithSameEmail = userDAO.getUserByEmail(email);
-            //if(userWithSameEmail!=null) {
-            //    emailExists =true;
-             //if(!emailExists){
+        try {
             getCurrentUser().setName(name);//change name
             getCurrentUser().setSurname(surname);//change surname
             getCurrentUser().setEmail(email);//change email
-            //messageDetails="User Data updated successfully!" + name +" "+ surname+" " + email;
             userDAO.update(getCurrentUser());//update
-            messageDetails="User Data updated successfully!";
-            //}
-            //}
-            
-        }catch(Exception e){
-             messageDetails = "This email is already taken! "
-                        + "Try another one or simply go back without making any changes.";
+            messageDetails = "User Data updated successfully!";
+        } catch (Exception e) {
+            messageDetails = "This email is already taken! "
+                    + "Try another one or simply go back without making any changes.";
         }
-        
-        
     }
-    
-    /**Method to update the password of the user*/
-    public void updatePassword(){
-        if(!doPasswordsMatch(encryptPassword(currentPassword), 
-                getCurrentUser().getPassword())){
-            messagePassword="Incorrect current password";
-        }
-        else if(doPasswordsMatch(currentPassword, newPassword)){
-            messagePassword="New password cannot be the same as old password!";
-        }
-        else if(!doPasswordsMatch(newPassword, confirmNewPassword)){
-            messagePassword="New and Confirmed passwords do not match";
-        }
-        else{
+
+    /**
+     * Method to update the password of the user
+     */
+    public void updatePassword() {
+        if (!doPasswordsMatch(encryptPassword(currentPassword),
+                getCurrentUser().getPassword())) {
+            messagePassword = "Incorrect current password";
+        } else if (doPasswordsMatch(currentPassword, newPassword)) {
+            messagePassword = "New password cannot be the same as old password!";
+        } else if (!doPasswordsMatch(newPassword, confirmNewPassword)) {
+            messagePassword = "New and Confirmed passwords do not match";
+        } else {
             //set password now
             UserDAO userDAO = new UserDAO();
             getCurrentUser().setPassword(encryptPassword(newPassword));
@@ -151,15 +140,19 @@ public class ChangeDetailsBean {
             messagePassword = "Password changed succesfully";
         }
     }
-    
-    /**Utility method to encrypt the user password before saving it to the database.*/
-    private String encryptPassword(String password){
+
+    /**
+     * Utility method to encrypt the user password before saving it to the database.
+     */
+    private String encryptPassword(String password) {
         return Base64.getEncoder().encodeToString(password.getBytes());
     }
-    
-    /**Utility method to check if two password match or not.*/
-    private boolean doPasswordsMatch(String pass1, String pass2){
+
+    /**
+     * Utility method to check if two password match or not.
+     */
+    private boolean doPasswordsMatch(String pass1, String pass2) {
         return pass1.equals(pass2);
     }
-    
+
 }

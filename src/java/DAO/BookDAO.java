@@ -8,18 +8,12 @@ package DAO;
 import databaseConnection.EntityManagerProvider;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import models.Book;
-import models.Review;
-import models.ReviewPK;
-import models.User;
 
 /**
  *
@@ -89,13 +83,6 @@ public class BookDAO implements BaseDao<Book> {
      * @return the corresponding book.
      */
     public Book getById(int id) {
-        //try {
-        //   return (Book) getEntityManager().createNamedQuery("Book.findById")
-        //         .setParameter("id", id)
-        //       .getSingleResult();
-        //} catch (NoResultException e) {
-        //    return null;
-        // }
         return getEntityManager().find(Book.class, id);
     }
 

@@ -17,8 +17,9 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @SessionScoped
 public class BufferSessionBean {
+
     private int bookIDFromIndexToDetails;
-            
+
     public BufferSessionBean() {
     }
 
@@ -29,7 +30,7 @@ public class BufferSessionBean {
     public String saveBookIDFromIndexToDetails(int bookIDFromIndexToDetails) {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext()
                 .getRequestParameterMap();
-        
+
         setBookIDFromIndexToDetails(Integer.parseInt(params.get("bookID")));
         return "bookDetails.xhtml?faces-redirect=true";
     }
@@ -37,7 +38,4 @@ public class BufferSessionBean {
     public void setBookIDFromIndexToDetails(int bookIDFromIndexToDetails) {
         this.bookIDFromIndexToDetails = bookIDFromIndexToDetails;
     }
-    
-    
-    
 }

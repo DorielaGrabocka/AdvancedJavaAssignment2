@@ -17,10 +17,8 @@ import models.Book;
 public class IndexBean {
     
     private BookDAO bookDAO;
-    private int id;
     private int rankTop;
     private int rankLast;
-    private List<Book> listOfBooks;
     
     //For searching
     private String searchTitle;
@@ -42,37 +40,6 @@ public class IndexBean {
 
     public List<Book> fillLastFive() {
         return bookDAO.getLastFive();
-    }
-
-    public void getAll() {
-        listOfBooks = bookDAO.getAll()
-                .stream()
-                .filter(b -> (b.getStatus().equals("N")))
-                .collect(Collectors.toList());
-    }
-    
-    public void searchBooks() throws ParseException {
-        int min;
-        int max;
-        if (searchMin.equals("")) {
-            min = 0;
-        } else {
-            min = Integer.parseInt(searchMin);
-        }
-        if (searchMax.equals("")) {
-            max = 0;
-        } else {
-            max = Integer.parseInt(searchMax);
-        }
-        
-        if(min > max){
-            searchMessage = "Please put minimum less than maximum!";
-        }
-        
-        listOfBooks = bookDAO.filterBooks(searchTitle, searchAuthor,
-                min, max, searchGenre)
-                .stream()
-                .collect(Collectors.toList());
     }
     
     public String getAverageRating(int bookID){
@@ -136,6 +103,4 @@ public class IndexBean {
     public void setSearchMessage(String searchMessage) {
         this.searchMessage = searchMessage;
     }
-   
-    
 }

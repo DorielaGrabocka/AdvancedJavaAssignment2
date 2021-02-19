@@ -24,10 +24,9 @@ import models.User;
 @ViewScoped
 public class UserBean {
 
-    
-    @ManagedProperty(value="#{loginBean}")
+    @ManagedProperty(value = "#{loginBean}")
     LoginBean loginBean;
-    
+
     private int currentUserId;
     private UserDAO userDAO;
     private List<User> listOfUsers;
@@ -40,24 +39,23 @@ public class UserBean {
     private String message;
     private User user;
     private String deleteMessage;
-    private String searchMessage="Hello";
-    
-    
+    private String searchMessage = "Hello";
+
     //used for filters
     private String searchName;
     private String searchSurname;
     private String searchEmail;
     private String searchType;
-    
+
     public UserBean() {
         userDAO = new UserDAO();
         allUsers();
     }
 
-    public void init(){
-       
+    public void init() {
+
     }
-    
+
     public String getSearchMessage() {
         return searchMessage;
     }
@@ -69,7 +67,7 @@ public class UserBean {
     public void setCurrentUserId(int currentUserId) {
         this.currentUserId = currentUserId;
     }
-    
+
     public String getSearchName() {
         return searchName;
     }
@@ -101,7 +99,7 @@ public class UserBean {
     public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -141,12 +139,12 @@ public class UserBean {
     public void setMessage(String message) {
         this.message = message;
     }
-    
-    public void allUsers(){
+
+    public void allUsers() {
         listOfUsers = userDAO.getAll().stream()
                 .collect(Collectors.toList());
-        searchMessage = "Showing "+ listOfUsers.size()+" records";
-        
+        searchMessage = "Showing " + listOfUsers.size() + " records";
+
     }
 
     public List<User> getListOfUsers() {
@@ -156,12 +154,12 @@ public class UserBean {
     public void setListOfUsers(List<User> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
-    
-    public void setUser(User u){
+
+    public void setUser(User u) {
         this.user = u;
     }
-    
-    public User getUser(){
+
+    public User getUser() {
         return user;
     }
 
@@ -180,45 +178,36 @@ public class UserBean {
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
-    
-    public void fillData(){
+
+    public void fillData() {
         clear();
-        editing=true;
+        editing = true;
         Map<String, String> parameters = FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getRequestParameterMap();
         int id = Integer.parseInt(parameters.get("userId"));
-        
+
         User u = userDAO.getById(id);
         name = u.getName();
         surname = u.getSurname();
         email = u.getEmail();
         userType = u.getUserType();
         setUser(u);
-        //message = "Editing set to "+editing;
     }
-    
-    public void save(){
-        try{
-            if (editing) {//we are editing
-                //message="Inside editing";
+
+    public void save() {
+        try {
+            if (editing) {
                 User u = userDAO.getById(user.getId());
                 u.setName(name);
                 u.setSurname(surname);
                 u.setEmail(email);
                 u.setUserType(userType);
                 userDAO.update(u);//update user
-                message="User updated succesfully!";
+                message = "User updated succesfully!";
                 clear();
-            } 
-            else{//we are inserting
-                //message="Inside insert";
-                /*if(userDAO.getUserByEmail(email)!=null){
-                    message+="User with this email already exists!";
-                }*/
-                //else{
-                try{
+            } else {
+                try {
                     //check if user is probably deleted
                     User u1 = userDAO.getAllUsersStatusInsensitive()
                             .stream()
@@ -226,7 +215,7 @@ public class UserBean {
                             .filter(u -> u.getUserType().equals(userType))
                             .collect(Collectors.toList())
                             .get(0);
-                    
+
                     //editing mode here
                     u1.setName(name);
                     u1.setSurname(surname);
@@ -235,9 +224,9 @@ public class UserBean {
                     u1.setUserType(userType);
                     u1.setPassword("user");
                     userDAO.update(u1);
-                    message="User added succesfully!";
-                    
-                }catch(Exception e){
+                    message = "User added succesfully!";
+
+                } catch (Exception e) {
                     //user with that email does not exist or that status does not exist
                     //normal insertion procedure goes here
                     User u = new User();
@@ -248,47 +237,38 @@ public class UserBean {
                     u.setStatus('N');//set user status to NOT DELETED
                     u.setUserType(userType);
                     userDAO.insert(u);//add user
-                    message="User added succesfully! Check users table";
+                    message = "User added succesfully! Check users table";
                 }
-                    
-                
-//                    User u = new User();
-//                    u.setName(name);
-//                    u.setSurname(surname);
-//                    u.setEmail(email);
-//                    u.setPassword(encrypt("user"));
-//                    u.setStatus('N');//set user status to NOT DELETED
-//                    u.setUserType(userType);
-//                    userDAO.insert(u);//add user
-//                    message="User added succesfully! Check users table";
-                //}
             }
             allUsers();//update the list
-        }catch(Exception e){
-            message="An error has occured! New Email might already be taken!";
+        } catch (Exception e) {
+            message = "An error has occured! New Email might already be taken!";
         }
     }
-    
-    /**Utility method to clear the view after an insert or delete.*/
-    public void clear(){
-        name="";
-        surname="";
-        email="";
-        deleteMessage="";
-        if(!editing)
-            message="";
-        editing=false;
+
+    /**
+     * Utility method to clear the view after an insert or delete.
+     */
+    public void clear() {
+        name = "";
+        surname = "";
+        email = "";
+        deleteMessage = "";
+        if (!editing) {
+            message = "";
+        }
+        editing = false;
     }
-    
-    private String encrypt(String pass){
+
+    private String encrypt(String pass) {
         return Base64.getEncoder().encodeToString(pass.getBytes());
     }
-    
-    
-    /**Method to mark a user as deleted in a database.
-     * 
+
+    /**
+     * Method to mark a user as deleted in a database.
+     *
      */
-    public void delete(){
+    public void delete() {
         Map<String, String> params = FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getRequestParameterMap();
@@ -300,27 +280,15 @@ public class UserBean {
         deleteMessage = "User deleted succesfully";
         allUsers();
     }
-    
-    /**Method to search for a specific user*/
-    public void searchUsers() throws Exception{
-        //searchMessage = "Inside search Users";
-        /*if(searchEmail==null )
-            searchEmail = "";
-        if(searchName==null)
-            searchName = "";
-        if(searchSurname==null )
-            searchSurname = "";
-        if(searchType==null)
-            searchType = "";*/
-        
-        listOfUsers = userDAO.filterUsers(searchName, searchSurname, 
+
+    /**
+     * Method to search for a specific user
+     */
+    public void searchUsers() throws Exception {
+        listOfUsers = userDAO.filterUsers(searchName, searchSurname,
                 searchEmail, searchType)
                 .stream()
                 .collect(Collectors.toList());
-        //listOfUsers = new ArrayList<User>();
-        //listOfUsers.add(userDAO.getUserByEmail("dorielag18@gmail.com"));
-        searchMessage = "Showing "+listOfUsers.size()+" record(s)"; 
-//listOfUsers.size()+" records found"+searchType;
-        
+        searchMessage = "Showing " + listOfUsers.size() + " record(s)";
     }
 }
