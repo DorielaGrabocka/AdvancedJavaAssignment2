@@ -15,7 +15,6 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import models.Book;
 import models.Review;
-import models.User;
 
 /**
  *

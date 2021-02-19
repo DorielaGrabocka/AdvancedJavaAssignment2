@@ -16,10 +16,10 @@ import models.User;
  *
  * @author Doriela
  */
-public class UserDAO implements BaseDao<User>{
+public class UserDAO implements BaseDao<User> {
 
     @Override
-    public void insert(User user) throws Exception{
+    public void insert(User user) throws Exception {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -51,100 +51,96 @@ public class UserDAO implements BaseDao<User>{
                 .setParameter("id", userUpdated.getId())
                 .executeUpdate();
         transaction.commit();
-        /*User user = em.find(User.class, userUpdated.getId());
-        updateUser(user, userUpdated);
-        
-        em.merge(user);
-        transaction.commit();*/
     }
-    
-    /**Method that gets the user with the original values and the user with new values
-    * It updates the updatable parameters(name, surname, email, password and user type) of the user.
-    * @param user - the user with unchanged data
-    * @param updatedUser -user with new parameters.
-    */
-    /*private void updateUser(User user, User updatedUser){
-        user.setName(updatedUser.getName());
-        user.setSurname(updatedUser.getSurname());
-        user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
-        user.setStatus(updatedUser.getStatus());
-    }*/
 
     @Override
     public EntityManager getEntityManager() {
         return EntityManagerProvider.getEntityManager();
     }
-    
-    /**Method that find and returns a user by a specific id.
-     *@param id- is the corresponding primary key of the user in the table
+
+    /**
+     * Method that find and returns a user by a specific id.
+     *
+     * @param id- is the corresponding primary key of the user in the table
      * @return the corresponding User object.
      */
-    public User getById(int id){
+    public User getById(int id) {
         EntityManager em = getEntityManager();
         User user = (User) em.createNamedQuery("User.findById", User.class)
                 .setParameter("id", id)
                 .getSingleResult();
         return user;
     }
-    
-    /**Method that find and returns a user by a specific id.
-     *@param email- is the corresponding user email
-     *@return the corresponding User object.
-     *@throws Exception
+
+    /**
+     * Method that find and returns a user by a specific id.
+     *
+     * @param email- is the corresponding user email
+     * @return the corresponding User object.
+     * @throws Exception
      */
-    public User getUserByEmail(String email) throws Exception{
+    public User getUserByEmail(String email) throws Exception {
         EntityManager em = getEntityManager();
         User user = (User) em.createNamedQuery("User.findByEmail", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
         return user;
     }
-    
-    /**Method to return all users in the database no matter of their status(present or lazily 
-     * deleted)
+
+    /**
+     * Method to return all users in the database no matter of their
+     * status(present or lazily deleted)
+     *
      * @return a list of users
      */
-    public List<User> getAllUsersStatusInsensitive(){
+    public List<User> getAllUsersStatusInsensitive() {
         String query = "SELECT u FROM User u";
         return getEntityManager().createQuery(query)
                 .getResultList();
     }
-    
-    /**Method to return all the users in the database.
-     *@return a list of users
+
+    /**
+     * Method to return all the users in the database.
+     *
+     * @return a list of users
      */
     @Override
-    public List<User> getAll(){
+    public List<User> getAll() {
         return getEntityManager().createNamedQuery("User.findAll", User.class)
                 .getResultList();
     }
-    
-    
-    public List<User> filterUsers(String name, String surname, 
-            String email, String type)
-    {
+
+    public List<User> filterUsers(String name, String surname,
+            String email, String type) {
         String query = "SELECT u FROM User u WHERE u.status !='D' ";
-        if(name!=null)
-            query +=" AND LOWER(u.name) LIKE LOWER(:name)";
-        if(surname!=null && !surname.equals(""))
-            query +=" AND LOWER(u.surname) LIKE LOWER(:surname)";
-        if(email!=null && !email.equals(""))
-            query +=" AND LOWER(u.email) LIKE LOWER(:email)";
-        if(type!=null && !type.equals(""))
-            query +=" AND u.userType= :type";
-        
-        TypedQuery<User> tQuery  = getEntityManager().createQuery(query, User.class);
-        if(name!=null)
-            tQuery.setParameter("name", name+"%");
-        if(surname!=null && !surname.equals(""))
-            tQuery.setParameter("surname", surname+"%");
-        if(email!=null && !email.equals(""))
-            tQuery.setParameter("email", email+"%");
-        if(!type.equals(""))
+        if (name != null) {
+            query += " AND LOWER(u.name) LIKE LOWER(:name)";
+        }
+        if (surname != null && !surname.equals("")) {
+            query += " AND LOWER(u.surname) LIKE LOWER(:surname)";
+        }
+        if (email != null && !email.equals("")) {
+            query += " AND LOWER(u.email) LIKE LOWER(:email)";
+        }
+        if (type != null && !type.equals("")) {
+            query += " AND u.userType= :type";
+        }
+
+        TypedQuery<User> tQuery = getEntityManager().createQuery(query, User.class);
+        if (name != null) {
+            tQuery.setParameter("name", name + "%");
+        }
+        if (surname != null && !surname.equals("")) {
+            tQuery.setParameter("surname", surname + "%");
+        }
+        if (email != null && !email.equals("")) {
+            tQuery.setParameter("email", email + "%");
+        }
+        if (!type.equals("")) {
             tQuery.setParameter("type", type);
-        
+        }
+
         return tQuery.getResultList();
-        
+
     }
 }

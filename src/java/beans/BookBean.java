@@ -20,7 +20,7 @@ import models.Book;
 
 /**
  *
- * @author Doriela
+ * @author Oli
  */
 @ManagedBean(name = "bookBean")
 @ViewScoped
@@ -120,17 +120,10 @@ public class BookBean {
         editing = false;
     }
 
-    /*public void edit() throws Exception {
-        populateModel(updatedBook);
-        bookDao.update(updatedBook);
-        FacesContext.getCurrentInstance().getExternalContext()
-                .redirect("booksPage.xhtml");
-    }*/
     public void populateModel(Book book) {
         book.setId(this.id);
         book.setTitle(this.title);
         book.setAuthor(this.author);
-        //book.setDateAdded(this.dateAdded);
         book.setGenre(this.genre);
         book.setPublishingHouse(this.publishingHouse);
         book.setPublicationYear(this.publicationYear);

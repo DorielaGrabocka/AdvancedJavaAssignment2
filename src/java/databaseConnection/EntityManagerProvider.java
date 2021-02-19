@@ -14,7 +14,7 @@ import javax.persistence.Persistence;
  * @author Doriela
  */
 public class EntityManagerProvider {
-    private static String persistanceUnit = "Assignment2PU";
+    private static final String persistanceUnit = "Assignment2PU";
     
     public static EntityManager getEntityManager(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistanceUnit);
