@@ -2,12 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <f:metadata> 
-            <f:event listener="#{loginBean.isUserLoggedIn('standard')}" type="preRenderView"/>
-        </f:metadata>
         <title>Book Details</title>
         <h:outputStylesheet name="template.css" library="css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
@@ -15,7 +11,7 @@
     </h:head>
     <h:body>
         <f:metadata>
-            <f:viewParam name="bookID" value="#{bookDetailsBean.bookID}" />
+            <f:viewParam name="bookID" value="#{bufferSessionBean.bookIDFromIndexToDetails}" />
             <f:event type="preRenderView" listener="#{bookDetailsBean.init}" />
         </f:metadata>
         <h:panelGrid styleClass="body" columns="2">
@@ -34,7 +30,7 @@
                 <h:outputText value="Date Added:" styleClass="components"/>
                 <h:outputText styleClass="info" value="#{bookDetailsBean.book.dateAdded}"/>
                 <h:outputText value="Average Rating:" styleClass="components"/>
-                <h:outputText styleClass="info" value="#{bookDetailsBean.averageRating}"/>
+                <h:outputText id ="avgRating" styleClass="info" value="#{bookDetailsBean.averageRating}"/>
                 <h:outputText value="Synopsis:" styleClass="components"/>
                 <h:outputText styleClass="info" value="#{bookDetailsBean.book.synopsis}"/>
             </h:panelGrid>
@@ -65,49 +61,43 @@
                                            rendered="#{r.reviewPK.userID eq bookDetailsBean.getCurrentUser().id}" 
                                            styleClass="icons"
                                            onclick="if (!confirm('Remove review?'))
-                                                       return false;"
-                                           >
+                                                       return false;">
                                 <f:param name="bookID" value="#{r.reviewPK.bookID}"/>
                                 <span class="glyphicon glyphicon-trash"></span>
-                                <f:ajax render="reviewsTable"/>
+                                <f:ajax render="reviewsTable resultOp avgRating"/>
                             </h:commandLink>
                         </h:form>
                     </h:column>
                 </h:dataTable>
-                <h:outputText value="#{bookDetailsBean.outputText}"/>
+                <h:outputText value="#{bookDetailsBean.outputText}" id="resultOp"/>
                 <h:form>
                     <h3>Add Review</h3>
                     <h:outputText value="Comment:" styleClass="labels"/>
-                    <h:inputTextarea value="#{bookDetailsBean.comment}" styleClass="form-control"/>
+                    <h:inputTextarea id="commentTextArea" value="#{bookDetailsBean.comment}" 
+                                     styleClass="form-control"/>
                     
                     <h:outputText value="Rating:" styleClass="labels"/>
-                    <div class="stars">
-                        <h:commandLink action="#{bookDetailsBean.addReview(5)}"
-                                       id="b1" styleClass="radios b1">
-                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
-                            <ion-icon name="star"></ion-icon>
-                        </h:commandLink>
-                        <h:commandLink action="#{bookDetailsBean.addReview(4)}"
-                                       id="b2" styleClass="radios b2">
-                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
-                            <ion-icon name="star"></ion-icon>
-                        </h:commandLink>
-                        <h:commandLink action="#{bookDetailsBean.addReview(3)}"
-                                       id="b3" styleClass="radios b3">
-                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
-                            <ion-icon name="star"></ion-icon>
-                        </h:commandLink>
-                        <h:commandLink action="#{bookDetailsBean.addReview(2)}"
-                                       id="b4" styleClass="radios b4">
-                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
-                            <ion-icon name="star"></ion-icon>
-                        </h:commandLink>
-                        <h:commandLink action="#{bookDetailsBean.addReview(1)}"
-                                       id="b5" styleClass="radios b5">
-                            <f:param name="bookID" value="#{bookDetailsBean.bookID}" />
-                            <ion-icon name="star"></ion-icon>
-                        </h:commandLink>
-                    </div>
+                    <h:selectOneMenu required="true"
+                                     requiredMessage="Please provide a rating"
+                                     class="form-control"
+                                     id="rating"
+                                     value="#{bookDetailsBean.rating}">
+                        <f:selectItem itemLabel="1" itemValue="1"/>
+                        <f:selectItem itemLabel="2" itemValue="2"/>
+                        <f:selectItem itemLabel="3" itemValue="3"/>
+                        <f:selectItem itemLabel="4" itemValue="4"/>
+                        <f:selectItem itemLabel="5" itemValue="5"/>
+                    </h:selectOneMenu>
+                    <h:message for="rating" id="ratingError"/>
+
+                    <h:commandButton styleClass="btn btn-default" value="Add review" action="#{bookDetailsBean.addReview()}">
+                        <f:ajax execute="commentTextArea rating" 
+                                render="ratingError rating 
+                                        commentTextArea resultOp 
+                                        avgRating reviewsTable"/>
+                    </h:commandButton>
+                    <h:commandButton styleClass="btn btn-default" 
+                                     value="Back to Index" action="indexStandard"/>
                 </h:form>
             </h:panelGrid>
         </h:panelGrid>
