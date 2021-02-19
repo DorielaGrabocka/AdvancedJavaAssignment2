@@ -6,13 +6,11 @@
 package DAO;
 
 import databaseConnection.EntityManagerProvider;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import models.Book;
 
 /**
@@ -139,6 +137,11 @@ public class BookDAO implements BaseDao<Book> {
                 .orElse(0);
     }
 
+    /**Method to check if a book exists or not, provided the title and publication year.
+     * @param title - is the title of the book we are searching for
+     * @param publicationYear - is the publication year of the book.
+     * @return the book if found or null.
+     */
     public Book bookExists(String title, String publicationYear) {
         String query = "SELECT b FROM Book b WHERE b.title=:title "
                 + "AND b.publicationYear=:publicationYear";
@@ -173,54 +176,71 @@ public class BookDAO implements BaseDao<Book> {
                 .getResultList();
     }
 
+    /**Method to filter books based on a number of attributes like author, title,
+     * minimum and maximum average ratings and genre. Used by the web service as well.
+     * @param title - the title of the book
+     * @param author - the author of the book
+     * @param min - the minimum average
+     * @param max - the maximum average
+     * @param genre - the genre of the book
+     * @return the list of books that comply with the specified criteria.
+     */
     public List<Book> filterBooks(String title, String author,
-            int min, int max, String genre) {
-        String query = "SELECT b FROM Book b WHERE b.status !='D' ";
-        if (title != null && !title.equals("")) {
-            query += " AND LOWER(b.title) LIKE LOWER(:title)";
-        }
-        if (author != null && !author.equals("")) {
-            query += " AND LOWER(b.author) LIKE LOWER(:author)";
-        }
-        if (genre != null && !genre.equals("")) {
-            query += " AND LOWER(b.genre) LIKE LOWER(:genre)";
-        }
-
-        TypedQuery<Book> tQuery = getEntityManager().createQuery(query, Book.class);
-        if (title != null && !title.equals("")) {
-            tQuery.setParameter("title", title + "%");
-        }
-        if (author != null && !author.equals("")) {
-            tQuery.setParameter("author", author + "%");
-        }
-        if (genre != null && !genre.equals("")) {
-            tQuery.setParameter("genre", genre + "%");
-        }
-        List<Book> filteredBooks = tQuery.getResultList();
-        List<Book> filteredByMinMax = new ArrayList<>();
-        if (min != 0 || max != 0) {
-            filteredByMinMax = filterByRange(filteredBooks, min, max);
-
-            return filteredByMinMax;
-        }
+            int min, int max, String genre){
+        List<Book> filteredBooks = 
+                filterBooksByAverageRatingRange(min, max);
+        if(isValueSet(title))
+            filteredBooks = filteredBooks.stream()
+                    .filter(b->b.getTitle().toLowerCase().contains(title.toLowerCase()))
+                    .collect(Collectors.toList());
+        if(isValueSet(author))
+            filteredBooks = filteredBooks.stream()
+                    .filter(b->b.getAuthor().toLowerCase().contains(author.toLowerCase()))
+                    .collect(Collectors.toList());
+        if(isValueSet(genre))
+            filteredBooks = filteredBooks.stream()
+                    .filter(b->b.getGenre().toLowerCase().contains(genre.toLowerCase()))
+                    .collect(Collectors.toList());
+        
         return filteredBooks;
+    
     }
-
-    private List<Book> filterByRange(List<Book> books, int min, int max) {
-        if (min != 0 && max != 0) {
-            return books.stream()
-                    .filter(b -> getAverageRating(b.getId()) > min && getAverageRating(b.getId()) <= max)
-                    .collect(Collectors.toList());
-        } else if (min != 0) {
-            return books.stream()
-                    .filter(b -> getAverageRating(b.getId()) > min)
-                    .collect(Collectors.toList());
-        } else if (max != 0) {
-            return books.stream()
-                    .filter(b -> getAverageRating(b.getId()) <= max)
+        
+    /**Method to check if the value has been provided by the user or not.
+     * @param value is the value to be checked.
+     * @return the condition fulfillment.
+     */
+    public boolean isValueSet(String value){
+        return value!=null && !value.equals("");
+    }
+    
+    /**Method to filter boos by range of average rating.
+     * @param minAverageRating - is the minimum average rating
+     * @param maxAverageRating - is the maximum average rating
+     * @return the list of books that comply with the specified criteria.
+     */
+    private List<Book> filterBooksByAverageRatingRange(int minAverageRating, int maxAverageRating) {
+        BookDAO bookDAO = new BookDAO();
+        List<Book> listOfBooks = bookDAO.getAll();
+        if(minAverageRating!=0 && maxAverageRating!=0){
+            return listOfBooks.stream()
+                    .filter(b->bookDAO.getAverageRating(b.getId())>minAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())<maxAverageRating)
                     .collect(Collectors.toList());
         }
-        return null;
+        else if(minAverageRating!=0){
+            return listOfBooks.stream()
+                    .filter(b->bookDAO.getAverageRating(b.getId())>minAverageRating)
+                    .collect(Collectors.toList());
+        }
+        else if(maxAverageRating!=0){
+            return listOfBooks.stream()
+                    .filter(b->bookDAO.getAverageRating(b.getId())<maxAverageRating)
+                    .filter(b->bookDAO.getAverageRating(b.getId())>0)
+                    .collect(Collectors.toList());
+        }
+        return listOfBooks;
     }
+    
 
 }

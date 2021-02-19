@@ -172,7 +172,7 @@ public class BookBean {
         if(min > max){
             searchMessage = "Please put minimum less than maximum!";
         }
-        
+                
         listOfBooks = bookDao.filterBooks(searchTitle, searchAuthor,
                 min, max, searchGenre)
                 .stream()
