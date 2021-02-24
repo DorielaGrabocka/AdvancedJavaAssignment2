@@ -48,10 +48,12 @@
                                     <h:outputText value="Average Rating: "/>
                                     <h:outputText value="#{indexBean.getAverageRating(book.id)}" styleClass="rating"/>
                                     <br/>
-                                    <h:link outcome="bookDetails">Add Review
-                                        <f:param name="bookID" value="#{book.id}"/>
-                                        <f:param name="addReview" value="true"/>
-                                    </h:link>
+                                    <h:form>
+                                        <h:commandLink action="#{indexBean.addReview()}">Add Review
+                                            <f:param name="bookID" value="#{b.id}"/>
+                                            <!--f:param name="addReview" value="true"/-->
+                                        </h:commandLink>
+                                    </h:form>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>
@@ -78,10 +80,12 @@
                                     <h:outputText value="Rating: "/>
                                     <h:outputText value="#{indexBean.getAverageRating(book1.id)}" styleClass="rating"/>
                                     <br/>
-                                    <h:link outcome="bookDetails">Add Review
-                                        <f:param name="bookID" value="#{book1.id}"/>
-                                        <f:param name="addReview" value="true"/>
-                                    </h:link>
+                                    <h:form>
+                                        <h:commandLink action="#{indexBean.addReview()}">Add Review
+                                            <f:param name="bookID" value="#{b.id}"/>
+                                            <!--f:param name="addReview" value="true"/-->
+                                        </h:commandLink>
+                                    </h:form>
                                 </div>
                             </ui:repeat>
                 </h:panelGroup>
@@ -111,10 +115,13 @@
                                     <h:outputText value="Rating: "/>
                                     <h:outputText value="#{indexBean.getAverageRating(b.id)}" styleClass="rating"/>
                                     <br/>
-                                    <h:link outcome="bookDetails">Add Review
-                                        <f:param name="bookID" value="#{b.id}"/>
-                                        <f:param name="addReview" value="true"/>
-                                    </h:link>
+                                    <h:form>
+                                        <h:commandLink action="#{indexBean.addReview()}">Add Review
+                                            <f:param name="bookID" value="#{b.id}"/>
+                                            <!--f:param name="addReview" value="true"/-->
+                                        </h:commandLink>
+                                    </h:form>
+                                    
                                 </div>
                             </ui:repeat>
                     </h:panelGrid>

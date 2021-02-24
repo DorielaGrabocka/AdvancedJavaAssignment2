@@ -13,7 +13,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>BooksAPI</servlet-name>
+        <servlet-name>BooksFilterAPI</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -22,8 +22,8 @@
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BooksAPI</servlet-name>
-        <url-pattern>/BooksAPI</url-pattern>
+        <servlet-name>BooksFilterAPI</servlet-name>
+        <url-pattern>/BooksFilterAPI</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

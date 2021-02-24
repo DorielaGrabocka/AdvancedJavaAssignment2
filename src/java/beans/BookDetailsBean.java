@@ -104,6 +104,11 @@ public class BookDetailsBean implements Serializable{
         }
         
     }
+    
+    public String goBack(){
+        if(loginBean.getUser()==null) return "indexSimple?faces-redirect=true";
+        return "indexStandard?faces-redirect=true";
+    }
 
     public int getRating() {
         return rating;

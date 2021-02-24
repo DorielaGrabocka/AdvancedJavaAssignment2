@@ -16,18 +16,10 @@ import models.Book;
  *
  * @author Doriela
  */
-@WebService(serviceName = "BooksAPI")
-public class BooksAPI {
+@WebService(serviceName = "BooksFilterAPI")
+public class BooksFilterAPI {
 
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-    
-    @WebMethod(operationName = "filterBooks")
+     @WebMethod(operationName = "filterBooks")
     public List<Book> filterBooks(@WebParam(name="title")String title,
             @WebParam(name="author") String author,
             @WebParam(name="genre")String genre,
