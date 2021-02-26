@@ -17,7 +17,7 @@ import models.ReviewPK;
  *
  * @author Doriela
  */
-public class ReviewDAO implements BaseDao<Review>{
+public class ReviewDAO implements BaseDao<Review, ReviewPK>{
  
     @Override
     public EntityManager getEntityManager() {
@@ -45,12 +45,20 @@ public class ReviewDAO implements BaseDao<Review>{
         transaction.commit();
     }
     
+    /**Method to remove a certain review provided its composite primary key.
+     *@param reviewPK - is the compiste primary key to be used on the search
+     */
     public void removeReview(ReviewPK reviewPK){
         String query ="DELETE FROM Review r WHERE r.reviewPK=:reviewPK";
         getEntityManager().createQuery(query)
                 .setParameter("reviewPK", reviewPK);
     }
 
+    /**Method to remove a certain review provided its composite primary key.
+     *@param userId - the id of the user
+     *@param bookID - the id of the book
+     *@return the review if it exists 
+     */
     public Review getByIds(int userId, int bookID) {
         String query = "SELECT r FROM Review r "
                 + "WHERE r.reviewPK.userID=:userID AND r.reviewPK.bookID=:bookID";
@@ -60,6 +68,7 @@ public class ReviewDAO implements BaseDao<Review>{
                 .getSingleResult();
     }
     
+    @Override
     public Review getById(ReviewPK reviewPK){
         String query = "SELECT r FROM Review r WHERE r.reviewPK=:reviewPK";
         return getEntityManager().createQuery(query, Review.class)
@@ -73,6 +82,10 @@ public class ReviewDAO implements BaseDao<Review>{
                 .getResultList();
     }
     
+    /**Method to get the review of a certain book
+     *@param id - is the book id
+     *@return a  list of book reviews
+     */
     public List<Review> getBookReviews(int id){
         String query = "SELECT r "
                 + "FROM Review r WHERE r.reviewPK.bookID=:bookId";
@@ -82,6 +95,10 @@ public class ReviewDAO implements BaseDao<Review>{
                 .getResultList();
     }
     
+    /**Method to get the reviews of a certain user.
+     * @param id is the if of the user
+     * @return a list of Reviews
+     */
     public List<Review> getUserReviews(int id){
         String query = "SELECT r "
                 + "FROM Review r WHERE r.reviewPK.userID=:userId";
@@ -91,6 +108,12 @@ public class ReviewDAO implements BaseDao<Review>{
                 .getResultList();
     }
     
+    
+    /**Method to check if a review from a user for a book exists.
+     * @param userID - is the ID of the user
+     * @param bookID - is the ID of the book
+     * @return true/false
+     */
     public boolean reviewExists(int userID, int bookID) {
         String query = "SELECT r FROM Review r "
                 + "WHERE r.reviewPK.userID=:userID AND r.reviewPK.bookID=:bookID";

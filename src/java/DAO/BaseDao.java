@@ -14,7 +14,7 @@ import java.util.List;
  * @author Doriela
  */
 
-public interface BaseDao<T> {
+public interface BaseDao<T, K> {
     EntityManager getEntityManager();
     
     /**Method to insert a new object in the database
@@ -33,4 +33,10 @@ public interface BaseDao<T> {
      *@return List of entities T.
      */
     List<T> getAll();
+    
+    /**Method to search an object of type T provided a key K.
+     *@param key - is the key based on which the search will be done
+     *@return an object of type T
+     */
+    T getById(K key);
 }

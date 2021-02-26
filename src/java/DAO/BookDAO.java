@@ -17,7 +17,7 @@ import models.Book;
  *
  * @author Doriela
  */
-public class BookDAO implements BaseDao<Book> {
+public class BookDAO implements BaseDao<Book, Integer> {
 
     @Override
     public EntityManager getEntityManager() {
@@ -45,6 +45,7 @@ public class BookDAO implements BaseDao<Book> {
             transcation.commit();
         }
     }
+    
 
     public void update(Book updatedBook) throws Exception {
         EntityManager em = getEntityManager();
@@ -80,7 +81,8 @@ public class BookDAO implements BaseDao<Book> {
      * @param id- is the primary key of the book on the table in the database.
      * @return the corresponding book.
      */
-    public Book getById(int id) {
+    @Override
+    public Book getById(Integer id) {
         return getEntityManager().find(Book.class, id);
     }
 

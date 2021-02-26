@@ -16,7 +16,7 @@ import models.User;
  *
  * @author Doriela
  */
-public class UserDAO implements BaseDao<User> {
+public class UserDAO implements BaseDao<User, Integer> {
 
     @Override
     public void insert(User user) throws Exception {
@@ -36,6 +36,9 @@ public class UserDAO implements BaseDao<User> {
         transaction.commit();
     }
 
+    /**Method used to update a certain user in the database.
+     *@param userUpdated - is the user with updated data
+     */
     public void update(User userUpdated) {
         EntityManager em = getEntityManager();
         String query = "UPDATE User u SET u.name=:name, u.surname=:surname,"
@@ -64,7 +67,8 @@ public class UserDAO implements BaseDao<User> {
      * @param id- is the corresponding primary key of the user in the table
      * @return the corresponding User object.
      */
-    public User getById(int id) {
+    @Override
+    public User getById(Integer id) {
         EntityManager em = getEntityManager();
         User user = (User) em.createNamedQuery("User.findById", User.class)
                 .setParameter("id", id)
@@ -110,6 +114,14 @@ public class UserDAO implements BaseDao<User> {
                 .getResultList();
     }
 
+    /**Method used to filter users based on a predefined set of parameters like,
+     * name, surname, email, type.
+     * @param name - is the name of the user
+     * @param surname - is the surname of the user
+     * @param email - is the email of the user
+     * @param type - is the type of the user
+     * @return the list of users that comply with the specified conditions.
+     */
     public List<User> filterUsers(String name, String surname,
             String email, String type) {
         String query = "SELECT u FROM User u WHERE u.status !='D' ";
@@ -136,7 +148,7 @@ public class UserDAO implements BaseDao<User> {
         if (email != null && !email.equals("")) {
             tQuery.setParameter("email", email + "%");
         }
-        if (!type.equals("")) {
+        if (!"".equals(type)) {
             tQuery.setParameter("type", type);
         }
 
