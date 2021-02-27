@@ -283,6 +283,7 @@ public class UserBean {
 
     /**
      * Method to search for a specific user
+     * @throws Exception 
      */
     public void searchUsers() throws Exception {
         listOfUsers = userDAO.filterUsers(searchName, searchSurname,

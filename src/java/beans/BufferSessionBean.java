@@ -27,7 +27,11 @@ public class BufferSessionBean {
         return bookIDFromIndexToDetails;
     }
 
-    public String saveBookIDFromIndexToDetails(int bookIDFromIndexToDetails) {
+    /**Method used to save the id of the book that the user has clicked.
+     * The is is passed as a parameter from the frontend.
+     * @return a string that will have redirect us to the bookDetails page.
+     */
+    public String saveBookIDFromIndexToDetails() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext()
                 .getRequestParameterMap();
 

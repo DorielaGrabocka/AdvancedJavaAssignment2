@@ -89,6 +89,7 @@ public class BookBean {
     }
 
     public void getAll() {
+        searchMessage="";
         listOfBooks = bookDao.getAll()
                 .stream()
                 .filter(b -> (b.getStatus().equals("N")))
@@ -156,6 +157,7 @@ public class BookBean {
     }
 
     public void searchBooks() throws ParseException {
+        searchMessage="";
         int min;
         int max;
         if (searchMin.equals("")) {
@@ -169,7 +171,7 @@ public class BookBean {
             max = Integer.parseInt(searchMax);
         }
         
-        if(min > max){
+        if(min > max && max!=0){
             searchMessage = "Please put minimum less than maximum!";
         }
                 

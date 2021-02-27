@@ -127,7 +127,7 @@ public class ChangeDetailsBean {
     public void updatePassword() {
         if (!doPasswordsMatch(encryptPassword(currentPassword),
                 getCurrentUser().getPassword())) {
-            messagePassword = "Incorrect current password";
+            messagePassword = " Incorrect current password ";
         } else if (doPasswordsMatch(currentPassword, newPassword)) {
             messagePassword = "New password cannot be the same as old password!";
         } else if (!doPasswordsMatch(newPassword, confirmNewPassword)) {

@@ -1,13 +1,10 @@
 package beans;
 
 import DAO.BookDAO;
-import java.text.ParseException;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import models.Book;
 
 /**
@@ -23,12 +20,12 @@ public class IndexBean {
     private int rankLast;
     
     //For searching
-    private String searchTitle;
+    /*private String searchTitle;
     private String searchAuthor;
     private String searchMax;
     private String searchMin;
     private String searchGenre;
-    private String searchMessage;
+    private String searchMessage;*/
     
     @ManagedProperty(value="#{loginBean}")
     LoginBean loginBean;
@@ -44,12 +41,12 @@ public class IndexBean {
     public String addReview(){
         if(loginBean.getUser()==null) return "login.xhtml?faces-redirect=true";
         else{
-            int id = Integer.parseInt(FacesContext
+            /*int id = Integer.parseInt(FacesContext
                     .getCurrentInstance()
                     .getExternalContext()
                     .getRequestParameterMap()
-                    .get("bookID"));
-            bufferSessionBean.saveBookIDFromIndexToDetails(id);
+                    .get("bookID"));*/
+            bufferSessionBean.saveBookIDFromIndexToDetails();
             return "bookDeatils.xhtml?faces-redirect=true";
         }
     }
@@ -76,7 +73,23 @@ public class IndexBean {
         return ++rankLast;
     }
 
-    public String getSearchTitle() {
+     public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
+    public BufferSessionBean getBufferSessionBean() {
+        return bufferSessionBean;
+    }
+
+    public void setBufferSessionBean(BufferSessionBean bufferSessionBean) {
+        this.bufferSessionBean = bufferSessionBean;
+    }
+    
+    /*public String getSearchTitle() {
         return searchTitle;
     }
 
@@ -122,23 +135,6 @@ public class IndexBean {
 
     public void setSearchMessage(String searchMessage) {
         this.searchMessage = searchMessage;
-    }
-
-    public LoginBean getLoginBean() {
-        return loginBean;
-    }
-
-    public void setLoginBean(LoginBean loginBean) {
-        this.loginBean = loginBean;
-    }
-
-    public BufferSessionBean getBufferSessionBean() {
-        return bufferSessionBean;
-    }
-
-    public void setBufferSessionBean(BufferSessionBean bufferSessionBean) {
-        this.bufferSessionBean = bufferSessionBean;
-    }
-    
-    
+    }*/
+  
 }

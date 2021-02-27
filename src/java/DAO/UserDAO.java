@@ -42,7 +42,8 @@ public class UserDAO implements BaseDao<User, Integer> {
     public void update(User userUpdated) {
         EntityManager em = getEntityManager();
         String query = "UPDATE User u SET u.name=:name, u.surname=:surname,"
-                + "u.email=:email, u.userType=:type, u.status=:status WHERE u.id=:id";
+                + "u.email=:email, u.userType=:type, u.status=:status, "
+                + "u.password=:password WHERE u.id=:id";
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         em.createQuery(query)
@@ -52,6 +53,7 @@ public class UserDAO implements BaseDao<User, Integer> {
                 .setParameter("status", userUpdated.getStatus())
                 .setParameter("type", userUpdated.getUserType())
                 .setParameter("id", userUpdated.getId())
+                .setParameter("password", userUpdated.getPassword())
                 .executeUpdate();
         transaction.commit();
     }

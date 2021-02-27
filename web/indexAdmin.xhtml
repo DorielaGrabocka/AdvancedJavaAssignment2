@@ -387,6 +387,11 @@
                             <f:facet name="header">Synopsis</f:facet>
                             <h:outputText value="#{b.synopsis}"/>   
                         </h:column>
+                        <h:column> 
+                            <f:facet name="header">Rating</f:facet>
+                            <h:outputText value="#{indexBean.getAverageRating(b.id)}"/>   
+                        </h:column>
+
                     </h:dataTable>
                 </h:panelGrid>
             </h:panelGroup>
