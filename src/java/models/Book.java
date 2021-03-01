@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,6 +46,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Book.findBySynopopsis", query = "SELECT b FROM Book b WHERE b.synopsis = :synopopsis AND b.status!='D'")
     , @NamedQuery(name = "Book.findByStatus", query = "SELECT b FROM Book b WHERE b.status = :status AND b.status!='D'")})
 public class Book implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    private List<Review> reviewList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -194,6 +198,15 @@ public class Book implements Serializable {
     @Override
     public String toString() {
         return "models.Book[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
     
 }

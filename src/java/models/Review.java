@@ -34,6 +34,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Review.findByText", query = "SELECT r FROM Review r WHERE r.text = :text")})
 public class Review implements Serializable {
 
+    @JoinColumn(name = "BookID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Book book;
+    @JoinColumn(name = "UserID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private User user;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ReviewPK reviewPK;
@@ -108,6 +115,22 @@ public class Review implements Serializable {
     @Override
     public String toString() {
         return "models.Review[ reviewPK=" + reviewPK + " ]";
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
 }

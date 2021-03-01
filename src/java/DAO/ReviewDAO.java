@@ -10,8 +10,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import models.Book;
 import models.Review;
 import models.ReviewPK;
+import models.User;
 
 /**
  *
@@ -87,12 +89,11 @@ public class ReviewDAO implements BaseDao<Review, ReviewPK>{
      *@return a  list of book reviews
      */
     public List<Review> getBookReviews(int id){
-        String query = "SELECT r "
-                + "FROM Review r WHERE r.reviewPK.bookID=:bookId";
-        
-        return getEntityManager().createQuery(query, Review.class)
-                .setParameter("bookId", id)
-                .getResultList();
+                
+        return getEntityManager().createNamedQuery("Book.findById", Book.class)
+                .setParameter("id", id)
+                .getSingleResult()
+                .getReviewList();
     }
     
     /**Method to get the reviews of a certain user.
@@ -100,12 +101,14 @@ public class ReviewDAO implements BaseDao<Review, ReviewPK>{
      * @return a list of Reviews
      */
     public List<Review> getUserReviews(int id){
-        String query = "SELECT r "
-                + "FROM Review r WHERE r.reviewPK.userID=:userId";
+        return getEntityManager().createNamedQuery("User.findById",User.class)
+                .setParameter("id", id)
+                .getSingleResult()
+                .getReviewList();
         
-        return getEntityManager().createQuery(query, Review.class)
+        /*return getEntityManager().createQuery(query, Review.class)
                 .setParameter("userId", id)
-                .getResultList();
+                .getResultList();*/
     }
     
     
