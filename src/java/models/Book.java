@@ -80,8 +80,7 @@ public class Book implements Serializable {
     @Basic(optional = false)
     @Column(name = "Status")
     private String status;
-    
-    
+
     public Book() {
     }
 
@@ -89,7 +88,7 @@ public class Book implements Serializable {
         this.id = id;
     }
 
-    public Book(String title, String author, String publishingHouse, 
+    public Book(String title, String author, String publishingHouse,
             String publicationYear, String genre, Date dateAdded, String synopsis, String status) {
         this.title = title;
         this.author = author;
@@ -158,7 +157,6 @@ public class Book implements Serializable {
         this.dateAdded = dateAdded;
     }
 
-
     public String getSynopsis() {
         return synopsis;
     }
@@ -174,7 +172,7 @@ public class Book implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -208,5 +206,5 @@ public class Book implements Serializable {
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
     }
-    
+
 }

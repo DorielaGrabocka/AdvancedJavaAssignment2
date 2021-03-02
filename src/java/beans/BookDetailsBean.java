@@ -9,6 +9,7 @@ package beans;
 import DAO.BookDAO;
 import DAO.ReviewDAO;
 import DAO.UserDAO;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -31,8 +32,8 @@ public class BookDetailsBean implements Serializable{
     @ManagedProperty(value = "#{loginBean}")
     private LoginBean loginBean;
     
-    @ManagedProperty(value="#{bufferSessionBean}")
-    private BufferSessionBean bufferSessionBean;
+    /*@ManagedProperty(value="#{bufferSessionBean}")
+    private BufferSessionBean bufferSessionBean;*/
     
     private int bookID;
     private Book book;
@@ -43,22 +44,29 @@ public class BookDetailsBean implements Serializable{
     private String outputText = "";
     private String comment;
     private int rating;
+    private boolean toAddReview=true;
+    
 
-    public BufferSessionBean getBufferSessionBean() {
+    /*public BufferSessionBean getBufferSessionBean() {
         return bufferSessionBean;
     }
 
     public void setBufferSessionBean(BufferSessionBean bufferSessionBean) {
         this.bufferSessionBean = bufferSessionBean;
-    }
+    }*/
     
     public BookDetailsBean(){
     }
     
-    public void init(){
-        bookID = bufferSessionBean.getBookIDFromIndexToDetails();
-        book = bookDao.getById(bookID);
-        averageRating = bookDao.getAverageRating(bookID);
+    public void init() throws IOException{
+        //bookID = bufferSessionBean.getBookIDFromIndexToDetails();
+        if(!toAddReview) FacesContext.getCurrentInstance().getExternalContext()
+                .redirect("login.xhtml?faces-redirect=true");
+        else{
+            book = bookDao.getById(bookID);
+            averageRating = bookDao.getAverageRating(bookID);
+        }
+      
     }
     
     public List<Review> getReviews(){
@@ -98,6 +106,8 @@ public class BookDetailsBean implements Serializable{
                 reviewDao.insert(review);
                 outputText = "Review added succesfully!";
                 averageRating = bookDao.getAverageRating(bookID);
+                //FacesContext.getCurrentInstance().getExternalContext()
+                //    .redirect("bookDetails.xhtml");
             } else {
                 outputText = "Review already exists!";
             }
@@ -116,7 +126,7 @@ public class BookDetailsBean implements Serializable{
 
     public void setRating(int rating) {
         this.rating = rating;
-        outputText+=rating+"XXXX";
+        //outputText+=rating+"XXXX";
     }
     
     public User getCurrentUser() {
@@ -145,6 +155,14 @@ public class BookDetailsBean implements Serializable{
 
     public void setAverageRating(double averageReview) {
         this.averageRating = averageReview;
+    }
+
+    public boolean isToAddReview() {
+        return toAddReview;
+    }
+
+    public void setToAddReview(boolean addReview) {
+        this.toAddReview = addReview;
     }
 
     public LoginBean getLoginBean() {

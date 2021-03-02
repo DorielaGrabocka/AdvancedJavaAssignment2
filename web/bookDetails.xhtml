@@ -12,7 +12,8 @@
     </h:head>
     <h:body>
         <f:metadata>
-            <f:viewParam name="bookID" value="#{bufferSessionBean.bookIDFromIndexToDetails}" />
+            <f:viewParam name="bookID" value="#{bookDetailsBean.bookID}" />
+            <f:viewParam name="addReview" value="#{bookDetailsBean.toAddReview}" />
             <f:event type="preRenderView" listener="#{bookDetailsBean.init}" />
         </f:metadata>
         <h:panelGrid styleClass="body" columns="2">

@@ -29,8 +29,8 @@ public class IndexBean {
     
     @ManagedProperty(value="#{loginBean}")
     LoginBean loginBean;
-    @ManagedProperty(value="#{bufferSessionBean}")
-    BufferSessionBean bufferSessionBean;
+    /*@ManagedProperty(value="#{bufferSessionBean}")
+    BufferSessionBean bufferSessionBean;*/
     
     public IndexBean() {
         rankTop=0;
@@ -46,7 +46,7 @@ public class IndexBean {
                     .getExternalContext()
                     .getRequestParameterMap()
                     .get("bookID"));*/
-            bufferSessionBean.saveBookIDFromIndexToDetails();
+           // bufferSessionBean.saveBookIDFromIndexToDetails();
             return "bookDeatils.xhtml?faces-redirect=true";
         }
     }
@@ -81,13 +81,13 @@ public class IndexBean {
         this.loginBean = loginBean;
     }
 
-    public BufferSessionBean getBufferSessionBean() {
+    /*public BufferSessionBean getBufferSessionBean() {
         return bufferSessionBean;
     }
 
     public void setBufferSessionBean(BufferSessionBean bufferSessionBean) {
         this.bufferSessionBean = bufferSessionBean;
-    }
+    }*/
     
     /*public String getSearchTitle() {
         return searchTitle;

@@ -44,6 +44,7 @@ public class ReviewDAO implements BaseDao<Review, ReviewPK>{
             r = em.merge(r);
         }
         em.remove(r);
+        em.flush();
         transaction.commit();
     }
     
@@ -89,11 +90,10 @@ public class ReviewDAO implements BaseDao<Review, ReviewPK>{
      *@return a  list of book reviews
      */
     public List<Review> getBookReviews(int id){
-                
-        return getEntityManager().createNamedQuery("Book.findById", Book.class)
-                .setParameter("id", id)
-                .getSingleResult()
-                .getReviewList();
+        String query = "SELECT r FROM Review r WHERE r.reviewPK.bookID=:bookID";        
+        return getEntityManager().createQuery(query, Review.class)
+                .setParameter("bookID", id)
+                .getResultList();
     }
     
     /**Method to get the reviews of a certain user.
@@ -101,14 +101,16 @@ public class ReviewDAO implements BaseDao<Review, ReviewPK>{
      * @return a list of Reviews
      */
     public List<Review> getUserReviews(int id){
-        return getEntityManager().createNamedQuery("User.findById",User.class)
+        /*return getEntityManager().createNamedQuery("User.findById",User.class)
                 .setParameter("id", id)
                 .getSingleResult()
-                .getReviewList();
+                .getReviewList();*/
         
-        /*return getEntityManager().createQuery(query, Review.class)
+        String query = "SELECT r FROM Review r WHERE r.reviewPK.userID=:userId";
+        
+        return getEntityManager().createQuery(query, Review.class)
                 .setParameter("userId", id)
-                .getResultList();*/
+                .getResultList();
     }
     
     

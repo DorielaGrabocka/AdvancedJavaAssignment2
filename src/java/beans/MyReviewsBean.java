@@ -43,11 +43,12 @@ public class MyReviewsBean {
         return book.getTitle();
     }
     
-    public void removeReview(int userID, int bookID) throws Exception{
+    public String removeReview(int userID, int bookID) throws Exception{
         Review review = reviewDao.getByIds(userID, bookID);
         reviewDao.delete(review);
-        FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("myReviews.xhtml");
+        //FacesContext.getCurrentInstance().getExternalContext()
+        //            .redirect("myReviews.xhtml");
+        return "";
     }
 
     public LoginBean getLoginBean() {
